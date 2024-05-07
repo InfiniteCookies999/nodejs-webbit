@@ -1,8 +1,11 @@
 const errorHandler = require('./error.handler');
-const { validateBody, validateLogin } = require('./validation');
+const { validateBody,
+        validateLogin,
+        validateFileExists } = require('./validation');
 
 module.exports = {
   errorHandler,
   validateBody,
-  validateLogin
+  validateLogin,
+  validateFileExists
 };

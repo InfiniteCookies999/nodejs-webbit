@@ -13,7 +13,6 @@ jest.mock('../../src/controllers/auth.controller', () => {
     login: statusOkMock
   }
 });
-jest.mock('../../src/controllers/auth.controller');
 
 describe('route /auth/register', () => {
   it('invalid email no address', async () => {

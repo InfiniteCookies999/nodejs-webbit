@@ -4,7 +4,6 @@ const httpMocks = require('node-mocks-http');
 
 jest.mock('../../src/services/user.service');
 
-
 describe('AuthController', () => {
   describe('#register', () => {
     it('email taken ', async () => {
@@ -17,8 +16,8 @@ describe('AuthController', () => {
         password: 'my password'
       };
 
-      UserService.getUserByUsername.mockReturnValue(false);
-      UserService.getUserByEmail.mockReturnValue(true);
+      UserService.getUserByUsername.mockResolvedValue(false);
+      UserService.getUserByEmail.mockResolvedValue(true);
 
       const nextMock = jest.fn();
       await AuthController.register(request, response, nextMock);
@@ -36,8 +35,8 @@ describe('AuthController', () => {
         password: 'my password'
       };
 
-      UserService.getUserByUsername.mockReturnValue(true);
-      UserService.getUserByEmail.mockReturnValue(false);
+      UserService.getUserByUsername.mockResolvedValue(true);
+      UserService.getUserByEmail.mockResolvedValue(false);
       
       const nextMock = jest.fn();
       await AuthController.register(request, response, nextMock);
@@ -61,8 +60,8 @@ describe('AuthController', () => {
         gender: gender
       };
 
-      UserService.getUserByUsername.mockReturnValue(false);
-      UserService.getUserByEmail.mockReturnValue(false);
+      UserService.getUserByUsername.mockResolvedValue(false);
+      UserService.getUserByEmail.mockResolvedValue(false);
 
       const nextMock = jest.fn();
       await AuthController.register(request, response, nextMock);
@@ -83,7 +82,7 @@ describe('AuthController', () => {
         password: password
       };
 
-      UserService.checkUserCredentials.mockReturnValue(false);
+      UserService.checkUserCredentials.mockResolvedValue(false);
 
       const nextMock = jest.fn();
       await AuthController.login(request, response, nextMock);
@@ -120,7 +119,7 @@ describe('AuthController', () => {
       };
       request.session = {}
 
-      UserService.checkUserCredentials.mockReturnValue(true);
+      UserService.checkUserCredentials.mockResolvedValue(true);
 
       const mockNext = jest.fn();
       await AuthController.login(request, response, mockNext);
@@ -140,8 +139,8 @@ describe('AuthController', () => {
       };
       request.session = {}
 
-      UserService.checkUserCredentials.mockReturnValue(true);
-      UserService.getUserByEmail.mockReturnValue('maddie');
+      UserService.checkUserCredentials.mockResolvedValue(true);
+      UserService.getUserByEmail.mockResolvedValue('maddie');
 
       const mockNext = jest.fn();
       await AuthController.login(request, response, mockNext);

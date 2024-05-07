@@ -28,13 +28,11 @@ class AuthController {
       const isEmail = emailOrUsername.includes("@");
       if (await UserService.checkUserCredentials(emailOrUsername, password, isEmail)) {
 
-        let username = emailOrUsername;
-        if (isEmail) {
-          username = await UserService.getUserByEmail(emailOrUsername);
-        }
-
+        const user = isEmail ? await UserService.getUserByEmail(emailOrUsername)
+                             : await UserService.getUserByUsername(emailOrUsername);
+        
         req.session.user = {
-          username: username
+          id: user.id
         };
 
         return res.json({ "status": "success" });

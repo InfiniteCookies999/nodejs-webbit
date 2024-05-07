@@ -1,15 +1,16 @@
 const config = require('./config/env.config');
 const createApp = require('./create.app');
-const { sequelize } = require('./models');
+const db = require('./models');
 
 (async () => {
 
   const app = createApp();
   
   try {
-    await sequelize.authenticate();
+    db.initialize();
+    await db.sequelize.authenticate();
     const shouldAlter = config.DATABASE_DEV_UPDATE || false;
-    await sequelize.sync({ alter: shouldAlter });
+    await db.sequelize.sync({ alter: shouldAlter });
   } catch (error) {
     console.log(error);
     return;

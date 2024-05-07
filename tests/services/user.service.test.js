@@ -1,12 +1,12 @@
-const { User } = require('../../src/models');
+const db = require('../../src/models');
 const { UserService } = require('../../src/services');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
-jest.mock('bcrypt');
+jest.mock('bcryptjs');
 jest.mock('../../src/models/user.model', () => () => {
   const SequelizeMock = require("sequelize-mock");
   const sequelizeMock = new SequelizeMock();
-  return sequelizeMock.define('user', {
+  return sequelizeMock.define('User', {
     id: 0,
     email: 'infinitecookies959@gmail.com',
     username: 'maddie',
@@ -14,22 +14,26 @@ jest.mock('../../src/models/user.model', () => () => {
   });
 });
 
+beforeEach(() => {
+  db.User = require('../../src/models/user.model')();
+});
+
 afterEach(() => {
   // Spying on the findOne function at times so need
   // to restore the mock to the original value.
   jest.restoreAllMocks();
-})
+});
 
 describe('UserService', () => {
     
   describe('#registerUser', () => {
     it('register given user', async () => {
 
-      jest.spyOn(User, 'create');
+      jest.spyOn(db.User, 'create');
 
       const password = 'my password';
       await UserService.registerUser('infinitecookies959@gmail.com', 'maddie', password, 'Woman');
-      expect(User.create).toHaveBeenCalled();
+      expect(db.User.create).toHaveBeenCalled();
       expect(bcrypt.hash).toHaveBeenCalledWith(password, expect.any(Number));
 
     });
@@ -43,7 +47,7 @@ describe('UserService', () => {
     
     it('check for email does not exist', async () => {
 
-      jest.spyOn(User, 'findOne').mockReturnValue(null);
+      jest.spyOn(db.User, 'findOne').mockReturnValue(null);
       
       const result = await UserService.checkUserCredentials('bademail@gmail.com', password, true);
       expect(result).toBe(false);
@@ -70,7 +74,7 @@ describe('UserService', () => {
     });
     it('check for username does not exist', async () => {
 
-      jest.spyOn(User, 'findOne').mockReturnValue(null);
+      jest.spyOn(db.User, 'findOne').mockReturnValue(null);
 
       const result = await UserService.checkUserCredentials(username, password, false);
       expect(result).toBe(false);

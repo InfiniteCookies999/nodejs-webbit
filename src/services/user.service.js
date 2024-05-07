@@ -1,26 +1,26 @@
-const { User } = require('../models')
-const bcrypt = require('bcrypt');
+const db = require('../models')
+const bcrypt = require('bcryptjs');
 
 class UserService {
     
   async getUserByEmail(email) {
-    return await User.findOne({ where: { email: email } });
+    return await db.User.findOne({ where: { email: email } });
   }
 
   async getUserByUsername(username) {
-    return await User.findOne({ where: { username: username } });
+    return await db.User.findOne({ where: { username: username } });
   }
 
   async registerUser(email, username, password, gender) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const joinDate = new Date();
-    await User.create({
+    await db.User.create({
       email: email,
-      email_verified: false,
+      emailVerified: false,
       username: username,
-      join_date: joinDate,
-      post_karma: 0,
-      comment_karma: 0,
+      joinDate: joinDate,
+      postKarma: 0,
+      commentKarma: 0,
       password: hashedPassword,
       gender: gender
     });
@@ -30,8 +30,8 @@ class UserService {
       
     // First check to make sure that there exists a username or an email for
     // the given usernameOrEmail.
-    let user = isEmail ? await User.findOne({ where: { email: usernameOrEmail } })
-                       : await User.findOne({ where: { username: usernameOrEmail } });
+    let user = isEmail ? await db.User.findOne({ where: { email: usernameOrEmail } })
+                       : await db.User.findOne({ where: { username: usernameOrEmail } });
     
     if (!user) return false;
 

@@ -1,11 +1,11 @@
 module.exports = (sequalize, DataTypes) => {
-  const User = sequalize.define('user', {
+  const User = sequalize.define('User', {
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
       unique: true
     },
-    email_verified: {
+    emailVerified: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
@@ -14,19 +14,19 @@ module.exports = (sequalize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    profile_uri: {
-      type: DataTypes.STRING(300),
+    profileURI: {
+      type: DataTypes.STRING(200),
       allowNull: true
     },
-    post_karma: {
+    postKarma: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    comment_karma: {
+    commentKarma: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    join_date: {
+    joinDate: {
       type: DataTypes.DATE,
       allowNull: false
     },

@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const { authRouter } = require('./routes');
+const { authRouter, subWebbitRouter } = require('./routes');
 const { errorHandler } = require('./middleware');
 
 function createApp() {
@@ -11,10 +11,11 @@ function createApp() {
   app.use(session({
     resave: false,
     secret: "ASd#@$afsd21SD32",
-    cookie: { maxAge: 30000 }, // how long in milliseconds the cookie will stay alive.
+    cookie: { maxAge: 86400000 }, // length of one day.
     saveUninitialized: false
   }));
   app.use(authRouter);
+  app.use(subWebbitRouter);
   app.use(cookieParser());
   app.use(errorHandler);
 

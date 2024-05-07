@@ -17,7 +17,7 @@ function validateBody(req, res, next) {
 
 function validateLogin(req, res, next) {
   if (!req.session.user) {
-    let error = new Error("No access to page");
+    let error = new Error("No access");
     error.statusCode = 401;
     next(error);
   } else {
@@ -26,7 +26,19 @@ function validateLogin(req, res, next) {
   }
 }
 
+function validateFileExists(req, res, next) {
+  // TODO: This also needs to check the type of the file
+  if (!req.file) {
+    let error = new Error("Missing file");
+    error.statusCode = 400;
+    next(error);
+  } else {
+    next();
+  }
+}
+
 module.exports = {
   validateBody,
-  validateLogin
+  validateLogin,
+  validateFileExists
 };

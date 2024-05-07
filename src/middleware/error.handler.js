@@ -5,17 +5,18 @@ const errorHandler = (err, req, res, next) => {
     res.status(err.statusCode)
        .setHeader('Content-Type', 'application/json')
        .end(err.message);
-    return;
-  }
-  if (err.statusCode == 401) {
+  } else if (err.statusCode == 401) {
     res.status(err.statusCode)
        .setHeader('Content-Type', 'text/plain')
        .end(err.message);
-    return;
+  } else if (err.statusCode == 404) {
+    res.status(err.statusCode)
+       .setHeader('Content-Type', 'text/plain')
+       .end("Page does not exist");
+  } else {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).send('Internal server error');
   }
-
-  console.error(err.stack);
-  res.status(err.statusCode || 500).send('Internal server error');
 }; 
 
 module.exports = errorHandler;
