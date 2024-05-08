@@ -27,7 +27,6 @@ function validateLogin(req, res, next) {
 }
 
 function validateFileExists(req, res, next) {
-  // TODO: This also needs to check the type of the file
   if (!req.file) {
     let error = new Error("Missing file");
     error.statusCode = 400;
