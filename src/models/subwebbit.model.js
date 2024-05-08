@@ -33,7 +33,7 @@ module.exports = (sequalize, DataTypes) => {
   SubWebbit.associate = (db) => {
     sequalize.define('Moderators');
     SubWebbit.belongsToMany(db.User, { through: 'Moderators', as: 'mod' });
+    SubWebbit.hasMany(db.Post);
   };
-
   return SubWebbit;
 }

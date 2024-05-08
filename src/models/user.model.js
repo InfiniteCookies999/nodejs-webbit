@@ -39,5 +39,8 @@ module.exports = (sequalize, DataTypes) => {
       allowNull: false
     }
   });
+  User.associate = (db) => {
+    User.hasMany(db.Post);
+  };
   return User;
 }

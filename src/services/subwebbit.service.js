@@ -1,4 +1,5 @@
 const db = require('../models');
+const { HttpError } = require('../middleware');
 
 class SubWebbitService {
 
@@ -18,21 +19,15 @@ class SubWebbitService {
 
   async updateSubWebbit(name, session, cb) {
     let subWebbit = await this.getSubWebbitByName(name);
-    if (subWebbit) {
-      const userId = session.user.id;
-      if (!(await subWebbit.hasMod(userId))) {
-        let error = new Error("User is not a moderator");
-        error.statusCode = 401;
-        throw error;
-      }
+    if (!subWebbit)
+      throw new HttpError("SubWebbit doesn't exist", 404);
+    
+    const userId = session.user.id;
+    if (!(await subWebbit.hasMod(userId)))
+      throw new HttpError("User is not a moderator", 401);
 
-      cb(subWebbit);
-      await subWebbit.save();
-    } else{
-      let error = new Error("SubWebbit doesn't exist");
-      error.statusCode = 404;
-      throw error;
-    }
+    cb(subWebbit);
+    await subWebbit.save();
   }
 
   async getSubWebbitByName(name) {
