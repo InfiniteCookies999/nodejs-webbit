@@ -46,6 +46,18 @@ describe('SubWebbitController', () => {
       expect(SubWebbitService.createSubWebbit).toHaveBeenCalled();
     });
   });
+  describe('#delete', () => {
+    it('service delete called', async () => {
+      const response = httpMocks.createResponse();
+      const request = httpMocks.createRequest();
+
+      const nextMock = jest.fn();
+      await SubWebbitController.delete(request, response, nextMock);
+      expect(nextMock).not.toHaveBeenCalled();
+      expect(SubWebbitService.deleteSubwebbitByName).toHaveBeenCalled();
+
+    });
+  });
 
   describe('#updateDescription', () => {
     it('update icon', async () => {

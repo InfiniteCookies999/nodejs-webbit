@@ -12,6 +12,7 @@ module.exports = (sequalize, DataTypes) => {
   Post.associate = (db) => {
     Post.belongsTo(db.SubWebbit);
     Post.belongsTo(db.User);
+    Post.hasMany(db.PostMedia);
   }
   return Post;
 };

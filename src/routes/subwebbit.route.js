@@ -2,28 +2,15 @@ const express = require('express');
 const { body } = require('express-validator');
 const { validateBody,
         validateLogin,
-        validateFileExists } = require('../middleware');
+        validateFileExists,
+        fileFilter } = require('../middleware');
 const { SubWebbitController } = require('../controllers');
 const multer = require('multer');
 
 
 const upload = multer({
   dest: '/upload',
-  fileFilter: (req, file, cb) => {
-    
-    const mimetype = file.mimetype;
-    if (mimetype == "image/png" ||
-        mimetype == "image/jpg" ||
-        mimetype == "image/jpeg"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      let error = new Error("Invalid file type format.");
-      error.statusCode = 400;
-      cb(error);
-    }
-  }
+  fileFilter: fileFilter([ "image/png", "image/jpg", "image/jpeg" ])
 });
 
 const router = express.Router();
@@ -32,11 +19,16 @@ router.use(express.json());
 
 router.post('/subwebbit',
   body('name').isLength({ min: 3, max: 40 }).isAlphanumeric(),
-  body('type').isIn('public', 'private', 'restricted'),
+  body('type').isIn([ 'public', 'private', 'restricted' ]),
   body('adultRated').isBoolean(),
   validateBody,
   validateLogin,
   SubWebbitController.create
+);
+
+router.delete('/subwebbit/:name',
+  validateLogin,
+  SubWebbitController.delete
 );
 
 router.put('/subwebbit/:name/description',
@@ -67,7 +59,5 @@ router.put('/subwebbit/:name/community_picture',
   validateLogin,
   SubWebbitController.updateCommunityIcon
 );
-
-
 
 module.exports = router;

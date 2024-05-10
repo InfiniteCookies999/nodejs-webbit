@@ -17,15 +17,9 @@ beforeEach(() => {
   db.SubWebbit = require('../../src/models/subwebbit.model')();
 });
 
-afterEach(() => {
-  // Spying on the findOne function at times so need
-  // to restore the mock to the original value.
-  jest.restoreAllMocks();
-});
-
 describe('SubWebbitService', () => {
   describe('#createSubWebbit', () => {
-    it('creates subwebbit and adds mod', () => {
+    it('creates subwebbit as public and adds mod', () => {
       const session = {
         user: {
           id: 1
@@ -104,6 +98,64 @@ describe('SubWebbitService', () => {
       expect(subMock.hasMod).toHaveBeenCalled();
       expect(subMock.save).toHaveBeenCalled();
 
+    });
+  });
+
+  describe('#deleteSubwebbitByName', () => {
+    it('no such subwebbit', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+
+      jest.spyOn(SubWebbitService, 'getSubWebbitByName').mockResolvedValue(null);
+
+      await expect(async () => {
+        await SubWebbitService.deleteSubwebbitByName(session, 'subname');
+      }).rejects.toThrow("SubWebbit doesn't exist");
+      expect(SubWebbitService.getSubWebbitByName).toHaveBeenCalled();
+      
+    });
+    it('user not a moderator', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        hasMod: jest.fn(() => false),
+        destroy: jest.fn()
+      };
+
+      jest.spyOn(SubWebbitService, 'getSubWebbitByName').mockResolvedValue(subMock);
+
+      await expect(async () => {
+        await SubWebbitService.deleteSubwebbitByName(session, 'subname');
+      }).rejects.toThrow("User is not a moderator");
+      expect(SubWebbitService.getSubWebbitByName).toHaveBeenCalled();
+      expect(subMock.hasMod).toHaveBeenCalled();
+      expect(subMock.destroy).not.toHaveBeenCalled();
+    
+    });
+    it('destroy called successfully', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        hasMod: jest.fn(() => true),
+        destroy: jest.fn()
+      };
+
+      jest.spyOn(SubWebbitService, 'getSubWebbitByName').mockResolvedValue(subMock);
+
+      await SubWebbitService.deleteSubwebbitByName(session, 'subname');
+      
+      expect(SubWebbitService.getSubWebbitByName).toHaveBeenCalled();
+      expect(subMock.hasMod).toHaveBeenCalled();
+      expect(subMock.destroy).toHaveBeenCalled();
     });
   });
 });

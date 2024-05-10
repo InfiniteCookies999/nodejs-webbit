@@ -119,7 +119,6 @@ describe('route /auth/register', () => {
       .set('Content-Type', 'application/json')
       .expect(400)
       .then(res => {
-        console.log(res.body.errors);
         expect(res.body.errors.length).toBe(1);
         expect(res.body.errors[0].path).toBe('gender');
       });

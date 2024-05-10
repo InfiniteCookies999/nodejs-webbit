@@ -17,6 +17,17 @@ class SubWebbitController {
     }
   }
 
+  async delete(req, res, next) {
+    try {
+
+      await SubWebbitService.deleteSubwebbitByName(req.session, req.params.name);
+    
+      res.json({ "status": "success" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updateDescription(req, res, next) {
     try {
       const name = req.params.name;

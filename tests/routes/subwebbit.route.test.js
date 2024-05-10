@@ -13,7 +13,8 @@ jest.mock('../../src/controllers/subwebbit.controller', () => {
     updateDescription: statusOkMock,
     updateBannerIcon: statusOkMock,
     updateBackgroundIcon: statusOkMock,
-    updateCommunityIcon: statusOkMock
+    updateCommunityIcon: statusOkMock,
+    delete: statusOkMock
   }
 });
 jest.mock('../../src/middleware/validation', () => {
@@ -93,7 +94,7 @@ describe('route POST /subwebbit', () => {
         expect(res.body.errors[0].path).toBe('adultRated');
       });
   });
-  it('successful creation of subwebbit', async () => {
+  it('successful creation of subwebbit with type public', async () => {
     const body = {
       name: 'newsubwebbit',
       type: 'public',
@@ -106,6 +107,32 @@ describe('route POST /subwebbit', () => {
       .set('Content-Type', 'application/json')
       .expect(200);
   });
+});
+it('successful creation of subwebbit with type restricted', async () => {
+  const body = {
+    name: 'newsubwebbit',
+    type: 'restricted',
+    adultRated: false
+  };
+
+  await supertest(app)
+    .post('/subwebbit')
+    .send(body)
+    .set('Content-Type', 'application/json')
+    .expect(200);
+});
+it('successful creation of subwebbit with type private', async () => {
+  const body = {
+    name: 'newsubwebbit',
+    type: 'private',
+    adultRated: false
+  };
+
+  await supertest(app)
+    .post('/subwebbit')
+    .send(body)
+    .set('Content-Type', 'application/json')
+    .expect(200);
 });
 
 describe('route PUT /subwebbit/:name/description', () => {

@@ -1,7 +1,9 @@
 const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const { authRouter, subWebbitRouter } = require('./routes');
+const { authRouter,
+        subWebbitRouter,
+        postRouter } = require('./routes');
 const { errorHandler } = require('./middleware');
 
 function createApp() {
@@ -16,6 +18,7 @@ function createApp() {
   }));
   app.use(authRouter);
   app.use(subWebbitRouter);
+  app.use(postRouter);
   app.use(cookieParser());
   app.use(errorHandler);
 

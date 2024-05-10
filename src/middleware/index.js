@@ -1,4 +1,5 @@
 const errorHandler = require('./error.handler');
+const fileFilter = require('./file.filter');
 const HttpError = require('./http.error');
 const { validateBody,
         validateLogin,
@@ -9,5 +10,6 @@ module.exports = {
   validateBody,
   validateLogin,
   validateFileExists,
-  HttpError
+  HttpError,
+  fileFilter
 };
