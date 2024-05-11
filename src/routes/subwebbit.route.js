@@ -16,6 +16,7 @@ const upload = multer({
 const router = express.Router();
 
 router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
 
 router.post('/subwebbit',
   body('name').isLength({ min: 3, max: 40 }).isAlphanumeric(),

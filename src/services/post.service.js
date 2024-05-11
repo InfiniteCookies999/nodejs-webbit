@@ -51,6 +51,13 @@ class PostService {
 
     await post.destroy();
   }
+
+  async getPost(postId, include) {
+    const post = await db.Post.findByPk(postId, { include: include });
+    if (!post)
+      throw new HttpError("Post doesn't exist", 404);
+    return post;
+  }
 }
 
 module.exports = new PostService();

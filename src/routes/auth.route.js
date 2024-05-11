@@ -6,6 +6,7 @@ const { AuthController } = require('../controllers');
 const router = express.Router();
 
 router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
 
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,100}$/;
 const USERNAME_REGEX = /^[a-zA-Z0-0]{3,20}$/;

@@ -50,6 +50,26 @@ class SubWebbitService {
 
     await subWebbit.destroy();
   }
+
+  async checkPostAccess(session, subWebbit) {
+    if (subWebbit.type == 'public') return;
+    
+    // Not accessible to everyone so have to check permission.
+    if (!subWebbit.hasAuthorizedUser(session.user.id) &&
+        !(await subWebbit.hasMod(session.user.id))) {
+      throw new HttpError("User not allowed to post");
+    }
+  }
+
+  async checkViewAccess(session, subWebbit) {
+    const type = subWebbit.type;
+    if (type == 'public' || type == 'restricted') return;
+
+    // Not accessible to everyone so have to check permission.
+    if (!(await subWebbit.hasAuthorizedUser(session.user.id)) &&
+        !(await subWebbit.hasMod(session.user.id)))
+      throw new HttpError("User not allowed to view");
+  }
 }
 
 module.exports = new SubWebbitService();

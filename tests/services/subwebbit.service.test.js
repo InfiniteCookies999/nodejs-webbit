@@ -158,4 +158,147 @@ describe('SubWebbitService', () => {
       expect(subMock.destroy).toHaveBeenCalled();
     });
   });
+
+  describe('#checkPostAccess', () => {
+    it('can post because public', async () => {
+
+      const session = {};
+      const subMock = {
+        type: 'public',
+        hasAuthorizedUser: jest.fn(),
+        hasMod: jest.fn()
+      };
+      await SubWebbitService.checkPostAccess(session, subMock);
+      expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
+      expect(subMock.hasMod).not.toHaveBeenCalled();
+
+    });
+    it('cannot post because no authorization', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => false),
+        hasMod: jest.fn(() => false)
+      };
+      
+      await expect(async () => {
+        await SubWebbitService.checkPostAccess(session, subMock);
+      }).rejects.toThrow("User not allowed to post");
+      
+    });
+    it('user can post because in authorized list', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => true),
+        hasMod: jest.fn(() => false)
+      };
+
+      await SubWebbitService.checkPostAccess(session, subMock);
+      expect(subMock.hasAuthorizedUser).toHaveBeenCalled();
+    
+    });
+    it('user can post because moderator', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => false),
+        hasMod: jest.fn(() => true)
+      };
+
+      await SubWebbitService.checkPostAccess(session, subMock);
+      expect(subMock.hasMod).toHaveBeenCalled();
+    
+    });
+  });
+
+  describe('#checkViewAccess', () => {
+    it('can view because public', async () => {
+
+      const session = {};
+      const subMock = {
+        type: 'public',
+        hasAuthorizedUser: jest.fn(),
+        hasMod: jest.fn()
+      };
+      await SubWebbitService.checkViewAccess(session, subMock);
+      expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
+      expect(subMock.hasMod).not.toHaveBeenCalled();
+
+    });
+    it('can view because restricted', async () => {
+
+      const session = {};
+      const subMock = {
+        type: 'restricted',
+        hasAuthorizedUser: jest.fn(),
+        hasMod: jest.fn()
+      };
+      await SubWebbitService.checkViewAccess(session, subMock);
+      expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
+      expect(subMock.hasMod).not.toHaveBeenCalled();
+
+    });
+    it('cannot view because no authorization', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => false),
+        hasMod: jest.fn(() => false)
+      };
+      
+      await expect(async () => {
+        await SubWebbitService.checkViewAccess(session, subMock);
+      }).rejects.toThrow("User not allowed to view");
+      
+    });
+    it('user can view because in authorized list', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => true),
+        hasMod: jest.fn(() => false)
+      };
+
+      await SubWebbitService.checkViewAccess(session, subMock);
+      expect(subMock.hasAuthorizedUser).toHaveBeenCalled();
+    
+    });
+    it('user can view because moderator', async () => {
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => false),
+        hasMod: jest.fn(() => true)
+      };
+
+      await SubWebbitService.checkViewAccess(session, subMock);
+      expect(subMock.hasMod).toHaveBeenCalled();
+    
+    });
+  });
 });

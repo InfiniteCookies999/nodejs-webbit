@@ -3,7 +3,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const { authRouter,
         subWebbitRouter,
-        postRouter } = require('./routes');
+        postRouter,
+        commentRouter } = require('./routes');
 const { errorHandler } = require('./middleware');
 
 function createApp() {
@@ -16,9 +17,12 @@ function createApp() {
     cookie: { maxAge: 86400000 }, // length of one day.
     saveUninitialized: false
   }));
+  
   app.use(authRouter);
   app.use(subWebbitRouter);
   app.use(postRouter);
+  app.use(commentRouter);
+
   app.use(cookieParser());
   app.use(errorHandler);
 
