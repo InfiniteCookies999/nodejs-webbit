@@ -4,6 +4,7 @@ const SubWebbitService = require('./subwebbit.service');
 const FileUploaderService = require('./fileuploader.service');
 
 class PostService {
+
   async createPost(subName, session, dto) {
     const subWebbit = await SubWebbitService.getSubWebbitByName(subName);
     if (!subWebbit)
@@ -18,7 +19,9 @@ class PostService {
       title: dto.title,
       body: dto.body,
       UserId: session.user.id,
-      SubWebbitId: subWebbit.id
+      SubWebbitId: subWebbit.id,
+      likes: 0,
+      dislikes: 0
     });
   }
 
@@ -36,27 +39,82 @@ class PostService {
     }
   }
 
-  async deletePost(subName, session, postId) {
-    const subWebbit = await SubWebbitService.getSubWebbitByName(subName);
-    if (!subWebbit)
-      throw new HttpError("SubWebbit doesn't exist", 404);
-
-    const post = await db.Post.findByPk(postId);
-    if (!post)
-      throw new HttpError("Post doesn't exist", 404);
-
-    if (post.UserId != session.user.id &&
-        !(await subWebbit.hasMod(session.user.id)))
-      throw new HttpError("Not user's post", 401);
-
-    await post.destroy();
-  }
-
   async getPost(postId, include) {
     const post = await db.Post.findByPk(postId, { include: include });
     if (!post)
       throw new HttpError("Post doesn't exist", 404);
     return post;
+  }
+
+  async deletePost(session, postId) {
+    
+    const post = await this.getPost(postId);
+    
+    if (post.UserId != session.user.id &&
+        !(await post.SubWebbit.hasMod(session.user.id)))
+      throw new HttpError("Not user's post", 401);
+
+    await post.destroy();
+  }
+
+  async likePost(session, postId) {
+    const post = await this.getPost(postId, [ db.SubWebbit, db.User ]);
+    
+    await SubWebbitService.checkPostAccess(session, post.SubWebbit);
+
+    const poster = post.User;
+    const user = await db.User.findByPk(session.user.id);
+    if (await user.hasPostLike(post)) {
+      // The user already liked this post, so have to unlike the post.
+      post.likes -= 1;
+      if (user.id != poster.id) {
+        poster.postKarma -= 1;
+      }
+      await user.removePostLike(post);
+    } else {
+      post.likes += 1;
+      if (user.id != poster.id) {
+        poster.postKarma += 1;
+      }
+
+      await user.addPostLike(post);
+    }
+
+    if (user.id != poster.id) {
+      await poster.save();
+    }
+    await post.save();
+
+  }
+
+  async dislikePost(session, postId) {
+    const post = await this.getPost(postId, [ db.SubWebbit, db.User ]);
+    
+    await SubWebbitService.checkPostAccess(session, post.SubWebbit);
+
+    const poster = post.User;
+    const user = await db.User.findByPk(session.user.id);
+    if (await user.hasPostDislike(post)) {
+      // The user already disliked this post, so have to undislike the post.
+      post.dislikes -= 1;
+      if (user.id != poster.id) {
+        poster.postKarma += 1;
+      }
+      await user.removePostDislike(post);
+    } else {
+      post.dislikes += 1;
+      if (user.id != poster.id) {
+        poster.postKarma -= 1;
+      }
+
+      await user.addPostDislike(post);
+    }
+
+    if (user.id != poster.id) {
+      await poster.save();
+    }
+    await post.save();
+
   }
 }
 

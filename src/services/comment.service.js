@@ -29,10 +29,15 @@ class CommentService {
     await post.addComment(comment);
   }
 
-  async deleteComment(session, commentId) {
-    const comment = await db.Comment.findByPk(commentId, { include: [ db.SubWebbit, db.User ] });
+  async getComment(commentId, include) {
+    const comment = await db.Comment.findByPk(commentId, { include: include });
     if (!comment)
-      throw new HttpError("Comment doesn't exist", 400);
+      throw new HttpError("Comment doesn't exist", 404);
+    return comment;
+  }
+
+  async deleteComment(session, commentId) {
+    const comment = await this.getComment(commentId, [ db.SubWebbit, db.User ]);
 
     const userId = session.user.id;
 
@@ -45,65 +50,59 @@ class CommentService {
   }
 
   async likeComment(session, commentId) {
-    const comment = await db.Comment
-      .findByPk(commentId, { include: [ db.SubWebbit, db.User ] });
-    if (!comment)
-      throw new HttpError("Comment doesn't exist", 400);
+    console.log("COMMENT ID: ", commentId);
+    const comment = await this.getComment(commentId, [ db.SubWebbit, db.User ]);
 
     await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
 
     const commenter = comment.User;
     const user = await db.User.findByPk(session.user.id);
-    if (await user.hasLike(comment)) {
+    if (await user.hasCommentLike(comment)) {
       // The user already liked this comment, so have to unlike the comment.
       comment.likes -= 1;
       if (user.id != commenter.id) {
         commenter.commentKarma -= 1;
       }
-      user.removeLike(comment);
+      await user.removeCommentLike(comment);
     } else {
       comment.likes += 1;
       if (user.id != commenter.id) {
         commenter.commentKarma += 1;
       }
-      user.addLike(comment);
+      await user.addCommentLike(comment);
     }
 
     if (user.id != commenter.id) {
-      commenter.save();
+      await commenter.save();
     }
     await comment.save();
     
   }
 
   async dislikeComment(session,  commentId) {
+    const comment = await this.getComment(commentId, [ db.SubWebbit, db.User ]);
     
-    const comment = await db.Comment
-      .findByPk(commentId, { include: [ db.SubWebbit, db.User ] });
-    if (!comment)
-      throw new HttpError("Comment doesn't exist", 400);
-
     await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
 
     const commenter = comment.User;
     const user = await db.User.findByPk(session.user.id);
-    if (await user.hasDislike(comment)) {
+    if (await user.hasCommentDislike(comment)) {
       // The user already disliked this comment, so have to undislike the comment.
       comment.dislikes -= 1;
       if (user.id != commenter.id) {
         commenter.commentKarma += 1;
       }
-      user.removeDislike(comment);
+      await user.removeCommentDislike(comment);
     } else {
       comment.dislikes += 1;
       if (user.id != commenter.id) {
         commenter.commentKarma -= 1;
       }
-      user.addDislike(comment);
+      await user.addCommentDislike(comment);
     }
 
     if (user.id != commenter.id) {
-      commenter.save();
+      await commenter.save();
     }
     await comment.save();
 

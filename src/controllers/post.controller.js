@@ -1,13 +1,14 @@
 const { PostService } = require('../services');
 
 class PostController {
+  
   async create(req, res, next) {
     try {
 
       const post = await PostService
-        .createPost(req.params.name, req.session, req.body);
+        .createPost(req.body.subname, req.session, req.body);
 
-      if (req.files.length > 0) {
+      if (req.files && req.files.length > 0) {
         await PostService.addPostMedia(post, req.files);
       }
 
@@ -21,12 +22,36 @@ class PostController {
   async delete(req, res, next) {
     try {
 
-      await PostService.deletePost(req.params.name, req.params.id);
+      await PostService.deletePost(req.session, req.params.id);
 
       res.json({ "status": "success" });
 
     } catch (error) {
       next(error);
+    }
+  }
+
+  async like(req, res, next) {
+    try {
+
+      await PostService.likePost(req.session, req.params.id);
+
+      res.json({ "status": "success" });
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async dislike(req, res, next) {
+    try {
+
+      await PostService.dislikePost(req.session, req.params.id);
+
+      res.json({ "status": "success" });
+
+    } catch (error) {
+      next(error);  
     }
   }
 }

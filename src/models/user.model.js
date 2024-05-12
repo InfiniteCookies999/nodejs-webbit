@@ -40,12 +40,16 @@ module.exports = (sequalize, DataTypes) => {
     }
   });
   User.associate = (db) => {
-    sequalize.define("Likes");
-    sequalize.define("Dislikes");
+    sequalize.define("CommentLikes");
+    sequalize.define("CommentDislikes");
+    sequalize.define("PostLikes");
+    sequalize.define("PostDislikes");
     User.hasMany(db.Post);
     User.hasMany(db.Comment);
-    User.belongsToMany(db.Comment, { through: "Likes", as: "likes" });
-    User.belongsToMany(db.Comment, { through: "Dislikes", as: "dislikes" });
+    User.belongsToMany(db.Comment, { through: "CommentLikes", as: "commentLikes" });
+    User.belongsToMany(db.Comment, { through: "CommentDislikes", as: "commentDislikes" });
+    User.belongsToMany(db.Post, { through: "PostLikes", as: "postLikes" });
+    User.belongsToMany(db.Post, { through: "PostDislikes", as: "postDislikes" });
   };
   return User;
 }

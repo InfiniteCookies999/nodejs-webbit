@@ -15,10 +15,20 @@ jest.mock('../../src/models/post.media.model', () => () => {
   const sequelizeMock = new SequelizeMock();
   return sequelizeMock.define('PostMedia');
 });
+jest.mock('../../src/models/user.model', () => () => {
+  const SequelizeMock = require("sequelize-mock");
+  const sequelizeMock = new SequelizeMock();
+  return sequelizeMock.define('User');
+});
 
 beforeEach(() => {
   db.Post = require('../../src/models/post.media.model')();
   db.PostMedia = require('../../src/models/post.media.model')();
+  db.User = require('../../src/models/user.model')();
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 describe('PostService', () => {
@@ -80,34 +90,6 @@ describe('PostService', () => {
   });
 
   describe('#deletePost', () => {
-    it('subwebbit does not exist', async () => {
-
-      SubWebbitService.getSubWebbitByName.mockResolvedValue(null);
-
-      await expect(async () => {
-        await PostService.deletePost('subname');
-      }).rejects.toThrow("SubWebbit doesn't exist");
-
-    });
-    it('post does not exist', async () => {
-
-      const session = {
-        user: {
-          id: 1
-        }
-      };
-      const subMock = {};
-
-      SubWebbitService.getSubWebbitByName.mockResolvedValue(subMock);
-
-      // TODO: why does findByPk not seem to exist for the mocked sequelize version?
-      db.Post.findByPk = jest.fn(() => null);
-
-      await expect(async () => {
-        await PostService.deletePost('subname', session, 1);
-      }).rejects.toThrow("Post doesn't exist");
-
-    });
     it('user does not have authorization to delete post', async () => {
 
       const session = {
@@ -115,20 +97,17 @@ describe('PostService', () => {
           id: 1
         }
       };
-      const subMock = {
-        hasMod: jest.fn(() => false)
-      };
       const postMock = {
-        UserId: 5
+        UserId: 5,
+        SubWebbit: {
+          hasMod: jest.fn(() => false)
+        }
       };
 
-      SubWebbitService.getSubWebbitByName.mockResolvedValue(subMock);
-
-      // TODO: why does findByPk not seem to exist for the mocked sequelize version?
-      db.Post.findByPk = jest.fn(() => postMock);
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
 
       await expect(async () => {
-        await PostService.deletePost('subname', session, 1);
+        await PostService.deletePost(session, 1);
       }).rejects.toThrow("Not user's post");
     });
     it('post delete successfull', async () => {
@@ -138,20 +117,17 @@ describe('PostService', () => {
           id: 1
         }
       };
-      const subMock = {
-        hasMod: jest.fn(() => false)
-      };
       const postMock = {
         UserId: 1,
-        destroy: jest.fn()
+        destroy: jest.fn(),
+        SubWebbit: {
+          hasMod: jest.fn(() => false)
+        }
       };
 
-      SubWebbitService.getSubWebbitByName.mockResolvedValue(subMock);
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
 
-      // TODO: why does findByPk not seem to exist for the mocked sequelize version?
-      db.Post.findByPk = jest.fn(() => postMock);
-
-      await PostService.deletePost('subname', session, 1);
+      await PostService.deletePost(session, 1);
       expect(postMock.destroy).toHaveBeenCalled();
 
     });
@@ -177,6 +153,151 @@ describe('PostService', () => {
       await PostService.addPostMedia(postMock, files);
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalledTimes(2);
       expect(postMock.addPostMedia).toHaveBeenCalledTimes(2);
+
+    });
+  });
+
+  describe('#getPost', () => {
+    it('post does not exist', async () => {
+
+      db.Post.findByPk = jest.fn(() => null);
+
+      await expect(async () => {
+        await PostService.getPost(1);
+      }).rejects.toThrow("Post doesn't exist");
+    });
+  });
+
+  describe('#likePost', () => {
+    it('liked post (no existing like)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const postMock = {
+        User: { // poster
+          id: 2,
+          postKarma: 0,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasPostLike: jest.fn(() => false),
+        addPostLike: jest.fn()
+      };
+      
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await PostService.likePost(session, 1);
+      expect(userMock.hasPostLike).toHaveBeenCalled();
+      expect(userMock.addPostLike).toHaveBeenCalled();
+      expect(postMock.User.save).toHaveBeenCalled();
+      expect(postMock.save).toHaveBeenCalled();
+      expect(postMock.User.postKarma).toBe(1);
+      
+    });
+    it('liked post (has existing like)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const postMock = {
+        User: { // poster
+          id: 2,
+          postKarma: 1,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasPostLike: jest.fn(() => true),
+        removePostLike: jest.fn()
+      };
+      
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await PostService.likePost(session, 1);
+      expect(userMock.hasPostLike).toHaveBeenCalled();
+      expect(userMock.removePostLike).toHaveBeenCalled();
+      expect(postMock.User.save).toHaveBeenCalled();
+      expect(postMock.save).toHaveBeenCalled();
+      expect(postMock.User.postKarma).toBe(0);
+
+    });
+  });
+
+  describe('#dislikePost', () => {
+    it('disliked post (no existing dislike)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const postMock = {
+        User: { // poster
+          id: 2,
+          postKarma: 0,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasPostDislike: jest.fn(() => false),
+        addPostDislike: jest.fn()
+      };
+      
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await PostService.dislikePost(session, 1);
+      expect(userMock.hasPostDislike).toHaveBeenCalled();
+      expect(userMock.addPostDislike).toHaveBeenCalled();
+      expect(postMock.User.save).toHaveBeenCalled();
+      expect(postMock.save).toHaveBeenCalled();
+      expect(postMock.User.postKarma).toBe(-1);
+      
+    });
+    it('disliked post (has existing dislike)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const postMock = {
+        User: { // poster
+          id: 2,
+          postKarma: 0,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasPostDislike: jest.fn(() => true),
+        removePostDislike: jest.fn()
+      };
+      
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await PostService.dislikePost(session, 1);
+      expect(userMock.hasPostDislike).toHaveBeenCalled();
+      expect(userMock.removePostDislike).toHaveBeenCalled();
+      expect(postMock.User.save).toHaveBeenCalled();
+      expect(postMock.save).toHaveBeenCalled();
+      expect(postMock.User.postKarma).toBe(1);
 
     });
   });

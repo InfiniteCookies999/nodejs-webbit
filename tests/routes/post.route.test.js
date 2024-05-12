@@ -10,7 +10,9 @@ const statusOkMock = (req, res, next) => {
 jest.mock('../../src/controllers/post.controller', () => {
   return {
     create: statusOkMock,
-    delete: statusOkMock
+    delete: statusOkMock,
+    like: statusOkMock,
+    dislike: statusOkMock
   }
 });
 jest.mock('../../src/middleware/validation', () => {
@@ -20,15 +22,16 @@ jest.mock('../../src/middleware/validation', () => {
   }
 });
 
-describe('route POST /subwebbit/:name/post', () => {
+describe('route POST /post', () => {
   it('title too long', async () => {
     const body = {
       title: 'a'.repeat(301),
-      body: 'contents of the post'
+      body: 'contents of the post',
+      subname: 'subname'
     };
 
     await supertest(app)
-      .post('/subwebbit/subname/post')
+      .post('/post')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -40,21 +43,22 @@ describe('route POST /subwebbit/:name/post', () => {
   it('post created successfully', async () => {
     const body = {
       title: 'post title',
-      body: 'contents of the post'
+      body: 'contents of the post',
+      subname: 'subname'
     };
 
     await supertest(app)
-      .post('/subwebbit/subname/post')
+      .post('/post')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);
   });
 });
 
-describe('route DELETE /subwebbit/:name/post/:id', () => {
+describe('route DELETE /post/:id', () => {
   it('id not an integer', async () => {
     await supertest(app)
-      .delete('/subwebbit/subname/post/abc')
+      .delete('/post/abc')
       .expect(400)
       .then(res => {
         expect(res.body.errors.length).toBe(1);
@@ -63,7 +67,7 @@ describe('route DELETE /subwebbit/:name/post/:id', () => {
   });
   it('delete successful', async () => {
     await supertest(app)
-      .delete('/subwebbit/subname/post/1')
+      .delete('/post/1')
       .expect(200);
   });
 });

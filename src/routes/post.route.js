@@ -23,8 +23,9 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.post('/subwebbit/:name/post',
+router.post('/post',
   upload.array('media', 4),
+  body('subname').notEmpty(),
   body('title').isLength({ min: 1, max: 300 }),
   body('body').isLength({ min: 1, max: 40000 }),
   validateBody,
@@ -32,11 +33,25 @@ router.post('/subwebbit/:name/post',
   PostController.create
 );
 
-router.delete('/subwebbit/:name/post/:id',
+router.delete('/post/:id',
   param('id').isInt(),
   validateBody,
   validateLogin,
   PostController.delete
+);
+
+router.post('/post/like/:id',
+  param('id').isInt(),
+  validateBody,
+  validateLogin,
+  PostController.like
+);
+
+router.post('/post/dislike/:id',
+  param('id').isInt(),
+  validateBody,
+  validateLogin,
+  PostController.dislike
 );
 
 module.exports = router;

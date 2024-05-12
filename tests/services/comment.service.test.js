@@ -18,6 +18,9 @@ beforeEach(() => {
   db.Comment = require('../../src/models/comment.model')();
   db.User = require('../../src/models/user.model')();
 });
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 describe('CommentService', () => {
   describe('#createComment', () => {
@@ -95,16 +98,6 @@ describe('CommentService', () => {
   });
 
   describe('#deleteComment', () => {
-    it('comment does not exist', async () => {
-
-      const session = {};
-      db.Comment.findByPk = jest.fn(() => null);
-
-      await expect(async () => {
-        await CommentService.deleteComment(session, 1);
-      }).rejects.toThrow("Comment doesn't exist");
-
-    });
     it('User does not have authorization to delete comment', async () => {
 
       const session = {
@@ -121,8 +114,8 @@ describe('CommentService', () => {
         }
       };
 
-      db.Comment.findByPk = jest.fn(() => commentMock);
-
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
+      
       await expect(async () => {
         await CommentService.deleteComment(session, 1);
       }).rejects.toThrow("Not User's comment");
@@ -145,7 +138,7 @@ describe('CommentService', () => {
         destroy: jest.fn()
       };
 
-      db.Comment.findByPk = jest.fn(() => commentMock);
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
 
       await CommentService.deleteComment(session, 1);
       expect(commentMock.destroy).toHaveBeenCalled();
@@ -154,16 +147,6 @@ describe('CommentService', () => {
   });
 
   describe('#likeComment', () => {
-    it('comment does not exist', async () => {
-
-      const session = {};
-      
-      db.Comment.findByPk = jest.fn(() => null);
-
-      await expect(async () => {
-        await CommentService.likeComment(session, 1);
-      }).rejects.toThrow("Comment doesn't exist");
-    });
     it('liked comment (no existing like)', async () => {
 
       const session = {
@@ -181,16 +164,16 @@ describe('CommentService', () => {
       };
       const userMock = {
         id: 1,
-        hasLike: jest.fn(() => false),
-        addLike: jest.fn()
+        hasCommentLike: jest.fn(() => false),
+        addCommentLike: jest.fn()
       };
       
-      db.Comment.findByPk = jest.fn(() => commentMock);
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
       db.User.findByPk = jest.fn(() => userMock);
 
       await CommentService.likeComment(session, 1);
-      expect(userMock.hasLike).toHaveBeenCalled();
-      expect(userMock.addLike).toHaveBeenCalled();
+      expect(userMock.hasCommentLike).toHaveBeenCalled();
+      expect(userMock.addCommentLike).toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(1);
@@ -213,16 +196,16 @@ describe('CommentService', () => {
       };
       const userMock = {
         id: 1,
-        hasLike: jest.fn(() => true),
-        removeLike: jest.fn()
+        hasCommentLike: jest.fn(() => true),
+        removeCommentLike: jest.fn()
       };
       
-      db.Comment.findByPk = jest.fn(() => commentMock);
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
       db.User.findByPk = jest.fn(() => userMock);
 
       await CommentService.likeComment(session, 1);
-      expect(userMock.hasLike).toHaveBeenCalled();
-      expect(userMock.removeLike).toHaveBeenCalled();
+      expect(userMock.hasCommentLike).toHaveBeenCalled();
+      expect(userMock.removeCommentLike).toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(0);
@@ -230,17 +213,18 @@ describe('CommentService', () => {
     });
   });
 
-  describe('#dislikeComment', () => {
+  describe('#getComment', () => {
     it('comment does not exist', async () => {
 
-      const session = {};
-      
       db.Comment.findByPk = jest.fn(() => null);
 
       await expect(async () => {
-        await CommentService.dislikeComment(session, 1);
+        await CommentService.getComment(1);
       }).rejects.toThrow("Comment doesn't exist");
     });
+  });
+
+  describe('#dislikeComment', () => {
     it('disliked comment (no existing dislike)', async () => {
 
       const session = {
@@ -258,16 +242,16 @@ describe('CommentService', () => {
       };
       const userMock = {
         id: 1,
-        hasDislike: jest.fn(() => false),
-        addDislike: jest.fn()
+        hasCommentDislike: jest.fn(() => false),
+        addCommentDislike: jest.fn()
       };
       
-      db.Comment.findByPk = jest.fn(() => commentMock);
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
       db.User.findByPk = jest.fn(() => userMock);
 
       await CommentService.dislikeComment(session, 1);
-      expect(userMock.hasDislike).toHaveBeenCalled();
-      expect(userMock.addDislike).toHaveBeenCalled();
+      expect(userMock.hasCommentDislike).toHaveBeenCalled();
+      expect(userMock.addCommentDislike).toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(-1);
@@ -290,16 +274,16 @@ describe('CommentService', () => {
       };
       const userMock = {
         id: 1,
-        hasDislike: jest.fn(() => true),
-        removeDislike: jest.fn()
+        hasCommentDislike: jest.fn(() => true),
+        removeCommentDislike: jest.fn()
       };
       
-      db.Comment.findByPk = jest.fn(() => commentMock);
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
       db.User.findByPk = jest.fn(() => userMock);
 
       await CommentService.dislikeComment(session, 1);
-      expect(userMock.hasDislike).toHaveBeenCalled();
-      expect(userMock.removeDislike).toHaveBeenCalled();
+      expect(userMock.hasCommentDislike).toHaveBeenCalled();
+      expect(userMock.removeCommentDislike).toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(1);

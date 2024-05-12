@@ -7,6 +7,14 @@ module.exports = (sequalize, DataTypes) => {
     body: {
       type: DataTypes.TEXT('medium'),
       allowNull: false
+    },
+    likes: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    dislikes: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   });
   Post.associate = (db) => {
