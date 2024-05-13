@@ -12,7 +12,7 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.statusCode == 404) {
     res.status(err.statusCode)
        .setHeader('Content-Type', 'text/plain')
-       .end("Page does not exist");
+       .end(err.message || "Page does not exist");
   } else {
     console.error(err.stack);
     res.status(err.statusCode || 500).send('Internal server error');

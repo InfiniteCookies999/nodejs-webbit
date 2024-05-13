@@ -14,9 +14,9 @@ module.exports = (sequalize, DataTypes) => {
     }
   });
   Comment.associate = (db) => {
-    Comment.belongsTo(db.Post);
+    Comment.belongsTo(db.Post, { onDelete: 'CASCADE' });
     Comment.belongsTo(db.Comment, { as:  "reply" });
-    Comment.belongsTo(db.SubWebbit);
+    Comment.belongsTo(db.SubWebbit, { onDelete: 'CASCADE' });
     Comment.belongsTo(db.User);
   }
   return Comment;

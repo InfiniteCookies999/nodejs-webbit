@@ -33,9 +33,19 @@ module.exports = (sequalize, DataTypes) => {
   SubWebbit.associate = (db) => {
     sequalize.define('Moderators');
     sequalize.define('AuthorizedUsers');
-    SubWebbit.belongsToMany(db.User, { through: 'Moderators', as: 'mod' });
-    SubWebbit.belongsToMany(db.User, { through: 'AuthorizedUsers', as: 'authorizedUser' });
-    SubWebbit.hasMany(db.Post);
+    SubWebbit.belongsToMany(db.User,
+      { 
+        through: 'Moderators',
+        as: 'mod',
+        onDelete: 'cascade'
+      });
+    SubWebbit.belongsToMany(db.User,
+      {
+        through: 'AuthorizedUsers',
+        as: 'authorizedUser',
+        onDelete: 'cascade'
+      });
+    SubWebbit.hasMany(db.Post, { onDelete: 'cascade' });
   };
   return SubWebbit;
 }

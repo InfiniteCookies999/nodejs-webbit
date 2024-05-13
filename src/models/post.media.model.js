@@ -7,7 +7,7 @@ module.exports = (sequalize, DataTypes) => {
     }
   });
   PostMedia.associate = (db) => {
-    PostMedia.belongsTo(db.Post);
+    PostMedia.belongsTo(db.Post, { onDelete: 'CASCADE' });
   }
   return PostMedia;
 };
