@@ -22,7 +22,7 @@ jest.mock('../../src/middleware/validation', () => {
   }
 });
 
-describe('route POST /comment', () => {
+describe('route POST /api/comment', () => {
   it('postId is not an integer', async () => {
 
     const body = {
@@ -31,7 +31,7 @@ describe('route POST /comment', () => {
     };
 
     await supertest(app)
-      .post('/comment')
+      .post('/api/comment')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -48,7 +48,7 @@ describe('route POST /comment', () => {
     };
 
     await supertest(app)
-      .post('/comment')
+      .post('/api/comment')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -66,7 +66,7 @@ describe('route POST /comment', () => {
     };
 
     await supertest(app)
-      .post('/comment')
+      .post('/api/comment')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -82,7 +82,7 @@ describe('route POST /comment', () => {
     };
 
     await supertest(app)
-      .post('/comment')
+      .post('/api/comment')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);
@@ -95,7 +95,7 @@ describe('route POST /comment', () => {
     };
 
     await supertest(app)
-      .post('/comment')
+      .post('/api/comment')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);

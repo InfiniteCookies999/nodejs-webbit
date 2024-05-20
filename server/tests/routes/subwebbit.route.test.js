@@ -25,7 +25,7 @@ jest.mock('../../src/middleware/validation', () => {
 });
 
 
-describe('route POST /subwebbit', () => {
+describe('route POST /api/subwebbit', () => {
   it('name not alphanumeric', async () => {
     const body = {
       name: 'newsubwebbit$^',
@@ -34,7 +34,7 @@ describe('route POST /subwebbit', () => {
     };
 
     await supertest(app)
-      .post('/subwebbit')
+      .post('/api/subwebbit')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -51,7 +51,7 @@ describe('route POST /subwebbit', () => {
     };
 
     await supertest(app)
-      .post('/subwebbit')
+      .post('/api/subwebbit')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -68,7 +68,7 @@ describe('route POST /subwebbit', () => {
     };
 
     await supertest(app)
-      .post('/subwebbit')
+      .post('/api/subwebbit')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -85,7 +85,7 @@ describe('route POST /subwebbit', () => {
     };
 
     await supertest(app)
-      .post('/subwebbit')
+      .post('/api/subwebbit')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -102,7 +102,7 @@ describe('route POST /subwebbit', () => {
     };
 
     await supertest(app)
-      .post('/subwebbit')
+      .post('/api/subwebbit')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);
@@ -116,7 +116,7 @@ it('successful creation of subwebbit with type restricted', async () => {
   };
 
   await supertest(app)
-    .post('/subwebbit')
+    .post('/api/subwebbit')
     .send(body)
     .set('Content-Type', 'application/json')
     .expect(200);
@@ -129,20 +129,20 @@ it('successful creation of subwebbit with type private', async () => {
   };
 
   await supertest(app)
-    .post('/subwebbit')
+    .post('/api/subwebbit')
     .send(body)
     .set('Content-Type', 'application/json')
     .expect(200);
 });
 
-describe('route PUT /subwebbit/:name/description', () => {
+describe('route PUT /api/subwebbit/:name/description', () => {
   it('length too long', async () => {
     const body = {
       description: 'a'.repeat(501)
     };
 
     await supertest(app)
-      .put('/subwebbit/newsubwebbit/description')
+      .put('/api/subwebbit/newsubwebbit/description')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -157,7 +157,7 @@ describe('route PUT /subwebbit/:name/description', () => {
     };
 
     await supertest(app)
-      .put('/subwebbit/newsubwebbit/description')
+      .put('/api/subwebbit/newsubwebbit/description')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);

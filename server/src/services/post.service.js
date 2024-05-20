@@ -2,8 +2,29 @@ const db = require('../models');
 const { HttpError } = require('../middleware');
 const SubWebbitService = require('./subwebbit.service');
 const FileUploaderService = require('./fileuploader.service');
+const { Op } = require('sequelize');
 
 class PostService {
+
+  async getPageOfPosts(pageCount) {
+    
+    const PAGE_SIZE = 10;
+
+    return await db.Post.findAndCountAll({
+      limit: PAGE_SIZE,
+      offset: pageCount * PAGE_SIZE,
+      raw: true,
+      where: {
+        [Op.or]: [
+          { '$SubWebbit.type$': 'public' },
+          { '$SubWebbit.type$': 'restricted' }
+        ]
+      },
+      include: [
+        db.SubWebbit
+      ]
+    });
+  }
 
   async createPost(subName, session, dto) {
     const subWebbit = await SubWebbitService.getSubWebbitByName(subName);

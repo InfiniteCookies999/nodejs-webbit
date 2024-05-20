@@ -14,7 +14,7 @@ jest.mock('../../src/controllers/auth.controller', () => {
   }
 });
 
-describe('route /auth/register', () => {
+describe('route /api/auth/register', () => {
   it('invalid email no address', async () => {
     const body = {
       email: 'infinitecookies959',
@@ -24,7 +24,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -42,7 +42,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -60,7 +60,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -78,7 +78,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -96,7 +96,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -114,7 +114,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -132,7 +132,7 @@ describe('route /auth/register', () => {
     };
 
     await supertest(app)
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);
@@ -147,7 +147,7 @@ describe('route /auth/login', () => {
     };
 
     await supertest(app)
-      .post('/auth/login')
+      .post('/api/auth/login')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -163,7 +163,7 @@ describe('route /auth/login', () => {
     };
 
     await supertest(app)
-      .post('/auth/login')
+      .post('/api/auth/login')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -179,7 +179,7 @@ describe('route /auth/login', () => {
     };
 
     await supertest(app)
-      .post('/auth/login')
+      .post('/api/auth/login')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);

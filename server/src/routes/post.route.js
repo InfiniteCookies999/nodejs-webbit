@@ -23,6 +23,12 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+router.get('/posts/:pageNumber',
+  param('pageNumber').isInt(),
+  validateBody,
+  PostController.getPageOfPosts
+);
+
 router.post('/post',
   upload.array('media', 4),
   body('subname').notEmpty(),

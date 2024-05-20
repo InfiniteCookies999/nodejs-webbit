@@ -4,13 +4,11 @@ const { HttpError } = require('../middleware');
 class SubWebbitService {
 
   async createSubWebbit(session, dto) {
-    const dateCreated = new Date();
     const subWebbit = await db.SubWebbit.create({
       name: dto.name,
       type: dto.type,
       adultRated: dto.adultRated,
-      description: "",
-      dateCreated: dateCreated
+      description: ""
     });
     // Setting the user who created the sub-webbit as a
     // moderator.

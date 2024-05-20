@@ -18,10 +18,10 @@ function createApp() {
     saveUninitialized: false
   }));
   
-  app.use(authRouter);
-  app.use(subWebbitRouter);
-  app.use(postRouter);
-  app.use(commentRouter);
+  app.use('/api/', authRouter);
+  app.use('/api/', subWebbitRouter);
+  app.use('/api/', postRouter);
+  app.use('/api/', commentRouter);
 
   app.use(cookieParser());
   app.use(errorHandler);

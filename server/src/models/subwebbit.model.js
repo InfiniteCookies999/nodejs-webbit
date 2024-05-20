@@ -16,10 +16,6 @@ module.exports = (sequalize, DataTypes) => {
       type: DataTypes.STRING(500),
       allowNull: false 
     },
-    dateCreated: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
     bannerFile: {
       type: DataTypes.STRING(200)
     },

@@ -26,10 +26,6 @@ module.exports = (sequalize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    joinDate: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
     password: {
       type: DataTypes.STRING(100),
       allowNull: false

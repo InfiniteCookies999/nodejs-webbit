@@ -12,7 +12,8 @@ jest.mock('../../src/controllers/post.controller', () => {
     create: statusOkMock,
     delete: statusOkMock,
     like: statusOkMock,
-    dislike: statusOkMock
+    dislike: statusOkMock,
+    getPageOfPosts: statusOkMock
   }
 });
 jest.mock('../../src/middleware/validation', () => {
@@ -22,7 +23,7 @@ jest.mock('../../src/middleware/validation', () => {
   }
 });
 
-describe('route POST /post', () => {
+describe('route POST /api/post', () => {
   it('title too long', async () => {
     const body = {
       title: 'a'.repeat(301),
@@ -31,7 +32,7 @@ describe('route POST /post', () => {
     };
 
     await supertest(app)
-      .post('/post')
+      .post('/api/post')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(400)
@@ -48,17 +49,17 @@ describe('route POST /post', () => {
     };
 
     await supertest(app)
-      .post('/post')
+      .post('/api/post')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);
   });
 });
 
-describe('route DELETE /post/:id', () => {
+describe('route DELETE /api/post/:id', () => {
   it('id not an integer', async () => {
     await supertest(app)
-      .delete('/post/abc')
+      .delete('/api/post/abc')
       .expect(400)
       .then(res => {
         expect(res.body.errors.length).toBe(1);
@@ -67,7 +68,24 @@ describe('route DELETE /post/:id', () => {
   });
   it('delete successful', async () => {
     await supertest(app)
-      .delete('/post/1')
+      .delete('/api/post/1')
+      .expect(200);
+  });
+});
+
+describe('route GET /api/posts/:pageNumber', () => {
+  it('pageNumber not an integer', async () => {
+    await supertest(app)
+      .get('/api/posts/abc')
+      .expect(400)
+      .then(res => {
+        expect(res.body.errors.length).toBe(1);
+        expect(res.body.errors[0].path).toBe('pageNumber');
+      });
+  });
+  it('get success', async () => {
+    await supertest(app)
+      .get('/api/posts/1')
       .expect(200);
   });
 });

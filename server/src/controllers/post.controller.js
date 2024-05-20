@@ -2,6 +2,18 @@ const { PostService } = require('../services');
 
 class PostController {
   
+  async getPageOfPosts(req, res, next) {
+    try {
+
+      const posts = await PostService.getPageOfPosts(req.params.pageNumber);
+
+      res.json(posts);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async create(req, res, next) {
     try {
 

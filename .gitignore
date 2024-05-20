@@ -1,4 +1,6 @@
-.env
+*/.env
+
 .vscode
-node_modules
-uploads
+*/node_modules
+server/uploads
+server/build

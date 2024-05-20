@@ -1,7 +1,6 @@
 {
   "name": "webbit",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest"
@@ -25,5 +24,9 @@
     "node-mocks-http": "^1.14.1",
     "sequelize-mock": "^0.10.2",
     "supertest": "^7.0.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "description": ""
 }

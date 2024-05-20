@@ -13,12 +13,10 @@ class UserService {
 
   async registerUser(email, username, password, gender) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const joinDate = new Date();
     await db.User.create({
       email: email,
       emailVerified: false,
       username: username,
-      joinDate: joinDate,
       postKarma: 0,
       commentKarma: 0,
       password: hashedPassword,
