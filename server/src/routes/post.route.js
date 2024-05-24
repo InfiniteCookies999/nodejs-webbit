@@ -29,6 +29,12 @@ router.get('/posts/:pageNumber',
   PostController.getPageOfPosts
 );
 
+router.get('/post/comments/:id',
+  param('id').isInt(),
+  validateBody,
+  PostController.get
+);
+
 router.post('/post',
   upload.array('media', 4),
   body('subname').notEmpty(),

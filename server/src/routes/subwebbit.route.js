@@ -7,7 +7,6 @@ const { validateBody,
 const { SubWebbitController } = require('../controllers');
 const multer = require('multer');
 
-
 const upload = multer({
   dest: '/upload',
   fileFilter: fileFilter([ "image/png", "image/jpg", "image/jpeg" ])

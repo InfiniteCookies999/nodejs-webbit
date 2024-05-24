@@ -1,9 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App';
+import PostContainer from './components/PostsContainer';
+import Post from './components/Post';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+const indexRouter = createBrowserRouter([
+  {
+    path: '/',
+    element: <PostContainer />
+  },
+  {
+    path: '/w/:subname/comments/:id',
+    element: <Post />
+  }
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={indexRouter} />
   </React.StrictMode>,
 )

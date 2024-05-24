@@ -4,10 +4,11 @@ const cookieParser = require('cookie-parser');
 const { authRouter,
         subWebbitRouter,
         postRouter,
-        commentRouter } = require('./routes');
+        commentRouter,
+        staticRouter } = require('./routes');
 const { errorHandler } = require('./middleware');
 
-function createApp() {
+function createApp(useCb) {
 
   const app = express();
 
@@ -22,6 +23,7 @@ function createApp() {
   app.use('/api/', subWebbitRouter);
   app.use('/api/', postRouter);
   app.use('/api/', commentRouter);
+  app.use(staticRouter);
 
   app.use(cookieParser());
   app.use(errorHandler);

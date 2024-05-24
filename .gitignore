@@ -2,5 +2,5 @@
 
 .vscode
 */node_modules
-server/uploads
+server/static/uploads
 server/build

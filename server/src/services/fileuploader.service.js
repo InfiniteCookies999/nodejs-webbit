@@ -16,7 +16,7 @@ class FileUploaderService {
     src.pipe(dest);
   }
 
-  moveFileAndGenRandomName(srcFile, destDir, oldFile) {
+  moveFileAndGenRandomName(id, srcFile, destDir, oldFile) {
     if (!destDir.endsWith('/'))
       destDir += '/';
 
@@ -29,7 +29,7 @@ class FileUploaderService {
     }
 
     const ext = this.getFileExtension(srcFile);
-    const name = uuidv4() + '.' + ext;
+    const name = id + '-' + uuidv4() + '.' + ext;
     this.moveFile(srcFile, destDir, name);
     return name;
   }

@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 (async () => {
 
   const app = createApp();
+
   app.use(express.static("build"));
   
   try {
@@ -53,8 +54,10 @@ const bcrypt = require('bcryptjs');
           description: "this is a private subwebbit"
         },
       ]);
+      
       const coffeeSub = await db.SubWebbit.findOne({ where: { name: "coffeesub" } });
       const privateSub = await db.SubWebbit.findOne({ where: { name: "superprivate" } });
+      coffeeSub.addMod(bestUser1);
       
       const postData1 = Array.from({length:50}, (_, i) => ({
         title: `The title of a post (Post: ${i})`,

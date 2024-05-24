@@ -38,6 +38,10 @@ class SubWebbitService {
     return await db.SubWebbit.findOne({ where: { name: name } });
   }
 
+  async getSubWebbitById(id) {
+    return await db.SubWebbit.findByPk(id);
+  }
+
   async deleteSubwebbitByName(session, name) {
     const subWebbit = await this.getSubWebbitByName(name);
     if (!subWebbit)
@@ -52,10 +56,13 @@ class SubWebbitService {
   async checkPostAccess(session, subWebbit) {
     if (subWebbit.type == 'public') return;
     
+    const error = new HttpError("User not allowed to post");
+    if (!session) throw error;
+
     // Not accessible to everyone so have to check permission.
     if (!subWebbit.hasAuthorizedUser(session.user.id) &&
         !(await subWebbit.hasMod(session.user.id))) {
-      throw new HttpError("User not allowed to post");
+      throw error;
     }
   }
 
@@ -63,10 +70,13 @@ class SubWebbitService {
     const type = subWebbit.type;
     if (type == 'public' || type == 'restricted') return;
 
+    const error = new HttpError("User not allowed to view");
+    if (!session) throw error;
+
     // Not accessible to everyone so have to check permission.
     if (!(await subWebbit.hasAuthorizedUser(session.user.id)) &&
         !(await subWebbit.hasMod(session.user.id)))
-      throw new HttpError("User not allowed to view");
+      throw error;
   }
 }
 

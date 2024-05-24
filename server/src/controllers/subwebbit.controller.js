@@ -49,8 +49,9 @@ class SubWebbitController {
       await SubWebbitService.updateSubWebbit(name, req.session, sub => {
         
         const file = FileUploaderService
-          .moveFileAndGenRandomName(req.file,
-                                    'uploads/subwebbit/banners',
+          .moveFileAndGenRandomName(sub.id,
+                                    req.file,
+                                    'static/uploads/subwebbit/banners',
                                     sub.bannerFile);
 
         sub.bannerFile = file;
@@ -70,8 +71,9 @@ class SubWebbitController {
       await SubWebbitService.updateSubWebbit(name, req.session, sub => {
         
         const file = FileUploaderService
-          .moveFileAndGenRandomName(req.file,
-                                    'uploads/subwebbit/backgrounds',
+          .moveFileAndGenRandomName(sub.id,
+                                    req.file,
+                                    'static/uploads/subwebbit/backgrounds',
                                     sub.backgroundFile);
 
         sub.backgroundFile = file;
@@ -91,8 +93,9 @@ class SubWebbitController {
       await SubWebbitService.updateSubWebbit(name, req.session, sub => {
         
         const file = FileUploaderService
-          .moveFileAndGenRandomName(req.file,
-                                    'uploads/subwebbit/community_pictures',
+          .moveFileAndGenRandomName(sub.id,
+                                    req.file,
+                                    'static/uploads/subwebbit/community_pictures',
                                     sub.communityFile);
 
         sub.communityFile = file;

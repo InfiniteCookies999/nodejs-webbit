@@ -8,15 +8,13 @@ const statusOkMock = (req, res, next) => {
 }
 
 jest.mock('../../src/controllers/subwebbit.controller', () => {
-  return {
-    create: statusOkMock,
-    updateDescription: statusOkMock,
-    updateBannerIcon: statusOkMock,
-    updateBackgroundIcon: statusOkMock,
-    updateCommunityIcon: statusOkMock,
-    delete: statusOkMock
-  }
+  const Controller = jest.requireActual('../../src/controllers/subwebbit.controller');
+  const mocked = {};
+  Object.getOwnPropertyNames(Object.getPrototypeOf(Controller))
+    .forEach(f => mocked[f] = statusOkMock);
+  return mocked;
 });
+
 jest.mock('../../src/middleware/validation', () => {
   return {
     ...jest.requireActual('../../src/middleware/validation'),

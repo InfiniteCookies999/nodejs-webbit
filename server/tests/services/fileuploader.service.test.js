@@ -39,7 +39,7 @@ describe('FileUploader', () => {
       uuidv4.mockReturnValue('random');
       jest.spyOn(FileUploaderService, 'moveFile').mockReturnValue(undefined);
 
-      expect(FileUploaderService.moveFileAndGenRandomName(file, 'dest')).toBe('random.png');
+      expect(FileUploaderService.moveFileAndGenRandomName(1, file, 'dest')).toBe('1-random.png');
       expect(fs.unlink).not.toHaveBeenCalled();
       expect(FileUploaderService.moveFile).toHaveBeenCalled();
       
@@ -52,7 +52,7 @@ describe('FileUploader', () => {
       uuidv4.mockReturnValue('random');
       jest.spyOn(FileUploaderService, 'moveFile').mockReturnValue(undefined);
 
-      expect(FileUploaderService.moveFileAndGenRandomName(file, 'dest', 'old')).toBe('random.png');
+      expect(FileUploaderService.moveFileAndGenRandomName(1, file, 'dest', 'old')).toBe('1-random.png');
       expect(fs.unlink).toHaveBeenCalled();
       expect(FileUploaderService.moveFile).toHaveBeenCalled();
       

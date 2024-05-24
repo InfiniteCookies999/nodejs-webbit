@@ -1,5 +1,4 @@
 const { SubWebbitController } = require('../../src/controllers');
-const subwebbitController = require('../../src/controllers/subwebbit.controller');
 const { SubWebbitService, FileUploaderService } = require('../../src/services');
 const httpMocks = require('node-mocks-http');
 
@@ -76,7 +75,7 @@ describe('SubWebbitController', () => {
       });
 
       const nextMock = jest.fn();
-      await subwebbitController.updateDescription(request, response, nextMock);
+      await SubWebbitController.updateDescription(request, response, nextMock);
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(response._getJSONData().status).toBe('updated');
@@ -103,7 +102,7 @@ describe('SubWebbitController', () => {
       FileUploaderService.moveFileAndGenRandomName.mockReturnValue(newFile);
 
       const nextMock = jest.fn();
-      await subwebbitController.updateBannerIcon(request, response, nextMock);
+      await SubWebbitController.updateBannerIcon(request, response, nextMock);
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalled();
@@ -131,7 +130,7 @@ describe('SubWebbitController', () => {
       FileUploaderService.moveFileAndGenRandomName.mockReturnValue(newFile);
 
       const nextMock = jest.fn();
-      await subwebbitController.updateBackgroundIcon(request, response, nextMock);
+      await SubWebbitController.updateBackgroundIcon(request, response, nextMock);
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalled();
@@ -159,7 +158,7 @@ describe('SubWebbitController', () => {
       FileUploaderService.moveFileAndGenRandomName.mockReturnValue(newFile);
 
       const nextMock = jest.fn();
-      await subwebbitController.updateCommunityIcon(request, response, nextMock);
+      await SubWebbitController.updateCommunityIcon(request, response, nextMock);
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalled();

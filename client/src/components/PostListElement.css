@@ -26,3 +26,11 @@
 .link-downvote:hover {
   color: #a5a5a5;
 }
+
+.link-sub:hover {
+  color: #4429a5;
+}
+
+.smaller-heading {
+  font-size: 0.9rem;
+}

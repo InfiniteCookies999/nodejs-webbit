@@ -8,10 +8,11 @@ const statusOkMock = (req, res, next) => {
 }
 
 jest.mock('../../src/controllers/auth.controller', () => {
-  return {
-    register: statusOkMock,
-    login: statusOkMock
-  }
+  const Controller = jest.requireActual('../../src/controllers/auth.controller');
+  const mocked = {};
+  Object.getOwnPropertyNames(Object.getPrototypeOf(Controller))
+    .forEach(f => mocked[f] = statusOkMock);
+  return mocked;
 });
 
 describe('route /api/auth/register', () => {

@@ -8,14 +8,13 @@ const statusOkMock = (req, res, next) => {
 }
 
 jest.mock('../../src/controllers/post.controller', () => {
-  return {
-    create: statusOkMock,
-    delete: statusOkMock,
-    like: statusOkMock,
-    dislike: statusOkMock,
-    getPageOfPosts: statusOkMock
-  }
+  const Controller = jest.requireActual('../../src/controllers/post.controller');
+  const mocked = {};
+  Object.getOwnPropertyNames(Object.getPrototypeOf(Controller))
+    .forEach(f => mocked[f] = statusOkMock);
+  return mocked;
 });
+
 jest.mock('../../src/middleware/validation', () => {
   return {
     ...jest.requireActual('../../src/middleware/validation'),

@@ -14,6 +14,18 @@ class PostController {
     }
   }
 
+  async get(req, res, next) {
+    try {
+
+      const post = await PostService.getPost(req.params.id);
+
+      res.json(post);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async create(req, res, next) {
     try {
 

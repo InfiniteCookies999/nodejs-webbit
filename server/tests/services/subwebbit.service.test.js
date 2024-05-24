@@ -173,6 +173,20 @@ describe('SubWebbitService', () => {
       expect(subMock.hasMod).not.toHaveBeenCalled();
 
     });
+    it('cannot post because no session', async () => {
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(() => false),
+        hasMod: jest.fn(() => false)
+      };
+      
+      await expect(async () => {
+        await SubWebbitService.checkPostAccess(undefined, subMock);
+      }).rejects.toThrow("User not allowed to post");
+      expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
+      expect(subMock.hasMod).not.toHaveBeenCalled();
+
+    });
     it('cannot post because no authorization', async () => {
       const session = {
         user: {
@@ -247,6 +261,21 @@ describe('SubWebbitService', () => {
         hasMod: jest.fn()
       };
       await SubWebbitService.checkViewAccess(session, subMock);
+      expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
+      expect(subMock.hasMod).not.toHaveBeenCalled();
+
+    });
+    it('cannot view because no session', async () => {
+
+      const subMock = {
+        type: 'private',
+        hasAuthorizedUser: jest.fn(),
+        hasMod: jest.fn()
+      };
+      await expect(async () => {
+        await SubWebbitService.checkViewAccess(undefined, subMock);
+      }).rejects.toThrow("User not allowed to view");
+
       expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
       expect(subMock.hasMod).not.toHaveBeenCalled();
 

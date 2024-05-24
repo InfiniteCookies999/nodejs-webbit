@@ -14,15 +14,12 @@ export default function PostContainer() {
     fetch(`/api/posts/${pageNumber}`, { signal: controller.signal })
       .then(response => response.json())
       .then(posts => {
-        console.log("NUMBER OF POSTS LEFT: ", posts.rows.length);
         if (posts.rows.length === 0) return;
 
         setPosts((currentPosts) =>
           currentPosts.concat(posts.rows));
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(error => console.log(error));
 
       return () => {
         controller.abort();
@@ -48,7 +45,7 @@ export default function PostContainer() {
 
         </div>
         <div className="col-sm-6">
-          <div className="App">
+          <div>
             {(posts.length <= 0) ? <span>Loading...</span>
               : posts.map((post, i, {length}) => {
                 const isLast = i+1 === length;
