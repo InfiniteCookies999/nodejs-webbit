@@ -34,3 +34,9 @@
 .smaller-heading {
   font-size: 0.9rem;
 }
+
+.post-username {
+  display: block;
+  transform: translate(0, -0.3rem);
+  color: rgb(82, 82, 82) !important;
+}

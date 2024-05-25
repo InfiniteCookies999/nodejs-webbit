@@ -1,4 +1,5 @@
 const { PostService } = require('../services');
+const db = require('../models');
 
 class PostController {
   
@@ -17,7 +18,9 @@ class PostController {
   async get(req, res, next) {
     try {
 
-      const post = await PostService.getPost(req.params.id);
+      const post = await PostService.getPost(req.params.id, {
+        model: db.User, attributes: [ 'id', 'username' ]
+      });
 
       res.json(post);
 

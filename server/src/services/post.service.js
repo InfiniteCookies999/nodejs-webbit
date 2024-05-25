@@ -14,15 +14,14 @@ class PostService {
       limit: PAGE_SIZE,
       offset: pageCount * PAGE_SIZE,
       raw: true,
+      nest: true,
       where: {
         [Op.or]: [
           { '$SubWebbit.type$': 'public' },
           { '$SubWebbit.type$': 'restricted' }
         ]
       },
-      include: [
-        db.SubWebbit
-      ]
+      include: { model: db.SubWebbit }
     });
   }
 

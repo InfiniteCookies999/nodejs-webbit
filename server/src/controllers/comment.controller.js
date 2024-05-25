@@ -1,6 +1,20 @@
 const { CommentService } = require('../services');
 
 class CommentController {
+
+  async getPageOfComments(req, res, next) {
+    try {
+
+      const comments = await CommentService
+        .getPageOfComments(req.session, req.query.postId, req.query.pageNumber);
+
+      res.json(comments);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async create(req, res, next) {
     try {
       await CommentService

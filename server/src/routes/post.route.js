@@ -29,7 +29,7 @@ router.get('/posts/:pageNumber',
   PostController.getPageOfPosts
 );
 
-router.get('/post/comments/:id',
+router.get('/post/:id',
   param('id').isInt(),
   validateBody,
   PostController.get

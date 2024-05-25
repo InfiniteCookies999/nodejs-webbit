@@ -9,5 +9,7 @@ router.use("/static/uploads/subwebbit",
   
 router.use("/static/default_sub_picture.jpg",
   express.static("static/default_sub_picture.jpg"));
+router.use("/static/default_user_picture.jpg",
+  express.static("static/default_user_picture.jpg"));
 
 module.exports = router;

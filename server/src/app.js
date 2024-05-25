@@ -78,6 +78,23 @@ const bcrypt = require('bcryptjs');
 
       await db.Post.bulkCreate(postData1);
       await db.Post.bulkCreate(postData2);
+      
+
+      const firstPost = await db.Post.findOne({
+        order: [ [ 'createdAt', 'ASC' ] ]
+      });
+      
+      const comments = Array.from({length:50}, (_, i) => ({
+        PostId: firstPost.id,
+        SubWebbitId: coffeeSub.id,
+        UserId: bestUser1.id,
+        content: `This is the content of comment #${i}`,
+        likes: 0,
+        dislikes: 0,
+      }));
+
+      await db.Comment.bulkCreate(comments);
+
     }
 
   } catch (error) {

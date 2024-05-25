@@ -5,6 +5,23 @@ const SubWebbitService = require('./subwebbit.service');
 
 class CommentService {
 
+  async getPageOfComments(session, postId, pageNumber) {
+
+    const post = await PostService.getPost(postId, db.SubWebbit);
+    await SubWebbitService.checkViewAccess(session, post.SubWebbit);
+
+    const PAGE_SIZE = 30;
+
+    return await db.Comment.findAndCountAll({
+      limit: PAGE_SIZE,
+      offset: pageNumber * PAGE_SIZE,
+      raw: true,
+      nest: true,
+      where: { PostId: post.id },
+      include: { model: db.User, attributes: ['id', 'username'] }
+    });
+  }
+
   async createComment(session, postId, replyId, content) {
     
     const post = await PostService.getPost(postId, db.SubWebbit);
