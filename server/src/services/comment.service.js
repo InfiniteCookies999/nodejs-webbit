@@ -2,6 +2,7 @@ const { HttpError } = require('../middleware');
 const db = require('../models');
 const PostService = require('./post.service');
 const SubWebbitService = require('./subwebbit.service');
+const { Op } = require('sequelize');
 
 class CommentService {
 
@@ -17,8 +18,42 @@ class CommentService {
       offset: pageNumber * PAGE_SIZE,
       raw: true,
       nest: true,
-      where: { PostId: post.id },
+      where: {
+        [Op.and]: [
+          { PostId: post.id },
+          { replyId: null } // We do not want to load replies.
+        ]
+      },
       include: { model: db.User, attributes: ['id', 'username'] }
+    });
+  }
+
+  async getPageOfReplies(session, commentId, pageNumber) {
+
+    const comment = await this.getComment(commentId, db.SubWebbit);
+    await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
+
+    const PAGE_SIZE = 10;
+
+    return await db.Comment.findAndCountAll({
+      limit: PAGE_SIZE,
+      offset: pageNumber * PAGE_SIZE,
+      raw: true,
+      nest: true,
+      where: { replyId: comment.id },
+      include: { model: db.User, attributes: ['id', 'username'] }
+    });
+  }
+
+  async getNumberOfReplies(session, commentId) {
+
+    const comment = await this.getComment(commentId, db.SubWebbit);
+    await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
+
+    return await db.Comment.count({
+      where: {
+        replyId: comment.id
+      }
     });
   }
 

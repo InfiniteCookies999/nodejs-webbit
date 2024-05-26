@@ -15,6 +15,32 @@ class CommentController {
     }
   }
 
+  async getPageOfReplies(req, res, next) {
+    try {
+
+      const replies = await CommentService
+        .getPageOfReplies(req.session, req.query.commentId, req.query.pageNumber);
+
+      res.json(replies);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getNumberOfReplies(req, res, next) {
+    try {
+
+      const numberOfReplies = await CommentService
+        .getNumberOfReplies(req.session, req.params.id);
+
+      res.json({ count: numberOfReplies });
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async create(req, res, next) {
     try {
       await CommentService

@@ -15,6 +15,19 @@ router.get('/comments',
   CommentController.getPageOfComments
 );
 
+router.get('/comment/replies',
+  query('commentId').isInt(),
+  query('pageNumber').isInt(),
+  validateBody,
+  CommentController.getPageOfReplies
+);
+
+router.get('/comment/replyCount/:id',
+  param('id').isInt(),
+  validateBody,
+  CommentController.getNumberOfReplies
+)
+
 router.post('/comment',
   body('postId').isInt(),
   body('content').isLength({ min: 1, max: 10000 }),
