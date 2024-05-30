@@ -1,21 +1,22 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom"
-import PostHeaderInfo from "./PostHeaderInfo";
 import "./Post.css";
-import PostFooterInfo from "./PostFooterInfo";
+import Comment from "./Comment";
+import PostTop from "./PostTop";
+import fetchReplies from "../utils/fetchReplies";
 
 export default function Post() {
 
   const lastCommentRef = useRef();
 
-  const { id, subname } = useParams();
+  const { id } = useParams();
 
   const [post, setPost] = useState(undefined);
 
   const [comments, setComments] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [noComments, setNoComments] = useState(false);
-
+  
   useEffect(() => {
     if (!id) return;
     
@@ -44,8 +45,21 @@ export default function Post() {
           return;
         }
 
-        setComments((currentComments) =>
-          currentComments.concat(comments.rows));
+        (async () => {
+          await fetchReplies(comments, controller);
+          if (controller.signal.aborted) return;
+
+          setComments((currentComments) => {
+            let newComments = [ ...currentComments ];
+            if (newComments.length > 0) {
+              newComments.at(-1).lastRef = undefined;
+            }
+            
+            newComments = newComments.concat(comments.rows);
+            newComments.at(-1).lastRef = lastCommentRef;
+            return newComments;
+          });
+        })();
       })
       .catch(error => console.log(error));
 
@@ -75,10 +89,7 @@ export default function Post() {
         <div className="col-sm-6">
           {!post ? <h1>Loading...</h1> :
             <div>
-              <PostHeaderInfo user={post.User} subNameForPost={subname} timeStamp={post.createdAt} />
-              <h4><b>{post.title}</b></h4>
-              <p className="post-body">{post.body}</p>
-              <PostFooterInfo />
+              <PostTop post={post} />
               <br />
               <div className="comment-form">
                 <div id="comment-form-textarea"
@@ -107,28 +118,14 @@ export default function Post() {
                         document.getElementById('comment-cancel-btn').style.display = 'none';
                       }}>
                         Cancel
-                      </button>
+                </button>
               </div>
               <br/>
               <div>
-                {comments.length <= 0 ? noComments ? <span>No Comments</span> : <span>Loading...</span>
-                  : comments.map((comment, i, {length}) => {
-                    const isLast = i+1 === length;
-
-                    return (
-                      <div id={comment.id} style={{"padding-top":"0.5rem"}} ref={isLast ? lastCommentRef : undefined}>
-                        <PostHeaderInfo user={comment.User} timeStamp={comment.createdAt} />
-                        <p className="comment-indent comment-body">{comment.content}</p>
-                        <a href="#/" className="bx bx-upvote link link-upvote comment-indent" />
-                        <span className="pr-1 pl-1 comment-indent comment-likes">{comment.likes}</span>
-                        <a href="#/" className="bx bx-downvote link link-downvote comment-indent" />
-                        <a href="#/" className="comment-indent link" style={{display:"inline-block"}}>
-                          <i  className="bx bx-comment pl-2"></i>
-                          <span className="pl-1">Reply</span>
-                        </a>
-                      </div>
-                    );
-                  })
+                {comments.length <= 0 ?
+                  (noComments ? <span>No Comments</span> : <span>Loading...</span>)
+                  : comments.map(comment =>
+                      <Comment comment={comment} indentCount={0} />)
                 }
               </div>
 

@@ -15,9 +15,16 @@ router.get('/comments',
   CommentController.getPageOfComments
 );
 
-router.get('/comment/replies',
+router.get('/comment/:id',
+  param('id').isInt(),
+  validateBody,
+  CommentController.getComment
+);
+
+router.get('/comment/replies/page',
   query('commentId').isInt(),
   query('pageNumber').isInt(),
+  query('useLargePages').optional().isBoolean(),
   validateBody,
   CommentController.getPageOfReplies
 );
@@ -26,7 +33,7 @@ router.get('/comment/replyCount/:id',
   param('id').isInt(),
   validateBody,
   CommentController.getNumberOfReplies
-)
+);
 
 router.post('/comment',
   body('postId').isInt(),

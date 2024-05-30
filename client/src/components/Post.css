@@ -47,7 +47,7 @@
 }
 
 .comment-indent {
-  transform: translate(1rem, 0);
+  padding-left: 1rem;
 }
 
 .comment-body {
@@ -58,4 +58,13 @@
 
 .comment-likes {
   display: inline-block;
+}
+
+.link-more-comments {
+  color: rgb(39, 39, 39);
+  font-size: 0.9rem;
+}
+
+.link-more-comments:hover {
+  color: rgb(121, 121, 121);
 }

@@ -28,12 +28,12 @@ class CommentService {
     });
   }
 
-  async getPageOfReplies(session, commentId, pageNumber) {
+  async getPageOfReplies(session, commentId, pageNumber, useLargePages) {
 
     const comment = await this.getComment(commentId, db.SubWebbit);
     await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
 
-    const PAGE_SIZE = 10;
+    const PAGE_SIZE = useLargePages ? 30 : 5;
 
     return await db.Comment.findAndCountAll({
       limit: PAGE_SIZE,
@@ -81,6 +81,23 @@ class CommentService {
     await post.addComment(comment);
   }
 
+  async getCommentForViewing(session, commentId) {
+    const comment = await db.Comment.findByPk(commentId, {
+      raw: true,
+      nest: true,
+      include: [
+        {
+          model: db.User, attributes: ['id', 'username']
+        },
+        { model: db.SubWebbit }
+      ]
+    });
+
+    await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
+    
+    return comment;
+  }
+
   async getComment(commentId, include) {
     const comment = await db.Comment.findByPk(commentId, { include: include });
     if (!comment)
@@ -102,7 +119,6 @@ class CommentService {
   }
 
   async likeComment(session, commentId) {
-    console.log("COMMENT ID: ", commentId);
     const comment = await this.getComment(commentId, [ db.SubWebbit, db.User ]);
 
     await SubWebbitService.checkViewAccess(session, comment.SubWebbit);

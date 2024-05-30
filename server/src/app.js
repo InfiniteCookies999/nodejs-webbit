@@ -3,7 +3,6 @@ const config = require('./config/env.config');
 const createApp = require('./create.app');
 const db = require('./models');
 const bcrypt = require('bcryptjs');
-const { dislike } = require('./controllers/post.controller');
 
 (async () => {
 
@@ -18,7 +17,7 @@ const { dislike } = require('./controllers/post.controller');
     await db.sequelize.sync({ alter: shouldAlter });
 
     if (config.DATABASE_SHOULD_MOCK_DATA === "true") {
-      /*await db.User.bulkCreate([
+      await db.User.bulkCreate([
         {
           email: 'bestemail1@gmail.com',
           password: await bcrypt.hash('password', 10),
@@ -83,7 +82,7 @@ const { dislike } = require('./controllers/post.controller');
       const firstPost = await db.Post.findOne({
         order: [ [ 'createdAt', 'ASC' ] ]
       });
-      
+
       const comments = Array.from({length:50}, (_, i) => ({
         PostId: firstPost.id,
         SubWebbitId: coffeeSub.id,
@@ -93,19 +92,14 @@ const { dislike } = require('./controllers/post.controller');
         dislikes: 0,
       }));
 
-      await db.Comment.bulkCreate(comments);*/
-
-      const bestUser1 = await db.User.findOne({ where: { email: 'bestemail1@gmail.com' } });
-      const coffeeSub = await db.SubWebbit.findOne({ where: { name: "coffeesub" } });
-      const firstPost = await db.Post.findOne({
-        order: [ [ 'createdAt', 'ASC' ] ]
-      });
+      await db.Comment.bulkCreate(comments);
 
       const firstComment = await db.Comment.findOne({
         order: [ [ 'createdAt', 'ASC' ] ]
       });
+      
 
-      /*const repliesToFirstComment = Array.from({length: 30}, (_, i) => ({
+      const repliesToFirstComment = Array.from({length: 100}, (_, i) => ({
         PostId: firstPost.id,
         SubWebbitId: coffeeSub.id,
         UserId: bestUser1.id,
@@ -115,7 +109,7 @@ const { dislike } = require('./controllers/post.controller');
         replyId: firstComment.id
       }));
 
-      await db.Comment.bulkCreate(repliesToFirstComment);*/
+      await db.Comment.bulkCreate(repliesToFirstComment);
 
       const someReplies = await db.Comment.findAll({
         order: [ [ 'createdAt', 'ASC' ] ],
@@ -148,11 +142,6 @@ const { dislike } = require('./controllers/post.controller');
           where: { replyId: reply.id }
         });
       }
-
-      
-
-      
-
     }
 
   } catch (error) {

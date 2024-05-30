@@ -2,6 +2,19 @@ const { CommentService } = require('../services');
 
 class CommentController {
 
+  async getComment(req, res, next) {
+    try {
+
+      const comment = await CommentService
+        .getCommentForViewing(req.session, req.params.id);
+
+      res.json(comment);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getPageOfComments(req, res, next) {
     try {
 
@@ -19,7 +32,10 @@ class CommentController {
     try {
 
       const replies = await CommentService
-        .getPageOfReplies(req.session, req.query.commentId, req.query.pageNumber);
+        .getPageOfReplies(req.session,
+                          req.query.commentId,
+                          req.query.pageNumber,
+                          req.query.useLargePages);
 
       res.json(replies);
 
