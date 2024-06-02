@@ -4,7 +4,8 @@ import '../index.css'
 
 const Transition = Object.freeze({
   EMAIL: 0,
-  USERNAME_AND_PASS: 1
+  USERNAME_AND_PASS: 1,
+  GENDER: 2
 });
 
 function handleEmailContinue(setEmail, setTransition) {
@@ -60,10 +61,14 @@ function handleUsernamePassContinue(email, setTransition) {
       password
     })
   })
-  .then(response => response.json())
+  .then(response => {
+    console.log("register response: ", response);
+    return response.json()
+  })
   .then(response => {
     if (response.status === "email taken") {
-      document.getElementById('email-error-text').innerText = "email taken!";
+      // TODO: This is broken because the element doesnt exist once the state has transitioned
+      // document.getElementById('email-error-text').innerText = "email taken!";
       setTransition(Transition.EMAIL);
     } else if (response.status === "username taken") {
       document.getElementById('username-error-text').innerText = "username taken!";

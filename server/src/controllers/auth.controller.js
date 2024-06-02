@@ -32,7 +32,8 @@ class AuthController {
           id: user.id
         };
 
-        return res.json({ "status": "success" });
+        res.json({ "status": "success" });
+        
       } catch (error) {
         next(error);
       }

@@ -39,7 +39,7 @@ class PostController {
         await PostService.addPostMedia(post, req.files);
       }
 
-      res.json({ "status": "success" });
+      res.end();
 
     } catch (error) {
       next(error);
@@ -51,7 +51,7 @@ class PostController {
 
       await PostService.deletePost(req.session, req.params.id);
 
-      res.json({ "status": "success" });
+      res.end();
 
     } catch (error) {
       next(error);
@@ -63,7 +63,7 @@ class PostController {
 
       await PostService.likePost(req.session, req.params.id);
 
-      res.json({ "status": "success" });
+      res.end();
 
     } catch (error) {
       next(error);
@@ -75,7 +75,7 @@ class PostController {
 
       await PostService.dislikePost(req.session, req.params.id);
 
-      res.json({ "status": "success" });
+      res.end();
 
     } catch (error) {
       next(error);  

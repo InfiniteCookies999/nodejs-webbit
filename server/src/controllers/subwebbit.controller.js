@@ -11,7 +11,8 @@ class SubWebbitController {
 
       await SubWebbitService.createSubWebbit(req.session, req.body);
 
-      return res.json({ "status": "success" });
+      res.end();
+
     } catch (error) {
       next(error);
     }
@@ -22,7 +23,8 @@ class SubWebbitController {
 
       await SubWebbitService.deleteSubwebbitByName(req.session, req.params.name);
     
-      res.json({ "status": "success" });
+      res.end();
+
     } catch (error) {
       next(error);
     }
@@ -35,7 +37,7 @@ class SubWebbitController {
 
       await SubWebbitService.updateSubWebbit(name, req.session, sub => {
         sub.description = description;
-        res.json({ "status": "updated" });
+        res.end();
       });
     } catch (error) {
       next(error);
@@ -56,7 +58,7 @@ class SubWebbitController {
 
         sub.bannerFile = file;
         
-        res.json({ "status": "updated" });
+        res.end();
       });
 
     } catch (error) {
@@ -78,7 +80,7 @@ class SubWebbitController {
 
         sub.backgroundFile = file;
         
-        res.json({ "status": "updated" });
+        res.end();
       });
 
     } catch (error) {
@@ -100,7 +102,7 @@ class SubWebbitController {
 
         sub.communityFile = file;
         
-        res.json({ "status": "updated" });
+        res.end();
       });
 
     } catch (error) {

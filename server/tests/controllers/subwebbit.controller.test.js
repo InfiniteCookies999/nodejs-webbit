@@ -78,7 +78,6 @@ describe('SubWebbitController', () => {
       await SubWebbitController.updateDescription(request, response, nextMock);
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
-      expect(response._getJSONData().status).toBe('updated');
       expect(sub.description).toBe(description);
 
     });
@@ -106,7 +105,6 @@ describe('SubWebbitController', () => {
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalled();
-      expect(response._getJSONData().status).toBe('updated');
       expect(sub.bannerFile).toBe(newFile);
 
     });
@@ -134,7 +132,6 @@ describe('SubWebbitController', () => {
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalled();
-      expect(response._getJSONData().status).toBe('updated');
       expect(sub.backgroundFile).toBe(newFile);
 
     });
@@ -162,7 +159,6 @@ describe('SubWebbitController', () => {
       expect(nextMock).not.toHaveBeenCalled();
       expect(SubWebbitService.updateSubWebbit).toHaveBeenCalled();
       expect(FileUploaderService.moveFileAndGenRandomName).toHaveBeenCalled();
-      expect(response._getJSONData().status).toBe('updated');
       expect(sub.communityFile).toBe(newFile);
 
     });

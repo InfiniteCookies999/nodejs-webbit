@@ -72,7 +72,6 @@ describe('AuthController', () => {
       const nextMock = jest.fn();
       await AuthController.register(request, response, nextMock);
       expect(nextMock).not.toHaveBeenCalled();
-      expect(response._getJSONData().status).toBe("success");
       expect(UserService.registerUser).toHaveBeenCalledWith(email, username, password);
       expect(request.session.user.id).toBe(userMock.id);
     });

@@ -65,7 +65,8 @@ class CommentController {
                        req.body.replyId,
                        req.body.content);
       
-      res.json({ "status": "success" });
+      res.end();
+      
     } catch (error) {
       next(error);
     }
@@ -76,7 +77,8 @@ class CommentController {
     
       await CommentService.deleteComment(req.session, req.params.id);
     
-      res.json({ "status": "success" });
+      res.end();
+
     } catch (error) {
       next(error);
     }
@@ -88,7 +90,8 @@ class CommentController {
       await CommentService
         .likeComment(req.session, req.params.id, req.body.commentId);
 
-      res.json({ "status": "success" });
+      res.end();
+
     } catch (error) {
       next(error);
     }
@@ -100,7 +103,8 @@ class CommentController {
       await CommentService
         .dislikeComment(req.session, req.params.id, req.body.commentId);
 
-      res.json({ "status": "success" });
+      res.end();
+      
     } catch (error) {
       next(error);
     }
