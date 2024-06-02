@@ -15,13 +15,12 @@ jest.mock('../../src/controllers/auth.controller', () => {
   return mocked;
 });
 
-describe('route /api/auth/register', () => {
+describe('route POST /api/auth/register', () => {
   it('invalid email no address', async () => {
     const body = {
       email: 'infinitecookies959',
       username: 'maddie',
-      password: 'reG#@$14as3',
-      gender: 'Woman'
+      password: 'reG#@$14as3'
     };
 
     await supertest(app)
@@ -38,8 +37,7 @@ describe('route /api/auth/register', () => {
     const body = {
       email: '@gmail.com',
       username: 'maddie',
-      password: 'reG#@$14as3',
-      gender: 'Woman'
+      password: 'reG#@$14as3'
     };
 
     await supertest(app)
@@ -56,8 +54,7 @@ describe('route /api/auth/register', () => {
     const body = {
       email: 'infinitecookies959@gmail.com',
       username: 'maddie#',
-      password: 'reG#@$14as3',
-      gender: 'Woman'
+      password: 'reG#@$14as3'
     };
 
     await supertest(app)
@@ -74,8 +71,7 @@ describe('route /api/auth/register', () => {
     const body = {
       email: 'infinitecookies959@gmail.com',
       username: 'maddie last',
-      password: 'reG#@$14as3',
-      gender: 'Woman'
+      password: 'reG#@$14as3'
     };
 
     await supertest(app)
@@ -92,8 +88,7 @@ describe('route /api/auth/register', () => {
     const body = {
       email: 'infinitecookies959@gmail.com',
       username: 'maddie',
-      password: 'somepassword',
-      gender: 'Woman'
+      password: 'somepassword'
     };
 
     await supertest(app)
@@ -106,30 +101,11 @@ describe('route /api/auth/register', () => {
         expect(res.body.errors[0].path).toBe('password');
       });
   });
-  it('invalid gender not in list', async () => {
-    const body = {
-      email: 'infinitecookies959@gmail.com',
-      username: 'maddie',
-      password: 'reG#@$14as3',
-      gender: 'Bad'
-    };
-
-    await supertest(app)
-      .post('/api/auth/register')
-      .send(body)
-      .set('Content-Type', 'application/json')
-      .expect(400)
-      .then(res => {
-        expect(res.body.errors.length).toBe(1);
-        expect(res.body.errors[0].path).toBe('gender');
-      });
-  });
   it('valid registration', async () => {
     const body = {
       email: 'infinitecookies959@gmail.com',
       username: 'maddie',
-      password: 'reG#@$14as3',
-      gender: 'Woman'
+      password: 'reG#@$14as3'
     };
 
     await supertest(app)
@@ -140,7 +116,7 @@ describe('route /api/auth/register', () => {
   });
 });
 
-describe('route /auth/login', () => {
+describe('route POST /auth/login', () => {
   it('invalid email or username too long', async () => {
     const body = {
       emailOrUsername: 'this is too long and will not work as being sent',
@@ -184,5 +160,23 @@ describe('route /auth/login', () => {
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);
+  });
+});
+
+describe('route PUT /auth/gender', () => {
+  it('invalid gender not in list', async () => {
+    const body = {
+      gender: 'Bad'
+    };
+
+    await supertest(app)
+      .put('/api/auth/gender')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res => {
+        expect(res.body.errors.length).toBe(1);
+        expect(res.body.errors[0].path).toBe('gender');
+      });
   });
 });

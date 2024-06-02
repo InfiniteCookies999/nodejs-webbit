@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import PostTop from './PostTop';
 import './CommentThread.css';
-import fetchReplies from '../utils/fetchReplies'
+import fetchReplies from '../../utils/fetchReplies'
 import Comment from './Comment';
 
 async function loadRepliesPage(commentId, pageNumber, setNoReplies, abortController) {

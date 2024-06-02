@@ -11,16 +11,20 @@ class UserService {
     return await db.User.findOne({ where: { username: username } });
   }
 
-  async registerUser(email, username, password, gender) {
+  async getUserById(id) {
+    return await db.User.findByPk(id);
+  }
+
+  async registerUser(email, username, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await db.User.create({
+    return await db.User.create({
       email: email,
       emailVerified: false,
       username: username,
       postKarma: 0,
       commentKarma: 0,
       password: hashedPassword,
-      gender: gender
+      gender: "Not-Say"
     });
   }
 

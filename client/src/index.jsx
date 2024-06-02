@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import PostContainer from './components/PostsContainer';
-import Post from './components/Post';
-import CommentThread from './components/CommentThread';
+import PostContainer from './components/post/PostsContainer';
+import Post from './components/post/Post';
+import CommentThread from './components/post/CommentThread';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const indexRouter = createBrowserRouter([
@@ -20,12 +20,8 @@ const indexRouter = createBrowserRouter([
   }
 ]);
 
-/*
-<React.StrictMode>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <RouterProvider router={indexRouter} />
   </React.StrictMode>,
-*/
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={indexRouter} />
 )

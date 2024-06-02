@@ -1,4 +1,4 @@
-import getTimeAgo from "../utils/getTimeAgo";
+import getTimeAgo from "../../utils/getTimeAgo";
 
 export default function PostHeaderInfo({ sub,
                                          user,

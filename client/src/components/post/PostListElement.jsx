@@ -1,5 +1,4 @@
 import "./PostListElement.css";
-import "../index.css";
 import PostHeaderInfo from "./PostHeaderInfo";
 import PostFooterInfo from "./PostFooterInfo";
 
@@ -9,8 +8,6 @@ export default function PostListElement({ post, lastRef }) {
     body = body.substr(0, 500);
     body += "...";
   }
-
-  console.log(post);
 
   const postLink = `/w/${post.SubWebbit.name}/comments/${post.id}`;
   return (
