@@ -12,7 +12,9 @@ class UserService {
   }
 
   async getUserById(id) {
-    return await db.User.findByPk(id);
+    return await db.User.findByPk(id, {
+      attributes: { exclude: ['password'] }
+    });
   }
 
   async registerUser(email, username, password) {

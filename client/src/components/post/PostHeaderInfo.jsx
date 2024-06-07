@@ -5,6 +5,7 @@ export default function PostHeaderInfo({ sub,
                                          subNameForPost,
                                          timeStamp
                                         }) {
+  // TODO: Load user profile
   const imgPath = sub ? (
       sub.communityFile ? `/static/uploads/subwebbit/community_pictures/${sub.communityFile}` :
       '/static/default_sub_picture.jpg'

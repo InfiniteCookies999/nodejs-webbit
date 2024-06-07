@@ -173,7 +173,7 @@ export default function SignupPopup() {
         <input id="signup-username"
               placeholder="Username*"
               className="form-control"
-              onChange={(e) => {
+              onChange={() => {
                 document.getElementById('username-error-text').innerText = ""; 
                 handleTextChange(transition)
               }}
@@ -184,7 +184,7 @@ export default function SignupPopup() {
                 placeholder="Password*"
                 type="password"
                 className="form-control"
-                onChange={(e) => {
+                onChange={() => {
                 document.getElementById('password-error-text').innerText = "";
                 handleTextChange(transition)
                 }}

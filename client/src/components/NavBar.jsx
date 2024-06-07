@@ -9,8 +9,8 @@ export default function NavBar() {
   const popupContext = useContext(PopupContext);
 
   let userImgPath = "/static/default_user_picture.jpg";
-  if (userContext) {
-    
+  if (userContext && userContext.profileURI) {
+    // TODO: Load user profile
   }
 
   return (
