@@ -1,0 +1,18 @@
+#next-btn {
+  pointer-events: all;
+  margin-bottom: 2rem;
+}
+
+#next-btn:enabled {
+  background-color: rgb(235, 124, 20);
+}
+
+#next-btn:enabled:hover {
+  cursor: pointer;
+  background-color: rgb(185, 101, 23);
+}
+
+#next-btn:disabled {
+  background-color: rgb(85, 85, 85);
+  color: rgb(160, 160, 160);
+}

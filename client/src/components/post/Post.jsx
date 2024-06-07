@@ -1,11 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom"
 import "./Post.css";
 import "../../index.css";
 import Comment from "./Comment";
 import PostTop from "./PostTop";
 import fetchReplies from "../../utils/fetchReplies";
-import SignupPopup from "../SignupPopup";
+import { UserContext } from "../../contexts/UserContext";
+import { PopupContext, PopupType } from "../../contexts/PopupContext";
 
 export default function Post() {
 
@@ -18,8 +19,10 @@ export default function Post() {
   const [comments, setComments] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const [noComments, setNoComments] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(undefined);
-  
+
+  const userContext = useContext(UserContext);
+  const popupContext = useContext(PopupContext);
+
   useEffect(() => {
     if (!id) return;
     
@@ -66,11 +69,6 @@ export default function Post() {
       })
       .catch(error => console.log(error));
 
-      fetch('/api/auth/session/status', { signal: controller.signal })
-        .then(response => response.json())
-        .then(status => setIsLoggedIn(status.loggedIn))
-        .catch(error => console.log(error));
-
     return () => {
       controller.abort();
     }
@@ -87,23 +85,20 @@ export default function Post() {
       observer.observe(lastCommentRef.current);
     }
   }, [ comments ]);
-
-  const loading = post === undefined || isLoggedIn === undefined;
-
+  
   return (
-    <>
     <div className="container">
       <div className="row">
         <div className="col-sm-3">
 
         </div>
         <div className="col-sm-6">
-          {loading ? <h1>Loading...</h1> :
+          {post === undefined ? <h1>Loading...</h1> :
             <div>
               <PostTop post={post} />
               <br />
 
-              {isLoggedIn ? 
+              {userContext !== undefined ? 
               <div className="comment-form">
                 <div id="comment-form-textarea"
                      type="text"
@@ -135,8 +130,9 @@ export default function Post() {
               </div> :
                 <button id="add-a-comment-nologin"
                         className="form-control rounded shadow-none"
-                        onClick={(e) => {
-                          document.getElementById('signup-popup').style.display = "block";
+                        onClick={() => {
+                          popupContext.setPopup(currentPopup =>
+                            ({ ...currentPopup, stateType: PopupType.SIGNUP }));
                         }}>
                   + Add a comment
                 </button>
@@ -158,7 +154,5 @@ export default function Post() {
         </div>
       </div>
     </div>
-    <SignupPopup />
-    </>
   );
 }

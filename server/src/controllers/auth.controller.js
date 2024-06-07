@@ -3,8 +3,12 @@ const { UserService } = require('../services');
 
 class AuthController {
 
-  isLoggedIn(req, res, next) {
-    res.json({ "loggedIn": req.session.user !== undefined });
+  async getSessionUser(req, res, next) {
+   const isLoggedIn = req.session.user !== undefined;
+    res.json({
+    "loggedIn": isLoggedIn,
+    "user": isLoggedIn ? await UserService.getUserById(req.session.user.id) : undefined
+   });
   }
 
   async doesEmailExist(req, res, next) {

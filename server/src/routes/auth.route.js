@@ -36,8 +36,8 @@ router.post('/auth/login',
   AuthController.login
 );
 
-router.get('/auth/session/status',
-  AuthController.isLoggedIn
+router.get('/auth/session',
+  AuthController.getSessionUser
 );
 
 router.get('/auth/emailexists/:email',
