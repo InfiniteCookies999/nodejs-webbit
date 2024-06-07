@@ -79,6 +79,8 @@ class CommentService {
     }
     const comment = await db.Comment.create(commentData);
     await post.addComment(comment);
+
+    return this.getCommentForViewing(session, comment.id);
   }
 
   async getCommentForViewing(session, commentId) {

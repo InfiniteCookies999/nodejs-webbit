@@ -37,8 +37,12 @@ describe('CommentService', () => {
         },
         addComment: jest.fn()
       };
+      const commentMock = {
+        id: 1
+      };
 
-      jest.spyOn(db.Comment, 'create').mockResolvedValue(undefined);
+      jest.spyOn(db.Comment, 'create').mockResolvedValue(commentMock);
+      jest.spyOn(CommentService, "getCommentForViewing").mockResolvedValue(commentMock);
       PostService.getPost.mockResolvedValue(postMock);
 
       await CommentService.createComment(session, 1, undefined, "content of comment");
@@ -85,8 +89,12 @@ describe('CommentService', () => {
         addComment: jest.fn()
       };
       const replyCommentMock = {};
+      const commentMock = {
+        id: 1
+      }
 
-      jest.spyOn(db.Comment, 'create').mockResolvedValue(undefined);
+      jest.spyOn(db.Comment, 'create').mockResolvedValue(commentMock);
+      jest.spyOn(CommentService, "getCommentForViewing").mockResolvedValue(commentMock);
       db.Comment.findByPk = jest.fn(() => replyCommentMock);
       PostService.getPost.mockResolvedValue(postMock);
 

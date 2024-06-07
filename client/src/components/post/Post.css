@@ -54,6 +54,7 @@
   padding-top: 0.5rem;
   padding-bottom: 0.2rem;
   margin: 0;
+  white-space: pre-line;
 }
 
 .comment-likes {

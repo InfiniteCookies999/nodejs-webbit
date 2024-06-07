@@ -118,7 +118,49 @@ export default function Post() {
                      }}
                      >
                 </div>
-                <button id="comment-submit-btn" className="form-control shadow-none">Comment</button>
+                <button id="comment-submit-btn"
+                        className="form-control shadow-none"
+                        onClick={() => {
+
+                          const textArea = document.getElementById('comment-form-textarea');
+                          const content = textArea.innerText;
+                          if (content === "") return;
+
+                          document.getElementById('comment-submit-btn').style.display = 'none';
+                          document.getElementById('comment-cancel-btn').style.display = 'none';
+                          
+                          textArea.innerHTML = "";
+                          
+                          fetch('/api/comment', {
+                            method: 'POST',
+                            headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              postId: id,
+                              content
+                            })
+                          })
+                          .then(response => {
+                            if (response.status === 200) {
+                              return response.json();
+                            } else {
+                              // redirect home page since most likely the post was deleted.
+                              window.location.href = "/";
+                            }
+                          })
+                          .then(comment => {
+                            setComments((currentComments) => {
+                              const newComments = [ ...currentComments ];
+                              newComments.unshift(comment);
+                              return newComments;
+                            });
+                          })
+                          .catch(error => console.log(error));
+                        }}>
+                    Comment
+                </button>
                 <button id="comment-cancel-btn"
                       className="form-control shadow-none"
                       onClick={() => {

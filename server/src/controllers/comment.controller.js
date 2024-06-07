@@ -59,13 +59,13 @@ class CommentController {
 
   async create(req, res, next) {
     try {
-      await CommentService
+      const comment = await CommentService
         .createComment(req.session,
                        req.body.postId,
                        req.body.replyId,
                        req.body.content);
       
-      res.end();
+      res.json(comment);
       
     } catch (error) {
       next(error);
