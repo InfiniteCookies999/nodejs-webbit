@@ -173,7 +173,9 @@ describe('CommentService', () => {
       const userMock = {
         id: 1,
         hasCommentLike: jest.fn(() => false),
-        addCommentLike: jest.fn()
+        addCommentLike: jest.fn(),
+        hasCommentDislike: jest.fn(() => false),
+        removeCommentDislike: jest.fn()
       };
       
       jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
@@ -182,6 +184,8 @@ describe('CommentService', () => {
       await CommentService.likeComment(session, 1);
       expect(userMock.hasCommentLike).toHaveBeenCalled();
       expect(userMock.addCommentLike).toHaveBeenCalled();
+      expect(userMock.hasCommentDislike).toHaveBeenCalled();
+      expect(userMock.removeCommentDislike).not.toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(1);
@@ -205,7 +209,9 @@ describe('CommentService', () => {
       const userMock = {
         id: 1,
         hasCommentLike: jest.fn(() => true),
-        removeCommentLike: jest.fn()
+        removeCommentLike: jest.fn(),
+        hasCommentDislike: jest.fn(() => false),
+        removeCommentDislike: jest.fn()
       };
       
       jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
@@ -214,9 +220,47 @@ describe('CommentService', () => {
       await CommentService.likeComment(session, 1);
       expect(userMock.hasCommentLike).toHaveBeenCalled();
       expect(userMock.removeCommentLike).toHaveBeenCalled();
+      expect(userMock.hasCommentDislike).toHaveBeenCalled();
+      expect(userMock.removeCommentDislike).not.toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(0);
+
+    });
+    it('liked comment (existing dislike)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const commentMock = {
+        User: { // commenter
+          id: 2,
+          commentKarma: 1,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasCommentLike: jest.fn(() => true),
+        removeCommentLike: jest.fn(),
+        hasCommentDislike: jest.fn(() => true),
+        removeCommentDislike: jest.fn()
+      };
+      
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await CommentService.likeComment(session, 1);
+      expect(userMock.hasCommentLike).toHaveBeenCalled();
+      expect(userMock.removeCommentLike).toHaveBeenCalled();
+      expect(userMock.hasCommentDislike).toHaveBeenCalled();
+      expect(userMock.removeCommentDislike).toHaveBeenCalled();
+      expect(commentMock.User.save).toHaveBeenCalled();
+      expect(commentMock.save).toHaveBeenCalled();
+      expect(commentMock.User.commentKarma).toBe(1);
 
     });
   });
@@ -251,7 +295,9 @@ describe('CommentService', () => {
       const userMock = {
         id: 1,
         hasCommentDislike: jest.fn(() => false),
-        addCommentDislike: jest.fn()
+        addCommentDislike: jest.fn(),
+        hasCommentLike: jest.fn(() => false),
+        removeCommentLike: jest.fn()
       };
       
       jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
@@ -260,6 +306,8 @@ describe('CommentService', () => {
       await CommentService.dislikeComment(session, 1);
       expect(userMock.hasCommentDislike).toHaveBeenCalled();
       expect(userMock.addCommentDislike).toHaveBeenCalled();
+      expect(userMock.hasCommentLike).toHaveBeenCalled();
+      expect(userMock.removeCommentLike).not.toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(-1);
@@ -283,7 +331,9 @@ describe('CommentService', () => {
       const userMock = {
         id: 1,
         hasCommentDislike: jest.fn(() => true),
-        removeCommentDislike: jest.fn()
+        removeCommentDislike: jest.fn(),
+        hasCommentLike: jest.fn(() => false),
+        removeCommentLike: jest.fn()
       };
       
       jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
@@ -292,10 +342,47 @@ describe('CommentService', () => {
       await CommentService.dislikeComment(session, 1);
       expect(userMock.hasCommentDislike).toHaveBeenCalled();
       expect(userMock.removeCommentDislike).toHaveBeenCalled();
+      expect(userMock.hasCommentLike).toHaveBeenCalled();
+      expect(userMock.removeCommentLike).not.toHaveBeenCalled();
       expect(commentMock.User.save).toHaveBeenCalled();
       expect(commentMock.save).toHaveBeenCalled();
       expect(commentMock.User.commentKarma).toBe(1);
 
+    });
+    it('disliked comment (existing like)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const commentMock = {
+        User: { // commenter
+          id: 2,
+          commentKarma: 0,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasCommentDislike: jest.fn(() => true),
+        removeCommentDislike: jest.fn(),
+        hasCommentLike: jest.fn(() => true),
+        removeCommentLike: jest.fn()
+      };
+      
+      jest.spyOn(CommentService, 'getComment').mockResolvedValue(commentMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await CommentService.dislikeComment(session, 1);
+      expect(userMock.hasCommentDislike).toHaveBeenCalled();
+      expect(userMock.removeCommentDislike).toHaveBeenCalled();
+      expect(userMock.hasCommentLike).toHaveBeenCalled();
+      expect(userMock.removeCommentLike).toHaveBeenCalled();
+      expect(commentMock.User.save).toHaveBeenCalled();
+      expect(commentMock.save).toHaveBeenCalled();
+      expect(commentMock.User.commentKarma).toBe(0);
     });
   });
 });

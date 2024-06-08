@@ -6,6 +6,34 @@ const { Op } = require('sequelize');
 
 class CommentService {
 
+  getCommentInclude(session) {
+    const include = [ { model: db.User, attributes: ['id', 'username'] } ];
+    if (!session.user) return include;
+
+    const userId = session.user.id;
+    return include.concat([
+      {
+        association: "usersThatLiked",
+        attributes: ['id'],
+        through: {
+          where: {
+            UserId: userId
+          }
+        }
+      },
+      // Fetch if the user of the given session disliked the comment.
+      {
+        association: "usersThatDisliked",
+        attributes: ['id'],
+        through: {
+          where: {
+            UserId: userId
+          }
+        }
+      }
+    ]);
+  }
+
   async getPageOfComments(session, postId, pageNumber) {
 
     const post = await PostService.getPost(postId, db.SubWebbit);
@@ -24,8 +52,8 @@ class CommentService {
           { replyId: null } // We do not want to load replies.
         ]
       },
-      include: { model: db.User, attributes: ['id', 'username'] }
-    });
+      include: this.getCommentInclude(session)
+    })
   }
 
   async getPageOfReplies(session, commentId, pageNumber, useLargePages) {
@@ -41,9 +69,20 @@ class CommentService {
       raw: true,
       nest: true,
       where: { replyId: comment.id },
-      include: { model: db.User, attributes: ['id', 'username'] }
+      include: this.getCommentInclude(session)
+    })
+  }
+
+  async getCommentForViewing(session, commentId) {
+    const include = this.getCommentInclude(session);
+    include.push({ model: db.SubWebbit });
+    return await db.Comment.findByPk(commentId, {
+      raw: true,
+      nest: true,
+      include
     });
   }
+
 
   async getNumberOfReplies(session, commentId) {
 
@@ -81,23 +120,6 @@ class CommentService {
     await post.addComment(comment);
 
     return this.getCommentForViewing(session, comment.id);
-  }
-
-  async getCommentForViewing(session, commentId) {
-    const comment = await db.Comment.findByPk(commentId, {
-      raw: true,
-      nest: true,
-      include: [
-        {
-          model: db.User, attributes: ['id', 'username']
-        },
-        { model: db.SubWebbit }
-      ]
-    });
-
-    await SubWebbitService.checkViewAccess(session, comment.SubWebbit);
-    
-    return comment;
   }
 
   async getComment(commentId, include) {
@@ -141,6 +163,11 @@ class CommentService {
       }
       await user.addCommentLike(comment);
     }
+    if (await user.hasCommentDislike(comment)) {
+      commenter.commentKarma += 1;
+      comment.dislikes -= 1;
+      await user.removeCommentDislike(comment);
+    }
 
     if (user.id != commenter.id) {
       await commenter.save();
@@ -169,6 +196,11 @@ class CommentService {
         commenter.commentKarma -= 1;
       }
       await user.addCommentDislike(comment);
+    }
+    if (await user.hasCommentLike(comment)) {
+      commenter.commentKarma -= 1;
+      comment.likes -=1;
+      await user.removeCommentLike(comment);
     }
 
     if (user.id != commenter.id) {

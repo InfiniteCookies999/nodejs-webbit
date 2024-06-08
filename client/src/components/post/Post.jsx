@@ -184,7 +184,7 @@ export default function Post() {
                 {comments.length <= 0 ?
                   (noComments ? <span>No Comments</span> : <span>Loading...</span>)
                   : comments.map(comment =>
-                      <Comment key={comment.id} comment={comment} indentCount={0} />)
+                      <Comment key={comment.id} comment={comment} addExtraPadding={false} />)
                 }
               </div>
 
