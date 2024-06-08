@@ -5,16 +5,6 @@ import { PopupContext, PopupType } from "../../contexts/PopupContext";
 
 export default function Comment({ comment, addExtraPadding }) {
   const replies = comment.replies;
-
-  console.log("rendering?");
-
-  useEffect(() => {
-    console.log("comment prop changed?");
-  }, [comment]);
-
-  useEffect(() => {
-    console.log("addExtraPadding prop changed?");
-  }, [addExtraPadding]);
   
   const [votes, setVotes] = useState({
     total: comment.likes - comment.dislikes,
