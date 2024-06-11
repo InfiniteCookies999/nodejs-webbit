@@ -149,6 +149,28 @@ const bcrypt = require('bcryptjs');
     return;
   }
 
+  const include = [
+    { model: db.SubWebbit },
+    {
+      association: "usersThatLikedForPost",
+      attributes: ['id'],
+      through: {
+        where: {
+          UserId: 1
+        }
+      }
+    },
+    {
+      association: "usersThatDislikedForPost",
+      attributes: ['id'],
+      through: {
+        where: {
+          UserId: 1
+        }
+      }
+    }
+  ];
+
   const port = config.SERVER_PORT || 3000;
   app.listen(port, () => {
     console.log('started express server');

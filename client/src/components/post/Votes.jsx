@@ -1,0 +1,78 @@
+import { useContext, useState } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import { PopupContext, PopupType } from '../../contexts/PopupContext';
+
+export default function Votes({ likes, dislikes,
+                                isLiked, isDisliked,
+                                likeURI, dislikeURI }) {
+  
+  const [votes, setVotes] = useState({
+    total: likes - dislikes,
+    isLiked,
+    isDisliked
+  });
+
+  const userContext = useContext(UserContext);
+  const popupContext = useContext(PopupContext);
+
+  const upvoteStyle = {color: votes.isLiked ? "green" : ""};
+  
+  return (<>
+    <a href="#/"
+       className={"bx link link-upvote " + (votes.isLiked ? "bxs-upvote" : "bx-upvote")}
+       style={upvoteStyle}
+       onClick={() => {
+        if (!userContext) {
+          popupContext.setPopup(currentPopup =>
+            ({ ...currentPopup, stateType: PopupType.SIGNUP }));
+          return;
+        }
+
+        fetch(likeURI, {
+          method: 'POST'
+        })
+        .then(response => {
+          if (response.status == 200) {
+            let newTotal = votes.total;
+            if (votes.isDisliked) newTotal += 2;
+            else if (votes.isLiked) newTotal -= 1;
+            else newTotal += 1;
+            setVotes({
+              total: newTotal,
+              isLiked: !votes.isLiked,
+              isDisliked: false
+            });
+          }
+        });
+       }}
+       />
+    <span className="pr-1 pl-1">{votes.total}</span>
+    <a href="#/"
+       className={"bx link link-downvote " + (votes.isDisliked ? "bxs-downvote" : "bx-downvote") }
+       onClick={() => {
+        if (!userContext) {
+          popupContext.setPopup(currentPopup =>
+            ({ ...currentPopup, stateType: PopupType.SIGNUP }));
+          return;
+        }
+
+        fetch(dislikeURI, {
+          method: 'POST'
+        })
+        .then(response => {
+          if (response.status == 200) {
+            let newTotal = votes.total;
+            if (votes.isLiked) newTotal -= 2;
+            else if (votes.isDisliked) newTotal += 1;
+            else newTotal -= 1;
+            setVotes({
+              total: newTotal,
+              isDisliked: !votes.isDisliked,
+              isLiked: false
+            });
+          }
+        });
+       }}
+       />
+  </>);
+}

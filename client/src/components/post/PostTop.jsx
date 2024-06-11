@@ -7,7 +7,7 @@ export default function PostTop({ post, subNameForPost }) {
       <PostHeaderInfo user={post.User} subNameForPost={subNameForPost} timeStamp={post.createdAt} />
       <h4><b>{post.title}</b></h4>
       <p className="post-body">{post.body}</p>
-      <PostFooterInfo />
+      <PostFooterInfo post={post} />
     </>
   );
 }

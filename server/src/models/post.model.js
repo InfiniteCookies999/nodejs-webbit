@@ -18,6 +18,10 @@ module.exports = (sequalize, DataTypes) => {
     }
   });
   Post.associate = (db) => {
+    sequalize.define("PostLikes");
+    sequalize.define("PostDislikes");
+    Post.belongsToMany(db.User, { through: "PostLikes", as: "usersThatLiked" });
+    Post.belongsToMany(db.User, { through: "PostDislikes", as: "usersThatDisliked" });
     Post.belongsTo(db.SubWebbit);
     Post.belongsTo(db.User);
     Post.hasMany(db.PostMedia);

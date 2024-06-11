@@ -34,6 +34,14 @@ class CommentService {
     ]);
   }
 
+  applyVoteData(comment) {
+    comment.isLiked = comment.usersThatLiked != null && comment.usersThatLiked.id != null;
+    comment.isDisliked = comment.usersThatDisliked != null && comment.usersThatDisliked.id != null;
+    delete comment.usersThatLiked;
+    delete comment.usersThatDisliked;
+    return comment;
+  }
+
   async getPageOfComments(session, postId, pageNumber) {
 
     const post = await PostService.getPost(postId, db.SubWebbit);
@@ -41,7 +49,7 @@ class CommentService {
 
     const PAGE_SIZE = 30;
 
-    return await db.Comment.findAndCountAll({
+    const comments = await db.Comment.findAndCountAll({
       limit: PAGE_SIZE,
       offset: pageNumber * PAGE_SIZE,
       raw: true,
@@ -53,7 +61,9 @@ class CommentService {
         ]
       },
       include: this.getCommentInclude(session)
-    })
+    });
+    comments.rows.map(comment => this.applyVoteData(comment));
+    return comments;
   }
 
   async getPageOfReplies(session, commentId, pageNumber, useLargePages) {
@@ -63,24 +73,26 @@ class CommentService {
 
     const PAGE_SIZE = useLargePages ? 30 : 5;
 
-    return await db.Comment.findAndCountAll({
+    const comments = await db.Comment.findAndCountAll({
       limit: PAGE_SIZE,
       offset: pageNumber * PAGE_SIZE,
       raw: true,
       nest: true,
       where: { replyId: comment.id },
       include: this.getCommentInclude(session)
-    })
+    });
+    comments.rows.map(comment => this.applyVoteData(comment));
+    return comments;
   }
 
   async getCommentForViewing(session, commentId) {
     const include = this.getCommentInclude(session);
     include.push({ model: db.SubWebbit });
-    return await db.Comment.findByPk(commentId, {
+    return this.applyVoteData(await db.Comment.findByPk(commentId, {
       raw: true,
       nest: true,
       include
-    });
+    }));
   }
 
 

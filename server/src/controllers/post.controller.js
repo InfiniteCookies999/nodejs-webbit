@@ -1,12 +1,12 @@
 const { PostService } = require('../services');
-const db = require('../models');
 
 class PostController {
   
   async getPageOfPosts(req, res, next) {
     try {
 
-      const posts = await PostService.getPageOfPosts(req.params.pageNumber);
+      const posts = await PostService.getPageOfPosts(req.session, req.params.pageNumber);
+      console.log("SENDING BACK THE POSTS!!");
 
       res.json(posts);
 
@@ -18,9 +18,7 @@ class PostController {
   async get(req, res, next) {
     try {
 
-      const post = await PostService.getPost(req.params.id, {
-        model: db.User, attributes: [ 'id', 'username' ]
-      });
+      const post = await PostService.getPostForViewing(req.session, req.params.id);
 
       res.json(post);
 

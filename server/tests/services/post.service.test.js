@@ -187,7 +187,9 @@ describe('PostService', () => {
       const userMock = {
         id: 1,
         hasPostLike: jest.fn(() => false),
-        addPostLike: jest.fn()
+        addPostLike: jest.fn(),
+        hasPostDislike: jest.fn(() => false),
+        removePostDislike: jest.fn()
       };
       
       jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
@@ -196,6 +198,8 @@ describe('PostService', () => {
       await PostService.likePost(session, 1);
       expect(userMock.hasPostLike).toHaveBeenCalled();
       expect(userMock.addPostLike).toHaveBeenCalled();
+      expect(userMock.hasPostDislike).toHaveBeenCalled();
+      expect(userMock.removePostDislike).not.toHaveBeenCalled();
       expect(postMock.User.save).toHaveBeenCalled();
       expect(postMock.save).toHaveBeenCalled();
       expect(postMock.User.postKarma).toBe(1);
@@ -219,7 +223,9 @@ describe('PostService', () => {
       const userMock = {
         id: 1,
         hasPostLike: jest.fn(() => true),
-        removePostLike: jest.fn()
+        removePostLike: jest.fn(),
+        hasPostDislike: jest.fn(() => false),
+        removePostDislike: jest.fn()
       };
       
       jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
@@ -228,9 +234,47 @@ describe('PostService', () => {
       await PostService.likePost(session, 1);
       expect(userMock.hasPostLike).toHaveBeenCalled();
       expect(userMock.removePostLike).toHaveBeenCalled();
+      expect(userMock.hasPostDislike).toHaveBeenCalled();
+      expect(userMock.removePostDislike).not.toHaveBeenCalled();
       expect(postMock.User.save).toHaveBeenCalled();
       expect(postMock.save).toHaveBeenCalled();
       expect(postMock.User.postKarma).toBe(0);
+
+    });
+    it('liked post (has existing dislike)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const postMock = {
+        User: { // poster
+          id: 2,
+          postKarma: 1,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasPostLike: jest.fn(() => true),
+        removePostLike: jest.fn(),
+        hasPostDislike: jest.fn(() => true),
+        removePostDislike: jest.fn()
+      };
+      
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await PostService.likePost(session, 1);
+      expect(userMock.hasPostLike).toHaveBeenCalled();
+      expect(userMock.removePostLike).toHaveBeenCalled();
+      expect(userMock.hasPostDislike).toHaveBeenCalled();
+      expect(userMock.removePostDislike).toHaveBeenCalled();
+      expect(postMock.User.save).toHaveBeenCalled();
+      expect(postMock.save).toHaveBeenCalled();
+      expect(postMock.User.postKarma).toBe(1);
 
     });
   });
@@ -254,7 +298,9 @@ describe('PostService', () => {
       const userMock = {
         id: 1,
         hasPostDislike: jest.fn(() => false),
-        addPostDislike: jest.fn()
+        addPostDislike: jest.fn(),
+        hasPostLike: jest.fn(() => false),
+        removePostLike: jest.fn(),
       };
       
       jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
@@ -263,6 +309,8 @@ describe('PostService', () => {
       await PostService.dislikePost(session, 1);
       expect(userMock.hasPostDislike).toHaveBeenCalled();
       expect(userMock.addPostDislike).toHaveBeenCalled();
+      expect(userMock.hasPostLike).toHaveBeenCalled();
+      expect(userMock.removePostLike).not.toHaveBeenCalled();
       expect(postMock.User.save).toHaveBeenCalled();
       expect(postMock.save).toHaveBeenCalled();
       expect(postMock.User.postKarma).toBe(-1);
@@ -286,7 +334,9 @@ describe('PostService', () => {
       const userMock = {
         id: 1,
         hasPostDislike: jest.fn(() => true),
-        removePostDislike: jest.fn()
+        removePostDislike: jest.fn(),
+        hasPostLike: jest.fn(() => false),
+        removePostLike: jest.fn(),
       };
       
       jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
@@ -295,9 +345,47 @@ describe('PostService', () => {
       await PostService.dislikePost(session, 1);
       expect(userMock.hasPostDislike).toHaveBeenCalled();
       expect(userMock.removePostDislike).toHaveBeenCalled();
+      expect(userMock.hasPostLike).toHaveBeenCalled();
+      expect(userMock.removePostLike).not.toHaveBeenCalled();
       expect(postMock.User.save).toHaveBeenCalled();
       expect(postMock.save).toHaveBeenCalled();
       expect(postMock.User.postKarma).toBe(1);
+
+    });
+    it('disliked post (has existing like)', async () => {
+
+      const session = {
+        user: {
+          id: 1
+        }
+      };
+      const postMock = {
+        User: { // poster
+          id: 2,
+          postKarma: 0,
+          save: jest.fn()
+        },
+        save: jest.fn()
+      };
+      const userMock = {
+        id: 1,
+        hasPostDislike: jest.fn(() => true),
+        removePostDislike: jest.fn(),
+        hasPostLike: jest.fn(() => true),
+        removePostLike: jest.fn(),
+      };
+      
+      jest.spyOn(PostService, 'getPost').mockResolvedValue(postMock);
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await PostService.dislikePost(session, 1);
+      expect(userMock.hasPostDislike).toHaveBeenCalled();
+      expect(userMock.removePostDislike).toHaveBeenCalled();
+      expect(userMock.hasPostLike).toHaveBeenCalled();
+      expect(userMock.removePostLike).toHaveBeenCalled();
+      expect(postMock.User.save).toHaveBeenCalled();
+      expect(postMock.save).toHaveBeenCalled();
+      expect(postMock.User.postKarma).toBe(0);
 
     });
   });

@@ -20,7 +20,7 @@ export default function PostListElement({ post, lastRef }) {
           />
           <h2><b>{post.title}</b></h2>
           <p>{body}</p>
-          <PostFooterInfo />
+          <PostFooterInfo post={post} />
         </div>
       </a>
     </div>

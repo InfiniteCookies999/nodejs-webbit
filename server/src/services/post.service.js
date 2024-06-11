@@ -6,11 +6,46 @@ const { Op } = require('sequelize');
 
 class PostService {
 
-  async getPageOfPosts(pageCount) {
+  getPostInclude(session) {
+    const include = [ { model: db.SubWebbit } ];
+    if (!session.user) return include;
+
+    const userId = session.user.id;
+    return include.concat([
+      {
+        association: "usersThatLiked",
+        attributes: ['id'],
+        through: {
+          where: {
+            UserId: userId
+          }
+        }
+      },
+      {
+        association: "usersThatDisliked",
+        attributes: ['id'],
+        through: {
+          where: {
+            UserId: userId
+          }
+        }
+      }
+    ]);
+  }
+
+  applyVoteData(post) {
+    post.isLiked = post.usersThatLiked != null && post.usersThatLiked.length > 0;
+    post.isDisliked = post.usersThatDisliked != null && post.usersThatDisliked.length > 0;
+    delete post.usersThatLiked;
+    delete post.usersThatDisliked;
+    return post;
+  }
+
+  async getPageOfPosts(session, pageCount) {
     
     const PAGE_SIZE = 10;
 
-    return await db.Post.findAndCountAll({
+    const posts = await db.Post.findAndCountAll({
       limit: PAGE_SIZE,
       offset: pageCount * PAGE_SIZE,
       raw: true,
@@ -21,8 +56,10 @@ class PostService {
           { '$SubWebbit.type$': 'restricted' }
         ]
       },
-      include: { model: db.SubWebbit }
-    });
+      include: this.getPostInclude(session)
+    })
+    posts.rows.map(post => this.applyVoteData(post));
+    return posts;
   }
 
   async createPost(subName, session, dto) {
@@ -57,6 +94,13 @@ class PostService {
       });
       await post.addPostMedia(postMedia);
     }
+  }
+
+  async getPostForViewing(session, postId) {
+    const post = await this.getPost(postId, this.getPostInclude(session).concat([
+      { model: db.User, attributes: [ 'id', 'username' ] }
+    ]));
+    return this.applyVoteData(post.get({ plain: true }));
   }
 
   async getPost(postId, include) {
@@ -99,6 +143,11 @@ class PostService {
 
       await user.addPostLike(post);
     }
+    if (await user.hasPostDislike(post)) {
+      poster.postKarma += 1;
+      post.dislikes -= 1;
+      await user.removePostDislike(post);
+    }
 
     if (user.id != poster.id) {
       await poster.save();
@@ -128,6 +177,11 @@ class PostService {
       }
 
       await user.addPostDislike(post);
+    }
+    if (await user.hasPostLike(post)) {
+      poster.postKarma -= 1;
+      post.likes -=1;
+      await user.removePostLike(post);
     }
 
     if (user.id != poster.id) {

@@ -15,7 +15,7 @@ function initialize() {
       host: config.DATABASE_HOST,
       dialect: 'mysql',
       dialectModule: require('mysql2'),
-      logging: false
+      logging: (config.SHOULD_DATABASE_LOG === "true")
     }
   );
   db.sequelize = sequelize;
