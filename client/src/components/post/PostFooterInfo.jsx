@@ -1,6 +1,7 @@
 import Votes from './Votes';
 
 export default function PostFooterInfo({ post }) {
+  console.log(post);
   return (
     <div>
       <span className="footing rounded">

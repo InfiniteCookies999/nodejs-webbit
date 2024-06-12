@@ -3,6 +3,7 @@ const config = require('./config/env.config');
 const createApp = require('./create.app');
 const db = require('./models');
 const bcrypt = require('bcryptjs');
+const { Op } = require('sequelize');
 
 (async () => {
 
@@ -148,28 +149,6 @@ const bcrypt = require('bcryptjs');
     console.log(error);
     return;
   }
-
-  const include = [
-    { model: db.SubWebbit },
-    {
-      association: "usersThatLikedForPost",
-      attributes: ['id'],
-      through: {
-        where: {
-          UserId: 1
-        }
-      }
-    },
-    {
-      association: "usersThatDislikedForPost",
-      attributes: ['id'],
-      through: {
-        where: {
-          UserId: 1
-        }
-      }
-    }
-  ];
 
   const port = config.SERVER_PORT || 3000;
   app.listen(port, () => {

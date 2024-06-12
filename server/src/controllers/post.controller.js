@@ -6,7 +6,6 @@ class PostController {
     try {
 
       const posts = await PostService.getPageOfPosts(req.session, req.params.pageNumber);
-      console.log("SENDING BACK THE POSTS!!");
 
       res.json(posts);
 

@@ -6,12 +6,10 @@ const { Op } = require('sequelize');
 
 class PostService {
 
-  getPostInclude(session) {
-    const include = [ { model: db.SubWebbit } ];
-    if (!session.user) return include;
-
+  getPostVotesAccociations(session) {
+    if (!session.user) return [];
     const userId = session.user.id;
-    return include.concat([
+    return [
       {
         association: "usersThatLiked",
         attributes: ['id'],
@@ -30,12 +28,17 @@ class PostService {
           }
         }
       }
-    ]);
+    ];
   }
 
   applyVoteData(post) {
-    post.isLiked = post.usersThatLiked != null && post.usersThatLiked.length > 0;
-    post.isDisliked = post.usersThatDisliked != null && post.usersThatDisliked.length > 0;
+    // The reason for checking .length > 0 is because for some reason the queries will
+    // return arrays containing the single object and other queries return just the object
+    // itself. So this just generalizes both cases.
+    post.isLiked = post.usersThatLiked != null &&
+      (post.usersThatLiked.id != null || post.usersThatLiked.length > 0);
+    post.isDisliked = post.usersThatDisliked != null &&
+      (post.usersThatDisliked.id != null || post.usersThatDisliked.length > 0);
     delete post.usersThatLiked;
     delete post.usersThatDisliked;
     return post;
@@ -50,14 +53,18 @@ class PostService {
       offset: pageCount * PAGE_SIZE,
       raw: true,
       nest: true,
-      where: {
-        [Op.or]: [
-          { '$SubWebbit.type$': 'public' },
-          { '$SubWebbit.type$': 'restricted' }
-        ]
-      },
-      include: this.getPostInclude(session)
-    })
+      include: this.getPostVotesAccociations(session)
+                   .concat([
+                      { 
+                        model: db.SubWebbit,
+                        where: {
+                          [Op.or]: [
+                            { type: 'public' },
+                            { type: 'restricted' }
+                          ]
+                        } 
+                      } ])
+    });
     posts.rows.map(post => this.applyVoteData(post));
     return posts;
   }
@@ -97,10 +104,19 @@ class PostService {
   }
 
   async getPostForViewing(session, postId) {
-    const post = await this.getPost(postId, this.getPostInclude(session).concat([
-      { model: db.User, attributes: [ 'id', 'username' ] }
+    let post = await this.getPost(postId, this.getPostVotesAccociations(session).concat([
+      { model: db.User, attributes: [ 'id', 'username' ] },
+      { model: db.SubWebbit }
     ]));
-    return this.applyVoteData(post.get({ plain: true }));
+    await SubWebbitService.checkViewAccess(session, post.SubWebbit);
+    post = this.applyVoteData(post.get({ plain: true }));
+    try {
+      await SubWebbitService.checkPostAccess(session, post.SubWebbit);
+      post.mayComment = true;
+    } catch (error) {
+      post.mayComment = false;
+    }
+    return post;
   }
 
   async getPost(postId, include) {

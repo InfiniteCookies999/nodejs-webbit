@@ -86,6 +86,10 @@ export default function Post() {
     }
   }, [ comments ]);
   
+  if (post !== undefined) {
+    console.log(post);
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -99,24 +103,25 @@ export default function Post() {
               <br />
 
               {userContext !== undefined ? 
+              post.mayComment &&
               <div className="comment-form">
                 <div id="comment-form-textarea"
-                     type="text"
-                     role="textbox"
-                     placeholder="Add a comment"
-                     className="input edit-box form-control shadow-none"
-                     contentEditable={true}
-                     onInput={(e) => {
-                       const area = e.target;
-                       if (area.innerHTML.trim() === '<br>') {
+                    type="text"
+                    role="textbox"
+                    placeholder="Add a comment"
+                    className="input edit-box form-control shadow-none"
+                    contentEditable={true}
+                    onInput={(e) => {
+                      const area = e.target;
+                      if (area.innerHTML.trim() === '<br>') {
                         area.innerHTML = "";
-                       }
-                     }}
-                     onClick={(e) => {
-                       document.getElementById('comment-submit-btn').style.display = 'block';
-                       document.getElementById('comment-cancel-btn').style.display = 'block';
-                     }}
-                     >
+                      }
+                    }}
+                    onClick={(e) => {
+                      document.getElementById('comment-submit-btn').style.display = 'block';
+                      document.getElementById('comment-cancel-btn').style.display = 'block';
+                    }}
+                    >
                 </div>
                 <button id="comment-submit-btn"
                         className="form-control shadow-none"
@@ -169,8 +174,8 @@ export default function Post() {
                       }}>
                         Cancel
                 </button>
-              </div> :
-                <button id="add-a-comment-nologin"
+              </div>
+              : <button id="add-a-comment-nologin"
                         className="form-control rounded shadow-none"
                         onClick={() => {
                           popupContext.setPopup(currentPopup =>
