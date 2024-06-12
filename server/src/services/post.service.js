@@ -140,7 +140,7 @@ class PostService {
   async likePost(session, postId) {
     const post = await this.getPost(postId, [ db.SubWebbit, db.User ]);
     
-    await SubWebbitService.checkPostAccess(session, post.SubWebbit);
+    await SubWebbitService.checkViewAccess(session, post.SubWebbit);
 
     const poster = post.User;
     const user = await db.User.findByPk(session.user.id);
@@ -175,7 +175,7 @@ class PostService {
   async dislikePost(session, postId) {
     const post = await this.getPost(postId, [ db.SubWebbit, db.User ]);
     
-    await SubWebbitService.checkPostAccess(session, post.SubWebbit);
+    await SubWebbitService.checkViewAccess(session, post.SubWebbit);
 
     const poster = post.User;
     const user = await db.User.findByPk(session.user.id);
