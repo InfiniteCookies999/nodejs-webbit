@@ -12,7 +12,7 @@ export default function Comment({ comment, addExtraPadding }) {
   const moreReplies = comment.remainingReplies !== undefined && comment.remainingReplies > 0;
 
   return (
-    <div id={comment.id} style={style} ref={comment.lastRef}>
+    <div id={"comment-" + comment.id} style={style} ref={comment.lastRef}>
       <PostHeaderInfo user={comment.User} timeStamp={comment.createdAt} />
       <div className="comment-indent">
         <p className="comment-body">{comment.content}</p>

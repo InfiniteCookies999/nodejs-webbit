@@ -1,7 +1,6 @@
 import Votes from './Votes';
 
 export default function PostFooterInfo({ post }) {
-  console.log(post);
   return (
     <div>
       <span className="footing rounded">
@@ -11,9 +10,10 @@ export default function PostFooterInfo({ post }) {
                dislikeURI={`/api/post/dislike/${post.id}`}
         />
       </span>
-      <a href="#/" className="footing rounded link link-comment">
+      <a href={`/w/${post.SubWebbit.name}/comments/${post.id}?viewReplies=true`}
+         className="footing rounded link link-comment">
         <i className="bx bx-comment pr-1"></i>
-        <span>0</span>
+        <span>{post.numComments}</span>
       </a>
     </div>
   );

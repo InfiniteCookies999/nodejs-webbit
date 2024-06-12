@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import "./Post.css";
 import "../../index.css";
 import Comment from "./Comment";
@@ -13,6 +13,8 @@ export default function Post() {
   const lastCommentRef = useRef();
 
   const { id } = useParams();
+  
+  const [searchParams] = useSearchParams();
 
   const [post, setPost] = useState(undefined);
 
@@ -22,6 +24,8 @@ export default function Post() {
 
   const userContext = useContext(UserContext);
   const popupContext = useContext(PopupContext);
+
+  const scrollStateRef = useRef(false);
 
   useEffect(() => {
     if (!id) return;
@@ -84,11 +88,18 @@ export default function Post() {
     if (lastCommentRef.current) {
       observer.observe(lastCommentRef.current);
     }
+
+    const commentContainer = document.getElementById("comment-container");
+    if (scrollStateRef.current === false &&
+        searchParams.get("viewReplies") === "true") {
+      if (commentContainer) {
+        if (commentContainer.children.length > 0) {
+          scrollStateRef.current = true;
+          commentContainer.children[0].scrollIntoView();
+        }
+      }
+    }
   }, [ comments ]);
-  
-  if (post !== undefined) {
-    console.log(post);
-  }
 
   return (
     <div className="container">
@@ -185,7 +196,7 @@ export default function Post() {
                 </button>
               }
               <br/>
-              <div>
+              <div id="comment-container">
                 {comments.length <= 0 ?
                   (noComments ? <span>No Comments</span> : <span>Loading...</span>)
                   : comments.map(comment =>

@@ -65,7 +65,13 @@ class PostService {
                         } 
                       } ])
     });
-    posts.rows.map(post => this.applyVoteData(post));
+    await Promise.all(posts.rows.map(async post => {
+      this.applyVoteData(post);
+      post.numComments = await db.Comment.count({
+        where: { PostId: post.id }
+      });
+      return post;
+    }));
     return posts;
   }
 
