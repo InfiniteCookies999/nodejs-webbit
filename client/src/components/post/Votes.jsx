@@ -28,22 +28,17 @@ export default function Votes({ likes, dislikes,
           return;
         }
 
-        fetch(likeURI, {
-          method: 'POST'
-        })
-        .then(response => {
-          if (response.status == 200) {
-            let newTotal = votes.total;
-            if (votes.isDisliked) newTotal += 2;
-            else if (votes.isLiked) newTotal -= 1;
-            else newTotal += 1;
-            setVotes({
-              total: newTotal,
-              isLiked: !votes.isLiked,
-              isDisliked: false
-            });
-          }
+        let newTotal = votes.total;
+        if (votes.isDisliked) newTotal += 2;
+        else if (votes.isLiked) newTotal -= 1;
+        else newTotal += 1;
+        setVotes({
+          total: newTotal,
+          isLiked: !votes.isLiked,
+          isDisliked: false
         });
+
+        fetch(likeURI, { method: 'POST' });
        }}
        />
     <span className="pr-1 pl-1">{votes.total}</span>
@@ -56,22 +51,17 @@ export default function Votes({ likes, dislikes,
           return;
         }
 
-        fetch(dislikeURI, {
-          method: 'POST'
-        })
-        .then(response => {
-          if (response.status == 200) {
-            let newTotal = votes.total;
-            if (votes.isLiked) newTotal -= 2;
-            else if (votes.isDisliked) newTotal += 1;
-            else newTotal -= 1;
-            setVotes({
-              total: newTotal,
-              isDisliked: !votes.isDisliked,
-              isLiked: false
-            });
-          }
+        let newTotal = votes.total;
+        if (votes.isLiked) newTotal -= 2;
+        else if (votes.isDisliked) newTotal += 1;
+        else newTotal -= 1;
+        setVotes({
+          total: newTotal,
+          isDisliked: !votes.isDisliked,
+          isLiked: false
         });
+
+        fetch(dislikeURI, { method: 'POST' });
        }}
        />
   </>);
