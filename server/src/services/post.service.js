@@ -96,10 +96,10 @@ class PostService {
   }
 
   async addPostMedia(post, files) {
-    const destDir = 'uploads/posts/media';
+    const destDir = 'static/uploads/posts/media';
     // There is media files to be included in the post.
     const uploadedFiles = files
-      .map((f) => FileUploaderService.moveFileAndGenRandomName(f, destDir));
+      .map((f) => FileUploaderService.moveFileAndGenRandomName(post.id, f, destDir));
 
     for (const file of uploadedFiles) {
       const postMedia = await db.PostMedia.create({
@@ -112,7 +112,8 @@ class PostService {
   async getPostForViewing(session, postId) {
     let post = await this.getPost(postId, this.getPostVotesAccociations(session).concat([
       { model: db.User, attributes: [ 'id', 'username' ] },
-      { model: db.SubWebbit }
+      { model: db.SubWebbit },
+      { model: db.PostMedia }
     ]));
     await SubWebbitService.checkViewAccess(session, post.SubWebbit);
     post = this.applyVoteData(post.get({ plain: true }));

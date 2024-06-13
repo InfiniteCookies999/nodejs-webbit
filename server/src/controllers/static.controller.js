@@ -1,5 +1,6 @@
-const { SubWebbitService } = require('../services');
+const { SubWebbitService, PostService } = require('../services');
 const { HttpError } = require('../middleware');
+const db = require('../models');
 
 class StaticController {
   async checkSubWebbitAccess(req, res, next) {
@@ -14,6 +15,27 @@ class StaticController {
 
       // Continue to serving the file.
       next();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async checkPostAccess(req, res, next) {
+
+    try {
+
+      const postId = parseInt(req.originalUrl.split('/').pop().split('-')[0]);
+      const post = await PostService.getPost(postId, {
+        model: db.SubWebbit
+      });
+      if (!post)
+        throw new HttpError("Post doesn't exist", 404);
+
+      await SubWebbitService.checkViewAccess(req.session, post.SubWebbit);
+
+      // Continue to serving the file.
+      next();
+
     } catch (error) {
       next(error);
     }
