@@ -9,6 +9,8 @@ router.use("/static/uploads/subwebbit",
 router.use("/static/uploads/posts/media",
   StaticController.checkPostAccess,
   express.static("static/uploads/posts/media"));
+router.use("/static/uploads/users/profile_pictures",
+  express.static("static/uploads/users/profile_pictures"));
   
 router.use("/static/default_sub_picture.jpg",
   express.static("static/default_sub_picture.jpg"));

@@ -5,11 +5,14 @@ export default function PostHeaderInfo({ sub,
                                          subNameForPost,
                                          timeStamp
                                         }) {
-  // TODO: Load user profile
+  
   const imgPath = sub ? (
       sub.communityFile ? `/static/uploads/subwebbit/community_pictures/${sub.communityFile}` :
       '/static/default_sub_picture.jpg'
-    ) : "/static/default_user_picture.jpg";
+    ) : (
+      user.profileFile ? `/static/uploads/users/profile_pictures/${user.profileFile}` :
+      '/static/default_user_picture.jpg'
+    );
 
   const nameBlockStyle = {
     display:"inline-block"

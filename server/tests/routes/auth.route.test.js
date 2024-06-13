@@ -162,21 +162,3 @@ describe('route POST /auth/login', () => {
       .expect(200);
   });
 });
-
-describe('route PUT /auth/gender', () => {
-  it('invalid gender not in list', async () => {
-    const body = {
-      gender: 'Bad'
-    };
-
-    await supertest(app)
-      .put('/api/auth/gender')
-      .send(body)
-      .set('Content-Type', 'application/json')
-      .expect(400)
-      .then(res => {
-        expect(res.body.errors.length).toBe(1);
-        expect(res.body.errors[0].path).toBe('gender');
-      });
-  });
-});

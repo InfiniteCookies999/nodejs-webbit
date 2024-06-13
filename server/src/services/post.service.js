@@ -111,7 +111,7 @@ class PostService {
 
   async getPostForViewing(session, postId) {
     let post = await this.getPost(postId, this.getPostVotesAccociations(session).concat([
-      { model: db.User, attributes: [ 'id', 'username' ] },
+      { model: db.User, attributes: [ 'id', 'username', 'profileFile' ] },
       { model: db.SubWebbit },
       { model: db.PostMedia }
     ]));

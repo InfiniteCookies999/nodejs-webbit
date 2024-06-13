@@ -14,7 +14,7 @@ module.exports = (sequalize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    profileURI: {
+    profileFile: {
       type: DataTypes.STRING(200),
       allowNull: true
     },

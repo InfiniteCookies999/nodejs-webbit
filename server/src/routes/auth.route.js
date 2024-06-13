@@ -19,13 +19,6 @@ router.post('/auth/register',
   AuthController.register
 );
 
-// TODO: Should this be moved? It seems out of place here.
-router.put('/auth/gender',
-  body('gender').isIn([ 'Woman', 'Man', 'Non-Binary', 'Not-Say' ]),
-  validateBody,
-  AuthController.updateGender
-);
-
 router.post('/auth/login',
   oneOf([
       body('emailOrUsername').isEmail(),

@@ -93,7 +93,7 @@ function handleUsernamePassContinue(email, setTransition) {
 }
 
 function handleGenderSelection(clickedBtn) {
-  fetch('/api/auth/gender', {
+  fetch('/api/user/gender', {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',

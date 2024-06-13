@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
 class CommentService {
 
   getCommentInclude(session) {
-    const include = [ { model: db.User, attributes: ['id', 'username'] } ];
+    const include = [ { model: db.User, attributes: ['id', 'username', 'profileFile'] } ];
     if (!session.user) return include;
 
     const userId = session.user.id;

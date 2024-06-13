@@ -5,7 +5,8 @@ const { authRouter,
         subWebbitRouter,
         postRouter,
         commentRouter,
-        staticRouter } = require('./routes');
+        staticRouter,
+        UserRouter } = require('./routes');
 const { errorHandler } = require('./middleware');
 
 function createApp(useCb) {
@@ -23,6 +24,7 @@ function createApp(useCb) {
   app.use('/api/', subWebbitRouter);
   app.use('/api/', postRouter);
   app.use('/api/', commentRouter);
+  app.use('/api/', UserRouter);
   app.use(staticRouter);
 
   app.use(cookieParser());
