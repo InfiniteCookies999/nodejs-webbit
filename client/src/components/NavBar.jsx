@@ -9,24 +9,29 @@ export default function NavBar() {
   const popupContext = useContext(PopupContext);
 
   let userImgPath = "/static/default_user_picture.jpg";
-  if (userContext && userContext.profileURI) {
-    // TODO: Load user profile
+  if (userContext && userContext.profileFile) {
+    userImgPath = `/static/uploads/users/profile_pictures/${userContext.profileFile}`;
   }
 
   return (
     <nav id="site-navbar">
       {userContext ?
-        <a id="user-btn">
-        <img src={userImgPath}
-             className="rounded-circle"
-             style={{width:"2.2rem", height:"2.2rem"}}></img>
+        userContext.isLoggedIn ?
+        <a className="right-nav-element">
+          <img src={userImgPath}
+              className="rounded-circle"
+              style={{width:"2.2rem", height:"2.2rem"}}></img>
         </a> :
-        <a id="login-button" onClick={(e) => {
-          popupContext.setPopup(currentPopup =>
-            ({ ...currentPopup, stateType: PopupType.LOGIN }));
-        }}>
-          <span>Log In</span>
-        </a>
+          <a id="login-button" className='right-nav-element' onClick={(e) => {
+            popupContext.setPopup(currentPopup =>
+              ({ ...currentPopup, stateType: PopupType.LOGIN }));
+          }}>
+            <span>Log In</span>
+          </a>
+        // No context loaded.
+        :
+        <a className="rounded-circle right-nav-element"
+          style={{width:"2.2rem", height:"2.2rem", backgroundColor:"gray"}}></a>
       }
     </nav>
   );

@@ -5,23 +5,22 @@
   align-items: center;
 }
 
+.right-nav-element {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
 #login-button {
   margin-left: auto;
   background-color: rgb(235, 124, 20);
   color: rgb(243, 243, 243);
   border-radius: 25px;
   padding: 0.5rem 0.8rem 0.5rem 0.8rem;
-  margin-right: 1rem;
 }
 
 #login-button:hover {
   cursor: pointer;
   background-color: rgb(185, 101, 23);
-}
-
-#user-btn {
-  margin-left: auto;
-  padding-right: 1rem;
 }
 
 #user-btn:hover {

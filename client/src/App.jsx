@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { isValidElement, useContext, useEffect, useState } from 'react'
 import PostContainer from './components/post/PostsContainer';
 import Post from './components/post/Post';
 import CommentThread from './components/post/CommentThread';
@@ -35,7 +35,9 @@ export default function App() {
       .then(response => response.json())
       .then(session => {
         if (session.loggedIn) {
-          setUser(session.user);
+          setUser({ isLoggedIn: true, ...session.user });
+        } else {
+          setUser({ isLoggedIn: false });
         }
       });
   }, []);
