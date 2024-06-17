@@ -1,0 +1,68 @@
+#tab-container {
+  display: flex;
+}
+
+.tab {
+  display: inline-block;
+  font-size: 1.3rem;
+  color: rgb(74, 74, 78);
+}
+
+.tab:hover {
+  cursor: pointer;
+  color: rgb(140, 140, 150);
+}
+
+.tab-underline {  
+  width: 100%;
+  height: 0.4rem;
+  border-radius: 25px;
+}
+
+.body-container {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+
+#body-textarea {
+  border: none;
+  outline: none;
+  display: block;
+  margin: auto;
+  padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+#body-textarea:empty:before {
+  content:attr(placeholder);
+  color:grey;
+  background-color: transparent;
+}
+
+#submit-btn {
+  color: white;
+  float: right;
+  border-radius: 18px;
+  padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+}
+
+#submit-btn:hover {
+  cursor: pointer;
+}
+
+#media-drag-drop {
+  text-align: center;
+  line-height: 5rem;
+  height: 5rem;
+}
+
+#media-drag-drop:hover {
+  cursor: pointer;
+}
+
+#drag-drop-text {
+  color: gray;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}

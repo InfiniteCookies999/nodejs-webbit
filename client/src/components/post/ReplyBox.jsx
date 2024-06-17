@@ -18,7 +18,7 @@ export default function ReplyBox({ comment, setComments }) {
           type="text"
           role="textbox"
           placeholder="Add a comment"
-          className="input edit-box form-control shadow-none comment-form-textarea"
+          className="input comment-form-textarea"
           contentEditable={true}
           onInput={(e) => {
             const area = e.target;

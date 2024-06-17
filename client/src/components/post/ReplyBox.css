@@ -7,7 +7,9 @@
 .comment-form-textarea {
   border: none;
   outline: none;
-  display: inline-block;
+  display: block;
+  margin: auto;
+  padding: 0.5rem 0 0.5rem 0.5rem;
 }
 
 .comment-form-textarea:empty:before{
