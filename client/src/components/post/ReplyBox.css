@@ -1,0 +1,41 @@
+.comment-form {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #222;
+}
+
+.comment-form-textarea {
+  border: none;
+  outline: none;
+  display: inline-block;
+}
+
+.comment-form-textarea:empty:before{
+  content:attr(placeholder);
+  color:grey;
+  background-color: transparent;;
+}
+
+.comment-submit-btn {
+  background-color: #1b3fc2;
+  color: white;
+  width: 7rem;
+  float: right;
+  border-radius: 20px;
+}
+
+.comment-submit-btn:hover {
+  background-color: #1232a5;
+}
+
+.comment-cancel-btn {
+  background-color: lightgray;
+  color: black;
+  width: 5rem;
+  float: right;
+  border-radius: 20px;
+}
+
+.comment-cancel-btn:hover {
+  background-color: #aaa;
+}

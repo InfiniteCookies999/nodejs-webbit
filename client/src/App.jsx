@@ -7,6 +7,7 @@ import NavBar from './components/NavBar';
 import Popup from './components/popup/Popup';
 import { UserContext } from './contexts/UserContext';
 import { PopupContext } from './contexts/PopupContext';
+import NewPost from './components/post/NewPost';
 
 export default function App() {
 
@@ -16,12 +17,16 @@ export default function App() {
       element: <PostContainer />
     },
     {
-      path: '/w/:subname/comments/:id',
+      path: '/w/:subname/comments/:postId',
       element: <Post />
     },
     {
       path: '/u/:user/comments/:commentId',
       element: <CommentThread />
+    },
+    {
+      path: 'w/:subname/submit',
+      element: <NewPost />
     }
   ]);
 
