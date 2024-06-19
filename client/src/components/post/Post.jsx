@@ -55,48 +55,46 @@ export default function Post() {
   }, [ comments ]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm-3">
+    <div className="row">
+      <div className="col-sm-3">
 
-        </div>
-        <div className="col-sm-6">
-          {post === undefined ? <h1>Loading...</h1> :
-            <div>
-              <PostTop post={post} subNameForPost={post.SubWebbit.name} />
-              <br />
+      </div>
+      <div className="col-sm-6">
+        {post === undefined ? <h1>Loading...</h1> :
+          <div>
+            <PostTop post={post} subNameForPost={post.SubWebbit.name} />
+            <br />
 
-              {userContext.isLoggedIn ? 
-              post.mayComment &&
-              <ReplyBox setComments={setComments} />
-              : <button id="add-a-comment-nologin"
-                        className="form-control rounded shadow-none"
-                        onClick={() => {
-                          popupContext.setPopup(currentPopup =>
-                            ({ ...currentPopup, stateType: PopupType.SIGNUP }));
-                        }}>
-                  + Add a comment
-                </button>
+            {userContext.isLoggedIn ? 
+            post.mayComment &&
+            <ReplyBox setComments={setComments} />
+            : <button id="add-a-comment-nologin"
+                      className="form-control rounded shadow-none"
+                      onClick={() => {
+                        popupContext.setPopup(currentPopup =>
+                          ({ ...currentPopup, stateType: PopupType.SIGNUP }));
+                      }}>
+                + Add a comment
+              </button>
+            }
+            <br/>
+            <div id="comment-container">
+              {comments.length <= 0 ?
+                (noMoreComments ? <span>No Comments</span> : <span>Loading...</span>)
+                : comments.map(comment =>
+                    <Comment key={comment.id}
+                              comment={comment}
+                              postId={postId}
+                              addExtraPadding={false}
+                              setComments={setComments} />)
               }
-              <br/>
-              <div id="comment-container">
-                {comments.length <= 0 ?
-                  (noMoreComments ? <span>No Comments</span> : <span>Loading...</span>)
-                  : comments.map(comment =>
-                      <Comment key={comment.id}
-                               comment={comment}
-                               postId={postId}
-                               addExtraPadding={false}
-                               setComments={setComments} />)
-                }
-              </div>
-
             </div>
-          }
-        </div>
-        <div className="col-sm-3">
-          
-        </div>
+
+          </div>
+        }
+      </div>
+      <div className="col-sm-3">
+        
       </div>
     </div>
   );
