@@ -133,7 +133,6 @@ export default function NewPost() {
               body: formData
             })
             .then(response => {
-              console.log("RESPONSE: ", response);
               if (response.status !== 200) {
                 // something went wrong let us redirect to the home page.
                 window.location.href = "/";
