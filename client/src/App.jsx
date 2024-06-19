@@ -1,5 +1,4 @@
-import React, { isValidElement, useContext, useEffect, useState } from 'react'
-import PostContainer from './components/post/PostsContainer';
+import React, { useContext, useEffect, useState } from 'react';
 import Post from './components/post/Post';
 import CommentThread from './components/post/CommentThread';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -8,13 +7,15 @@ import Popup from './components/popup/Popup';
 import { UserContext } from './contexts/UserContext';
 import { PopupContext } from './contexts/PopupContext';
 import NewPost from './components/post/NewPost';
+import User from './components/user/User';
+import Home from './components/Home';
 
 export default function App() {
 
   const indexRouter = createBrowserRouter([
     {
       path: '/',
-      element: <PostContainer />
+      element: <Home />
     },
     {
       path: '/w/:subname/comments/:postId',
@@ -27,6 +28,10 @@ export default function App() {
     {
       path: 'w/:subname/submit',
       element: <NewPost />
+    },
+    {
+      path: 'u/:username',
+      element: <User />
     }
   ]);
 

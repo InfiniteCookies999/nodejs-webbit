@@ -5,7 +5,8 @@ class PostController {
   async getPageOfPosts(req, res, next) {
     try {
 
-      const posts = await PostService.getPageOfPosts(req.session, req.params.pageNumber);
+      const posts = await PostService
+        .getPageOfPosts(req.session, req.params.pageNumber, req.query.userId);
 
       res.json(posts);
 

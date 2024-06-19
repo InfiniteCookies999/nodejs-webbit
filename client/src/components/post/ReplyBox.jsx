@@ -1,6 +1,6 @@
 import './ReplyBox.css';
 
-export default function ReplyBox({ comment, setComments }) {
+export default function ReplyBox({ comment, setComments, replyJumpsToThread }) {
   const qualifiedId = comment ? comment.id : 'post';
   
   const submitBtnId = 'comment-submit-btn-' + qualifiedId;

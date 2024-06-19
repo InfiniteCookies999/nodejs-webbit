@@ -63,7 +63,7 @@ export default function Post() {
         <div className="col-sm-6">
           {post === undefined ? <h1>Loading...</h1> :
             <div>
-              <PostTop post={post} />
+              <PostTop post={post} subNameForPost={post.SubWebbit.name} />
               <br />
 
               {userContext.isLoggedIn ? 

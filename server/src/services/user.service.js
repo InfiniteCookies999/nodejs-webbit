@@ -4,11 +4,17 @@ const bcrypt = require('bcryptjs');
 class UserService {
     
   async getUserByEmail(email) {
-    return await db.User.findOne({ where: { email: email } });
+    return await db.User.findOne({
+      where: { email: email },
+      attributes: { exclude: ['password'] }
+    });
   }
 
   async getUserByUsername(username) {
-    return await db.User.findOne({ where: { username: username } });
+    return await db.User.findOne({
+      where: { username: username },
+      attributes: { exclude: ['password'] }
+    });
   }
 
   async getUserById(id) {

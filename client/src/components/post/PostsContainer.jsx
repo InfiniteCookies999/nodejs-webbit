@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PostListElement from "./PostListElement";
 
-export default function PostContainer() {
+export default function PostContainer({ userId }) {
 
   const lastPostRef = useRef();
 
@@ -11,7 +11,12 @@ export default function PostContainer() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(`/api/posts/${pageNumber}`, { signal: controller.signal })
+    let URL = `/api/posts/${pageNumber}`;
+    if (userId) {
+      URL += "?userId=" + userId; 
+    }
+
+    fetch(URL, { signal: controller.signal })
       .then(response => response.json())
       .then(posts => {
         if (posts.rows.length === 0) return;
@@ -39,25 +44,13 @@ export default function PostContainer() {
   }, [ posts ]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm-3">
-
-        </div>
-        <div className="col-sm-6">
-          <div>
-            {(posts.length <= 0) ? <span>Loading...</span>
-              : posts.map((post, i, {length}) => {
-                const isLast = i+1 === length;
-                return <PostListElement key={post.id} post={post} lastRef={isLast ? lastPostRef : undefined} />;
-              })
-              }
-          </div>
-        </div>
-        <div className="col-sm-3">
-          
-        </div>
-      </div>
+    <div>
+      {(posts.length <= 0) ? <span>Loading...</span>
+        : posts.map((post, i, {length}) => {
+          const isLast = i+1 === length;
+          return <PostListElement key={post.id} post={post} lastRef={isLast ? lastPostRef : undefined} />;
+        })
+        }
     </div>
   );
 }

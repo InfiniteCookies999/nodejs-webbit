@@ -1,7 +1,7 @@
 const express = require('express');
 const { validateBody, validateLogin } = require('../middleware');
 const { CommentController } = require('../controllers');
-const { body, param, query } = require('express-validator');
+const { body, param, query, oneOf } = require('express-validator');
 
 const router = express.Router();
 
@@ -9,7 +9,10 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
 router.get('/comments',
-  query('postId').isInt(),
+  oneOf([
+    query('postId').isInt(),
+    query('userId').isInt()
+  ]),
   query('pageNumber').isInt(),
   validateBody,
   CommentController.getPageOfComments

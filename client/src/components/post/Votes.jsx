@@ -22,7 +22,7 @@ export default function Votes({ likes, dislikes,
        className={"bx link link-upvote " + (votes.isLiked ? "bxs-upvote" : "bx-upvote")}
        style={upvoteStyle}
        onClick={() => {
-        if (!userContext) {
+        if (!userContext.isLoggedIn) {
           popupContext.setPopup(currentPopup =>
             ({ ...currentPopup, stateType: PopupType.SIGNUP }));
           return;
@@ -45,7 +45,7 @@ export default function Votes({ likes, dislikes,
     <a href="#/"
        className={"bx link link-downvote " + (votes.isDisliked ? "bxs-downvote" : "bx-downvote") }
        onClick={() => {
-        if (!userContext) {
+        if (!userContext.isLoggedIn) {
           popupContext.setPopup(currentPopup =>
             ({ ...currentPopup, stateType: PopupType.SIGNUP }));
           return;

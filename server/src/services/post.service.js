@@ -44,15 +44,21 @@ class PostService {
     return post;
   }
 
-  async getPageOfPosts(session, pageCount) {
+  async getPageOfPosts(session, pageCount, userId) {
     
     const PAGE_SIZE = 10;
+
+    const where = {};
+    if (userId) {
+      where.UserId = userId;
+    }
 
     const posts = await db.Post.findAndCountAll({
       limit: PAGE_SIZE,
       offset: pageCount * PAGE_SIZE,
       raw: true,
       nest: true,
+      where,
       include: this.getPostVotesAccociations(session)
                    .concat([
                       { 
@@ -62,7 +68,7 @@ class PostService {
                             { type: 'public' },
                             { type: 'restricted' }
                           ]
-                        } 
+                        }
                       } ])
     });
     await Promise.all(posts.rows.map(async post => {

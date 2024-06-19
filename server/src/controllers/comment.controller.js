@@ -18,10 +18,17 @@ class CommentController {
   async getPageOfComments(req, res, next) {
     try {
 
-      const comments = await CommentService
-        .getPageOfComments(req.session, req.query.postId, req.query.pageNumber);
+      if (req.query.postId) {
+        const comments = await CommentService
+          .getPageOfCommentsForPost(req.session, req.query.postId, req.query.pageNumber);
 
-      res.json(comments);
+        res.json(comments);
+      } else {
+        const comments = await CommentService
+          .getPageOfCommentsForUser(req.session, req.query.userId, req.query.pageNumber);
+
+        res.json(comments);
+      }
 
     } catch (error) {
       next(error);

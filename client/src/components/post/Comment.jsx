@@ -5,7 +5,7 @@ import Votes from "./Votes";
 import { UserContext } from "../../contexts/UserContext";
 import { PopupContext, PopupType } from "../../contexts/PopupContext";
 
-export default function Comment({ comment, addExtraPadding, setComments, repliesList }) {
+export default function Comment({ comment, addExtraPadding, setComments, repliesList, replyJumpsToThread }) {
   let replies = comment.replies;
   if (repliesList) {
     replies = replies.concat(repliesList);
@@ -33,8 +33,7 @@ export default function Comment({ comment, addExtraPadding, setComments, replies
         <a href="#/" className="link" style={{display:"inline-block"}}
           onClick={() => {
             if (userContext.isLoggedIn) {
-              const replyBox = document.getElementById('reply-box-' + comment.id);
-              replyBox.style.display = "block";
+              window.location.href = `/u/${comment.User.username}/comments/${comment.id}`;
             } else {
               popupContext.setPopup(currentPopup =>
                 ({ ...currentPopup, stateType: PopupType.SIGNUP }));
@@ -43,7 +42,7 @@ export default function Comment({ comment, addExtraPadding, setComments, replies
           <i className="bx bx-comment pl-2"></i>
           <span className="pl-1">Reply</span>
         </a>
-        <ReplyBox comment={comment} setComments={setComments} />
+        {!replyJumpsToThread && <ReplyBox comment={comment} setComments={setComments} />}
         <div>
           {replies && replies.map(reply => 
               <Comment key={reply.id}

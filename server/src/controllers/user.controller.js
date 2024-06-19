@@ -1,7 +1,23 @@
+const { HttpError } = require('../middleware');
 const { UserService, FileUploaderService } = require('../services');
 
 class UserController {
   
+  async getUserByUsername(req, res, next) {
+    try {
+
+      const user = await UserService.getUserByUsername(req.params.username);
+      if (!user) {
+        throw new HttpError("User does not exist");
+      }
+
+      res.json(user);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updateGender(req, res, next) {
     try {
 

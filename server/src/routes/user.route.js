@@ -17,6 +17,10 @@ const upload = multer({
   fileFilter: fileFilter([ "image/png", "image/jpg", "image/jpeg" ])
 });
 
+router.get('/user/:username',
+  UserController.getUserByUsername
+);
+
 router.put('/user/gender',
   body('gender').isIn([ 'Woman', 'Man', 'Non-Binary', 'Not-Say' ]),
   validateLogin,
@@ -30,5 +34,6 @@ router.put('/user/profilePicture',
   validateFileExists,
   UserController.updateProfilePicture
 );
+
 
 module.exports = router;

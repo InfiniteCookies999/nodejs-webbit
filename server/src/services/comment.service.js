@@ -42,7 +42,7 @@ class CommentService {
     return comment;
   }
 
-  async getPageOfComments(session, postId, pageNumber) {
+  async getPageOfCommentsForPost(session, postId, pageNumber) {
 
     const post = await PostService.getPost(postId, db.SubWebbit);
     await SubWebbitService.checkViewAccess(session, post.SubWebbit);
@@ -61,6 +61,35 @@ class CommentService {
         ]
       },
       include: this.getCommentInclude(session)
+    });
+    comments.rows.map(comment => this.applyVoteData(comment));
+    return comments;
+  }
+
+  async getPageOfCommentsForUser(session, userId, pageNumber) {
+    
+    const PAGE_SIZE = 30;
+
+    const comments = await db.Comment.findAndCountAll({
+      limit: PAGE_SIZE,
+      offset: pageNumber * PAGE_SIZE,
+      raw: true,
+      nest: true,
+      where: {
+        UserId: userId
+      },
+      include: this.getCommentInclude(session)
+        .concat([
+          {
+            model: db.SubWebbit,
+            where: {
+              [Op.or]: [
+                { type: 'public' },
+                { type: 'restricted' }
+              ]
+            }
+          }
+        ])
     });
     comments.rows.map(comment => this.applyVoteData(comment));
     return comments;

@@ -13,7 +13,7 @@ export default function CommentThread() {
   const [comment, setComment] = useState(undefined);
   const [postId, setPostId] = useState(undefined);
 
-  const [comments, setComments] = useComments(pageNumber =>
+  const [comments, setComments, noMoreComments] = useComments(pageNumber =>
     `/api/comment/replies/page?commentId=${commentId}&pageNumber=${pageNumber}&useLargePages=true`,
     postId);
 
@@ -60,7 +60,7 @@ export default function CommentThread() {
                 </div>
                 <a href={linkToPost} className='full-dicussion-link link'>See full discussion</a>
               </div>
-              {!comment || comments.length === 0 ? <h1>Loading...</h1> :
+              {!comment || (comments.length === 0 && !noMoreComments) ? <h1>Loading...</h1> :
                 <Comment key={comment.id}
                          comment={comment}
                          setComments={setComments}

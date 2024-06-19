@@ -14,6 +14,8 @@ export default function PostHeaderInfo({ sub,
       '/static/default_user_picture.jpg'
     );
 
+  const subOrUserTag = sub ? `w/${sub.name}` : (subNameForPost ? `w/${subNameForPost}` : `u/${user.username}`);
+
   const nameBlockStyle = {
     display:"inline-block"
   };
@@ -27,11 +29,11 @@ export default function PostHeaderInfo({ sub,
            className="rounded-circle"
            style={{width:"2rem", height:"2rem"}}></img>
       <div style={nameBlockStyle}>
-        <a href="#/" className="pl-2 link link-sub smaller-heading">
-          {sub ? 'w/'+sub.name : subNameForPost ? 'w/'+subNameForPost : 'u/'+user.username}
+        <a href={"/"+subOrUserTag} className="pl-2 link link-sub smaller-heading">
+          {subOrUserTag}
         </a>
         {subNameForPost &&
-          <a href="#/" className="pl-2 link smaller-heading post-username">{user.username}</a>}
+          <a href={`/u/${user.username}`} className="pl-2 link smaller-heading post-username">{user.username}</a>}
       </div>
       
       <span className="pl-3 time-ago smaller-heading">{getTimeAgo(timeStamp)}</span>
