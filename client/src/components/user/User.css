@@ -31,3 +31,25 @@
 .tab-btn:hover {
   cursor: pointer;
 }
+
+#user-info {
+  padding: 1.5rem;
+  width: 95%;
+  height: 10rem;
+  border-radius: 25px;
+  background-color: black;
+  color: white;
+}
+
+.user-info-values {
+  font-size: 1rem;
+}
+
+.user-info-desc {
+  font-size: 0.8rem;
+  color: rgb(194, 194, 194);
+}
+
+#user-info .row .col-sm-4 {
+  padding: 0.1rem;
+}
