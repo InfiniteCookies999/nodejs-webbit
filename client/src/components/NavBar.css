@@ -26,3 +26,17 @@
 #user-btn:hover {
   cursor: pointer;
 }
+
+#post-create-btn {
+  border-style: none;
+  font-size: 1.2rem;
+  background-color: transparent;
+}
+
+#post-create-btn:hover {
+  cursor: pointer;
+}
+
+#post-create-btn, #post-create-btn:active, #post-create-btn:focus {
+  outline: none;
+}
