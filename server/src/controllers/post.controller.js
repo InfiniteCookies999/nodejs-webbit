@@ -36,7 +36,7 @@ class PostController {
         await PostService.addPostMedia(post, req.files);
       }
 
-      res.end();
+      res.json({ postId: post.id });
 
     } catch (error) {
       next(error);

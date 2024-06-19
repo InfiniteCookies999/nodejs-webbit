@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom"
 import './NewPost.css';
 
 function swapUnderline(target) {
@@ -92,6 +93,8 @@ function removeMediaFile(input, index) {
 
 export default function NewPost() {
 
+  const { subname } = useParams();
+
   return (
     <div className="container">
       <div className="row">
@@ -99,7 +102,50 @@ export default function NewPost() {
 
         </div>
         <div className="col-sm-6">
-          <form >
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title-input').value;
+            const body = document.getElementById('body-textarea').innerText;
+            const files = document.getElementById('file-input-holder').files;
+
+            if (title === "" || body === "") return;
+
+            if (body.length > 40000) {
+              return;
+            }
+
+            const formData = new FormData();
+            formData.append("subname", subname);
+            formData.append("title", title);
+            formData.append("body", body);
+            if (files.length > 0) {
+              for (const f of files) {
+                formData.append("media", f);
+              }
+            }
+
+            fetch('/api/post', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json'
+              },
+              body: formData
+            })
+            .then(response => {
+              console.log("RESPONSE: ", response);
+              if (response.status !== 200) {
+                // something went wrong let us redirect to the home page.
+                window.location.href = "/";
+              }
+              return response.json();
+            })
+            .then(response => {
+              window.location.href = `/w/${subname}/comments/${response.postId}`;
+            })
+            .catch(error => console.log(error));
+            
+          }}>
             <h3>Create Post</h3>
             <div id="tab-container" className="pl-2">
               <div>
@@ -125,7 +171,7 @@ export default function NewPost() {
             </div>
             
             <br />
-            <input placeholder="Title*" className="form-control shadow-none" />
+            <input id='title-input' placeholder="Title*" className="form-control shadow-none" maxLength={300} />
             <br />
             <div className="body-container">
               <div id="body-textarea"
@@ -262,12 +308,10 @@ export default function NewPost() {
                       const index = parseInt(document.getElementById('image-display').getAttribute("data-index"));
                       changeMediaImage(index + 1);
                     }}></span>
-                  </div>
-
-                  
+                  </div>                  
                 </div>
             </div>
-            <span className='mt-2 bg-primary' id='submit-btn' postActionType="submit">Post</span>
+            <button className='mt-2 bg-primary' id='submit-btn'>Post</button>
           </form>
         </div>
         <div className="col-sm-3">
