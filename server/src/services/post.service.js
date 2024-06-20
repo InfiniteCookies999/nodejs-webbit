@@ -44,13 +44,23 @@ class PostService {
     return post;
   }
 
-  async getPageOfPosts(session, pageCount, userId) {
+  async getPageOfPosts(session, pageCount, userId, subName) {
     
     const PAGE_SIZE = 10;
 
     const where = {};
     if (userId) {
       where.UserId = userId;
+    }
+
+    if (subName) {
+      // Checking that the user has access to view the posts of the
+      // given sub.
+      const sub = await SubWebbitService.getSubWebbitByName(subName);
+      if (!sub) {
+        throw new HttpError("Subwebbit doesn't exist", 404);
+      }
+      await SubWebbitService.checkViewAccess(session, sub);
     }
 
     const posts = await db.Post.findAndCountAll({
@@ -63,7 +73,11 @@ class PostService {
                    .concat([
                       { 
                         model: db.SubWebbit,
-                        where: {
+                        where: subName ?
+                        {
+                          name: subName
+                        } :
+                        {
                           [Op.or]: [
                             { type: 'public' },
                             { type: 'restricted' }
@@ -71,6 +85,7 @@ class PostService {
                         }
                       } ])
     });
+
     await Promise.all(posts.rows.map(async post => {
       this.applyVoteData(post);
       post.numComments = await db.Comment.count({

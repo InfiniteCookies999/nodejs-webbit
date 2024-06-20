@@ -1,0 +1,15 @@
+#sub-header {
+  display: flex;
+  align-items: end;
+  margin-left: 2rem;
+}
+
+#sub-image {
+  width: 5rem;
+  height: 5rem;
+}
+
+#sub-header span {
+  padding-left: 1rem;
+  font-size: 1.8rem;
+}

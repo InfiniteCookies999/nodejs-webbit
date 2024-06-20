@@ -1,6 +1,6 @@
 import PageLayout from '../PageLayout';
 import { useEffect, useState, useRef, useContext } from "react";
-import { useParams, useSearchParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom";
 import "./Post.css";
 import "../../index.css";
 import Comment from "./Comment";

@@ -3,7 +3,7 @@ const { validateBody,
         validateLogin,
         fileFilter } = require('../middleware');
 const { PostController } = require('../controllers');
-const { body, param, query } = require('express-validator');
+const { body, param, query, oneOf } = require('express-validator');
 const multer = require('multer');
 
 const upload = multer({
@@ -26,6 +26,7 @@ router.use(express.urlencoded({ extended: true }));
 router.get('/posts/:pageNumber',
   param('pageNumber').isInt(),
   query('userId').optional().isInt(),
+  query('subname').optional().isAlphanumeric(),
   validateBody,
   PostController.getPageOfPosts
 );

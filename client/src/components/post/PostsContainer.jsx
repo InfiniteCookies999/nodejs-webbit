@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PostListElement from "./PostListElement";
 
-export default function PostContainer({ userId }) {
+export default function PostContainer({ userId, subname }) {
 
   const lastPostRef = useRef();
 
@@ -13,7 +13,10 @@ export default function PostContainer({ userId }) {
 
     let URL = `/api/posts/${pageNumber}`;
     if (userId) {
-      URL += "?userId=" + userId; 
+      URL += "?userId=" + userId;
+    }
+    if (subname) {
+      URL += "?subname=" + subname;
     }
 
     fetch(URL, { signal: controller.signal })

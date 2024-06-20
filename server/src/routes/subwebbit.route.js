@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const { validateBody,
         validateLogin,
         validateFileExists,
@@ -16,6 +16,12 @@ const router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
+
+router.get('/subwebbit/:subname',
+  param('subname').isAlphanumeric(),
+  validateBody,
+  SubWebbitController.get
+)
 
 router.post('/subwebbit',
   body('name').isLength({ min: 3, max: 40 }).isAlphanumeric(),

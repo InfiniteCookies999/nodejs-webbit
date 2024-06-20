@@ -179,9 +179,10 @@ describe('SubWebbitService', () => {
         hasAuthorizedUser: jest.fn(() => false),
         hasMod: jest.fn(() => false)
       };
+      const session = {};
       
       await expect(async () => {
-        await SubWebbitService.checkPostAccess(undefined, subMock);
+        await SubWebbitService.checkPostAccess(session, subMock);
       }).rejects.toThrow("User not allowed to post");
       expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();
       expect(subMock.hasMod).not.toHaveBeenCalled();
@@ -272,8 +273,10 @@ describe('SubWebbitService', () => {
         hasAuthorizedUser: jest.fn(),
         hasMod: jest.fn()
       };
+      const session = {};
+
       await expect(async () => {
-        await SubWebbitService.checkViewAccess(undefined, subMock);
+        await SubWebbitService.checkViewAccess(session, subMock);
       }).rejects.toThrow("User not allowed to view");
 
       expect(subMock.hasAuthorizedUser).not.toHaveBeenCalled();

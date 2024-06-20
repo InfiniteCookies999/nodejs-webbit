@@ -6,7 +6,7 @@ class PostController {
     try {
 
       const posts = await PostService
-        .getPageOfPosts(req.session, req.params.pageNumber, req.query.userId);
+        .getPageOfPosts(req.session, req.params.pageNumber, req.query.userId, req.query.subname);
 
       res.json(posts);
 

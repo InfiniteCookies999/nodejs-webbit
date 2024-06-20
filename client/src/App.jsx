@@ -9,6 +9,7 @@ import { PopupContext } from './contexts/PopupContext';
 import NewPost from './components/post/NewPost';
 import User from './components/user/User';
 import Home from './components/Home';
+import SubWebbit from './components/SubWebbit';
 
 export default function App() {
 
@@ -26,12 +27,16 @@ export default function App() {
       element: <CommentThread />
     },
     {
-      path: 'w/:subname/submit',
+      path: '/w/:subname/submit',
       element: <NewPost />
     },
     {
-      path: 'u/:username',
+      path: '/u/:username',
       element: <User />
+    },
+    {
+      path: '/w/:subname',
+      element: <SubWebbit />
     }
   ]);
 

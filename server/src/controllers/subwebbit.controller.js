@@ -1,6 +1,24 @@
+const { HttpError } = require('../middleware');
 const { SubWebbitService, FileUploaderService } = require('../services');
 
 class SubWebbitController {
+
+  async get(req, res, next) {
+    try {
+
+      const sub = await SubWebbitService.getSubWebbitByName(req.params.subname);
+      if (!sub) {
+        throw new HttpError("Subwebbit doesn't exist", 404);
+      }
+
+      await SubWebbitService.checkViewAccess(req.session, sub);
+
+      res.json(sub.get({ plain: true }));
+
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async create(req, res, next) {
     try {

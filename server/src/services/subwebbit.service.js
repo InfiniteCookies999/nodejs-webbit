@@ -56,8 +56,8 @@ class SubWebbitService {
   async checkPostAccess(session, subWebbit) {
     if (subWebbit.type == 'public') return;
     
-    const error = new HttpError("User not allowed to post");
-    if (!session) throw error;
+    const error = new HttpError("User not allowed to post", 401);
+    if (!session.user) throw error;
 
     // Not accessible to everyone so have to check permission.
     if (!subWebbit.hasAuthorizedUser(session.user.id) &&
@@ -70,8 +70,8 @@ class SubWebbitService {
     const type = subWebbit.type;
     if (type == 'public' || type == 'restricted') return;
 
-    const error = new HttpError("User not allowed to view");
-    if (!session) throw error;
+    const error = new HttpError("User not allowed to view", 401);
+    if (!session.user) throw error;
 
     // Not accessible to everyone so have to check permission.
     if (!(await subWebbit.hasAuthorizedUser(session.user.id)) &&
