@@ -1,3 +1,4 @@
+import PageLayout from '../PageLayout';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostContainer from "../post/PostsContainer";
@@ -44,12 +45,8 @@ export default function User() {
   }
 
   return (
-    <div className="row">
-      <div className="col-sm-3">
-
-      </div>
-      <div className="col-sm-6">
-        {user ?
+    <PageLayout middle={
+      user ?
           <>
             <br />
             <div id="profile-row">
@@ -75,9 +72,10 @@ export default function User() {
             }
           </>
           :
-          <span>Loading...</span>}
-      </div>
-      <div className="col-sm-3">
+          <span>Loading...</span>
+    }
+    right={
+      <>
         <br />
         <div id="user-info">
           <div className="row">
@@ -98,7 +96,8 @@ export default function User() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </>
+    }
+    />
   );
 }

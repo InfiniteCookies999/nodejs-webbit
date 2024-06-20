@@ -1,3 +1,4 @@
+import PageLayout from '../PageLayout';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PostTop from './PostTop';
@@ -43,12 +44,9 @@ export default function CommentThread() {
   const linkToPost = !post || !comment ? '' : `/w/${comment.SubWebbit.name}/comments/${post.id}`;
 
   return (
-    <div className="row">
-      <div className="col-sm-3">
-
-      </div>
-      <div className="col-sm-6">
-        {!post ? <h1>Loading...</h1> :
+    <PageLayout 
+      middle={
+        !post ? <h1>Loading...</h1> :
           <div>
             <PostTop post={post} />
             <br />
@@ -67,11 +65,7 @@ export default function CommentThread() {
                         repliesList={comments} />
             }
           </div>
-          }
-      </div>
-      <div className="col-sm-3">
-
-      </div>
-    </div>
+      }
+    />
   );
 }
