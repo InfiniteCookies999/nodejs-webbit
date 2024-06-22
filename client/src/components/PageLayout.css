@@ -1,0 +1,21 @@
+.side-links {
+  font-size: 1.5rem;
+  width: fit-content;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-radius: 5px;
+}
+
+.side-links:hover {
+  cursor: pointer;
+  background-color: rgb(207, 207, 207);
+}
+
+.section-name {
+  font-size: 1.8rem;
+  color: rgb(44, 44, 44);
+}
+
+#create-community-btn {
+  font-size: 1.2rem !important;
+}

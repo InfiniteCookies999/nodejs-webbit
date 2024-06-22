@@ -29,7 +29,7 @@ class SubWebbitController {
 
       await SubWebbitService.createSubWebbit(req.session, req.body);
 
-      res.end();
+      res.json({ "status": "success" });
 
     } catch (error) {
       next(error);

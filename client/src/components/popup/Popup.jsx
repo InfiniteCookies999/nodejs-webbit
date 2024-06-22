@@ -2,6 +2,7 @@ import { PopupContext, PopupType } from '../../contexts/PopupContext';
 import { useContext } from "react";
 import SignupPopup from './SignupPopup';
 import LoginPopup from './LoginPopup';
+import CreateCommunityPopup from './CreateCommunityPopup';
 
 export default function Popup() {
   
@@ -13,5 +14,7 @@ export default function Popup() {
     return <SignupPopup />
   } else if (popupContext.stateType === PopupType.LOGIN) {
     return <LoginPopup />
+  } else if (popupContext.stateType === PopupType.CREATE_COMMUNITY) {
+    return <CreateCommunityPopup />
   }
 }
