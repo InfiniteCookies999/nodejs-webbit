@@ -1,6 +1,6 @@
 const express = require('express');
 const { body, oneOf } = require('express-validator');
-const { validateBody } = require('../middleware');
+const { validateBody, validateLogin } = require('../middleware');
 const { AuthController } = require('../controllers');
 
 const router = express.Router();
@@ -27,6 +27,22 @@ router.post('/auth/login',
   body('password').notEmpty(),
   validateBody,
   AuthController.login
+);
+
+router.put('/auth/email',
+  body('email').isEmail(),
+  body('password').notEmpty(),
+  validateBody,
+  validateLogin,
+  AuthController.updateEmail
+);
+
+router.put('/auth/password',
+  body('currentPassword').notEmpty(),
+  body('newPassword').matches(PASSWORD_REGEX),
+  validateBody,
+  validateLogin,
+  AuthController.updatePassword
 );
 
 router.get('/auth/session',

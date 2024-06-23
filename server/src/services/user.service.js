@@ -1,3 +1,4 @@
+const { HttpError } = require('../middleware');
 const db = require('../models')
 const bcrypt = require('bcryptjs');
 
@@ -21,6 +22,27 @@ class UserService {
     return await db.User.findByPk(id, {
       attributes: { exclude: ['password'] }
     });
+  }
+
+  async updateEmail(id, email, password) {
+    const user = await db.User.findByPk(id);
+    const hashedPassword = user.password;
+    if (!(await bcrypt.compare(password, hashedPassword))) {
+      throw new HttpError("Invalid password", 401);
+    }
+    user.email = email;
+    await user.save();
+  }
+
+  async updatePassword(id, newPassword, password) {
+    const user = await db.User.findByPk(id);
+    const hashedPassword = user.password;
+    if (!(await bcrypt.compare(password, hashedPassword))) {
+      throw new HttpError("Invalid password", 401);
+    }
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = newHashedPassword;
+    await user.save();
   }
 
   async registerUser(email, username, password) {

@@ -1,4 +1,3 @@
-const { HttpError } = require('../middleware');
 const { UserService } = require('../services');
 
 class AuthController {
@@ -9,6 +8,35 @@ class AuthController {
     "loggedIn": isLoggedIn,
     "user": isLoggedIn ? await UserService.getUserById(req.session.user.id) : undefined
    });
+  }
+
+  async updateEmail(req, res, next) {
+    try {
+      await UserService.
+        updateEmail(req.session.user.id, req.body.email, req.body.password);
+      res.json({ "status": "success" });
+    } catch (error) {
+      if (error.message === "Invalid password") {
+        res.json({ "status": "wrong password" });
+      } else {
+        console.log("CALLING NEXT?");
+        next(error);
+      }
+    }
+  }
+
+  async updatePassword(req, res, next) {
+    try {
+      await UserService.
+        updatePassword(req.session.user.id, req.body.currentPassword, req.body.newPassword);
+      res.json({ "status": "success" });
+    } catch (error) {
+      if (error.message === "Invalid password") {
+        res.json({ "status": "wrong password" });
+      } else {
+        next(error);
+      }
+    }
   }
 
   async doesEmailExist(req, res, next) {

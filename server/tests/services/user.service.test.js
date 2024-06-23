@@ -100,4 +100,83 @@ describe('UserService', () => {
     
     });
   });
+
+  describe('updateEmail', () => {
+    it('wrong password', async () => {
+
+      const userMock = {
+        save: jest.fn()
+      };
+
+      bcrypt.compare.mockReturnValue(false);
+
+      db.User.findByPk = jest.fn(() => userMock);
+
+      await expect(async () => {
+        await UserService.updateEmail(1, "bestuser1@gmail.com", "my_secret_password214");
+      }).rejects.toThrow("Invalid password");
+      expect(userMock.save).not.toHaveBeenCalled();
+
+    });
+    it('successful update', async () => {
+
+      const newEmail = "bestuser1@gmail.com";
+
+      const userMock = {
+        save: jest.fn(),
+        email: "oldemail@gmail.com"
+      };
+
+      bcrypt.compare.mockReturnValue(true);
+
+      db.User.findByPk = jest.fn(() => userMock);
+      
+      await UserService.updateEmail(1, newEmail, "my_secret_password214");
+      expect(userMock.save).toHaveBeenCalled();
+      expect(userMock.email).toBe(newEmail);
+      expect(bcrypt.compare).toHaveBeenCalled();
+
+    });
+
+    describe('updatePassword', () => {
+      it('wrong password', async () => {
+
+        const userMock = {
+          save: jest.fn()
+        };
+
+        bcrypt.compare.mockReturnValue(false);
+
+        db.User.findByPk = jest.fn(() => userMock);
+
+        await expect(async () => {
+          await UserService.updatePassword(1, "newpassword", "oldpassword");
+        }).rejects.toThrow("Invalid password");
+        expect(userMock.save).not.toHaveBeenCalled();
+
+      });
+      it('successful update', async () => {
+
+        const oldPassword = "oldpassword";
+        const hashedPassword = "password_but_hashed";
+
+        const userMock = {
+          save: jest.fn(),
+          password: oldPassword
+        };
+
+        bcrypt.compare.mockReturnValue(true);
+        bcrypt.hash.mockReturnValue(hashedPassword);
+
+        db.User.findByPk = jest.fn(() => userMock);
+
+        await UserService.updatePassword(1, "newPassword", oldPassword);
+        expect(userMock.save).toHaveBeenCalled();
+        expect(userMock.password).toBe(hashedPassword);
+        expect(bcrypt.compare).toHaveBeenCalled();
+        expect(bcrypt.hash).toHaveBeenCalled();
+
+      });
+    });
+  })
 });

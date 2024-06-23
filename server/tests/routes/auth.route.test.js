@@ -4,7 +4,7 @@ const createApp = require('../../src/create.app');
 const app = createApp();
 
 const statusOkMock = (req, res, next) => {
-    res.status(200).json({});
+  res.status(200).json({});
 }
 
 jest.mock('../../src/controllers/auth.controller', () => {
@@ -13,6 +13,12 @@ jest.mock('../../src/controllers/auth.controller', () => {
   Object.getOwnPropertyNames(Object.getPrototypeOf(Controller))
     .forEach(f => mocked[f] = statusOkMock);
   return mocked;
+});
+jest.mock('../../src/middleware/validation', () => {
+  return {
+    ...jest.requireActual('../../src/middleware/validation'),
+    validateLogin: jest.fn((req, res, next) => next())
+  }
 });
 
 describe('route POST /api/auth/register', () => {
@@ -157,6 +163,100 @@ describe('route POST /auth/login', () => {
 
     await supertest(app)
       .post('/api/auth/login')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(200);
+  });
+});
+
+describe('route PUT /auth/email', () => {
+  it('invalid email no address', async () => {
+    const body = {
+      email: 'infinitecookies959',
+      password: 'reG#@$14as3'
+    };
+
+    await supertest(app)
+      .put('/api/auth/email')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res => {
+        expect(res.body.errors.length).toBe(1);
+        expect(res.body.errors[0].path).toBe('email');
+      });
+  });
+  it('invalid password is empty', async () => {
+    const body = {
+      email: 'infinitecookies959@gmail.com',
+      password: ''
+    };
+
+    await supertest(app)
+      .put('/api/auth/email')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res => {
+        expect(res.body.errors.length).toBe(1);
+        expect(res.body.errors[0].path).toBe('password');
+      });
+  });
+  it('successful update', async () => {
+    const body = {
+      email: 'infinitecookies959@gmail.com',
+      password: 'reG#@$14as3'
+    };
+
+    await supertest(app)
+      .put('/api/auth/email')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(200);
+  });
+});
+
+describe('route PUT /auth/password', () => {
+  it('currentPassword is empty', async () => {
+    const body = {
+      currentPassword: '',
+      newPassword: 'reG#@$14as3'
+    };
+
+    await supertest(app)
+      .put('/api/auth/password')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res => {
+        expect(res.body.errors.length).toBe(1);
+        expect(res.body.errors[0].path).toBe('currentPassword');
+      });
+  });
+  it('invalid newPassword no special characters', async () => {
+    const body = {
+      currentPassword: 'reG#@$14as3',
+      newPassword: 'somepassword'
+    };
+
+    await supertest(app)
+      .put('/api/auth/password')
+      .send(body)
+      .set('Content-Type', 'application/json')
+      .expect(400)
+      .then(res => {
+        expect(res.body.errors.length).toBe(1);
+        expect(res.body.errors[0].path).toBe('newPassword');
+      });
+  });
+  it('successful update', async () => {
+    const body = {
+      currentPassword: 'reG#@$14as3',
+      newPassword: 'kuy#@gseD312'
+    };
+
+    await supertest(app)
+      .put('/api/auth/password')
       .send(body)
       .set('Content-Type', 'application/json')
       .expect(200);

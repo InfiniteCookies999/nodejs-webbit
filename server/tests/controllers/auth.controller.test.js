@@ -1,4 +1,5 @@
 const { AuthController } = require('../../src/controllers');
+const { HttpError } = require('../../src/middleware');
 const { UserService } = require('../../src/services');
 const httpMocks = require('node-mocks-http');
 
@@ -154,6 +155,79 @@ describe('AuthController', () => {
       expect(response._getJSONData().status).toBe("success");
       expect(UserService.getUserByEmail).toHaveBeenCalled();
       expect(request.session.user).not.toBeUndefined();
+    });
+  });
+
+  describe('#updateEmail', () => {
+
+    it('Invalid password', async () => {
+      const response = httpMocks.createResponse();
+      const request = httpMocks.createRequest();
+      request.session = {
+        user: {
+          id: 1
+        }
+      };
+
+      UserService.updateEmail.mockRejectedValue(new HttpError("Invalid password", 401));
+    
+      const mockNext = jest.fn();
+      await AuthController.updateEmail(request, response, mockNext);
+      expect(mockNext).not.toHaveBeenCalled();
+      expect(response._getJSONData().status).toBe("wrong password");
+      
+    });
+    it('update successful', async () => {
+      const response = httpMocks.createResponse();
+        const request = httpMocks.createRequest();
+        request.session = {
+          user: {
+            id: 1
+          }
+        };
+  
+        UserService.updateEmail.mockResolvedValue(undefined);
+      
+        const mockNext = jest.fn();
+        await AuthController.updateEmail(request, response, mockNext);
+        expect(UserService.updateEmail).toHaveBeenCalled();
+        expect(mockNext).not.toHaveBeenCalled();
+        expect(response._getJSONData().status).toBe("success");
+    });
+  });
+  describe('#updatePassword', () => {
+    it('Invalid password', async () => {
+      const response = httpMocks.createResponse();
+      const request = httpMocks.createRequest();
+      request.session = {
+        user: {
+          id: 1
+        }
+      };
+
+      UserService.updatePassword.mockRejectedValue(new HttpError("Invalid password", 401));
+    
+      const mockNext = jest.fn();
+      await AuthController.updatePassword(request, response, mockNext);
+      expect(mockNext).not.toHaveBeenCalled();
+      expect(response._getJSONData().status).toBe("wrong password");
+    });
+    it('update successful', async () => {
+      const response = httpMocks.createResponse();
+        const request = httpMocks.createRequest();
+        request.session = {
+          user: {
+            id: 1
+          }
+        };
+  
+        UserService.updatePassword.mockResolvedValue(undefined);
+      
+        const mockNext = jest.fn();
+        await AuthController.updatePassword(request, response, mockNext);
+        expect(UserService.updatePassword).toHaveBeenCalled();
+        expect(mockNext).not.toHaveBeenCalled();
+        expect(response._getJSONData().status).toBe("success");
     });
   });
 });
