@@ -5,6 +5,9 @@ export const PopupType = Object.freeze({
   SIGNUP: 1,
   LOGIN: 2,
   CREATE_COMMUNITY: 3,
+  CHANGE_EMAIL: 4,
+  CHANGE_PASSWORD: 5,
+  CHANGE_GENDER: 6
 });
 
 export const PopupContext = createContext({

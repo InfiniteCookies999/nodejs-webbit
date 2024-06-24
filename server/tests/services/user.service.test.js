@@ -118,6 +118,29 @@ describe('UserService', () => {
       expect(userMock.save).not.toHaveBeenCalled();
 
     });
+    it('email taken', async () => {
+      const newEmail = "bestuser1@gmail.com";
+
+      const userMock = {
+        save: jest.fn(),
+        email: "oldemail@gmail.com"
+      };
+      const userByEmailMock = {
+
+      };
+
+      bcrypt.compare.mockReturnValue(true);
+
+      db.User.findByPk = jest.fn(() => userMock);
+      jest.spyOn(UserService, "getUserByEmail").mockResolvedValue(userByEmailMock);
+      
+      await expect(async () => {
+        await UserService.updateEmail(1, newEmail, "my_secret_password214");
+      }).rejects.toThrow("Email taken");
+      expect(userMock.save).not.toHaveBeenCalled();
+      expect(userMock.email).toBe("oldemail@gmail.com");
+      
+    });
     it('successful update', async () => {
 
       const newEmail = "bestuser1@gmail.com";
@@ -130,6 +153,7 @@ describe('UserService', () => {
       bcrypt.compare.mockReturnValue(true);
 
       db.User.findByPk = jest.fn(() => userMock);
+      jest.spyOn(UserService, "getUserByEmail").mockResolvedValue(null);
       
       await UserService.updateEmail(1, newEmail, "my_secret_password214");
       expect(userMock.save).toHaveBeenCalled();

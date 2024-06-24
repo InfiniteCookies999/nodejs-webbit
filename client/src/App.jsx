@@ -10,6 +10,7 @@ import NewPost from './components/post/NewPost';
 import User from './components/user/User';
 import Home from './components/Home';
 import SubWebbit from './components/SubWebbit';
+import Settings from './components/Settings';
 
 export default function App() {
 
@@ -37,6 +38,10 @@ export default function App() {
     {
       path: '/w/:subname',
       element: <SubWebbit />
+    },
+    {
+      path: '/settings',
+      element: <Settings />
     }
   ]);
 
@@ -58,7 +63,7 @@ export default function App() {
   }, []);
  
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={user ? {...user, setUser} : null}>
       <PopupContext.Provider value={{ ...popup, setPopup }}>
         <NavBar />
         <Popup />

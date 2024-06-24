@@ -18,8 +18,9 @@ class AuthController {
     } catch (error) {
       if (error.message === "Invalid password") {
         res.json({ "status": "wrong password" });
+      } else if (error.message === "Email taken") {
+        res.json({ "status": "email taken" });
       } else {
-        console.log("CALLING NEXT?");
         next(error);
       }
     }
@@ -27,9 +28,14 @@ class AuthController {
 
   async updatePassword(req, res, next) {
     try {
+    
       await UserService.
-        updatePassword(req.session.user.id, req.body.currentPassword, req.body.newPassword);
+        updatePassword(req.session.user.id, req.body.newPassword, req.body.currentPassword);
+    
+      delete req.session.user;
+  
       res.json({ "status": "success" });
+    
     } catch (error) {
       if (error.message === "Invalid password") {
         res.json({ "status": "wrong password" });

@@ -30,6 +30,9 @@ class UserService {
     if (!(await bcrypt.compare(password, hashedPassword))) {
       throw new HttpError("Invalid password", 401);
     }
+    if (await this.getUserByEmail(email)) {
+      throw new HttpError("Email taken", 400);
+    }
     user.email = email;
     await user.save();
   }

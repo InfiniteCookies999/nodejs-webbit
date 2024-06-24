@@ -4,6 +4,7 @@ import AgreementTerms from './AgreementTerms';
 import PopupNextButton from "./PopupNextButton";
 import PopupBase from './PopupBase';
 import { PopupContext, PopupType } from "../../contexts/PopupContext";
+import { emailPattern, passwordPattern, usernamePattern } from '../../utils/validationPatterns';
 
 export const Transition = Object.freeze({
   EMAIL: 0,
@@ -15,9 +16,7 @@ function handleEmailContinue(setEmail, setTransition) {
   const nextBtn = document.getElementById('next-btn');
   const email = document.getElementById('signup-email').value;
   if (email === "") return;
-  if (!email.toLowerCase().match(
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  )) {
+  if (!email.toLowerCase().match(emailPattern)) {
     document.getElementById('email-error-text').innerText = "invalid email!";
     nextBtn.disabled = false;
     return;
@@ -47,11 +46,11 @@ function handleUsernamePassContinue(email, setTransition) {
   }
 
   let isValid = true;
-  if (!username.match(/^[a-zA-Z0-9]{3,20}$/)) {
+  if (!username.match(usernamePattern)) {
     document.getElementById('username-error-text').innerText = "invalid username!";
     isValid = false;
   }
-  if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[_=+!@#$%^&*.])[a-zA-Z0-9_=+!@#$%^&*.]{8,100}$/)) {
+  if (!password.match(passwordPattern)) {
     document.getElementById('password-error-text').innerText = "invalid password!";
     isValid = false;
   }

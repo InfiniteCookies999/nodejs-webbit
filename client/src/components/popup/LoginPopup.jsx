@@ -64,7 +64,6 @@ export default function OpenLoginPopup() {
         console.log(error);
         nextBtn.disabled = false;
       });
-      ;
     }}>
       <h2>Log In</h2>
       <AgreementTerms />
@@ -99,15 +98,5 @@ export default function OpenLoginPopup() {
     </form>
   );
 
-  return <PopupBase
-    content={form}
-    onCloseButton={() => {
-      popupContext.setPopup(currentPopup =>
-        ({ ...currentPopup, stateType: PopupType.NONE }));
-    }}
-    onBackgroundClicked={(e) => {
-      popupContext.setPopup(currentPopup =>
-        ({ ...currentPopup, stateType: PopupType.NONE }));
-    }}
-    />
+  return <PopupBase content={form} />;
 }
