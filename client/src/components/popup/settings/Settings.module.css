@@ -14,3 +14,15 @@
   cursor: pointer;
   background-color: rgb(57, 58, 68);
 }
+
+.imageUpload {
+  border-style: dashed;
+  border-width: thin;
+  height: 18rem;
+}
+
+.imageUploadImage {
+  width: 80%;
+  height: 80%;
+  transform: translate(2rem, 2rem);
+}

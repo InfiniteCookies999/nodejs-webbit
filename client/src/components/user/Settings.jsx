@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { UserContext } from "../../contexts/UserContext";
 import styles from './Settings.module.css';
-import PageLayout from "./PageLayout";
-import { PopupContext, PopupType } from "../contexts/PopupContext";
+import PageLayout from "../PageLayout";
+import { PopupContext, PopupType } from "../../contexts/PopupContext";
 
 export default function Settings() {
 
@@ -61,6 +61,15 @@ export default function Settings() {
         <span>Gender</span>
         <div>
           <span>{gender}</span>
+          <label className="bx bx-chevron-right"></label>
+        </div>
+      </div>
+      <div className={styles.setting} onClick={() => {
+        popupContext.setPopup(currentPopup =>
+          ({ ...currentPopup, stateType: PopupType.CHANGE_PROFILE_PIC }));
+      }}>
+        <span>Profile Picture</span>
+        <div>
           <label className="bx bx-chevron-right"></label>
         </div>
       </div>

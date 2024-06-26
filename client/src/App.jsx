@@ -10,7 +10,7 @@ import NewPost from './components/post/NewPost';
 import User from './components/user/User';
 import Home from './components/Home';
 import SubWebbit from './components/SubWebbit';
-import Settings from './components/Settings';
+import Settings from './components/user/Settings';
 
 export default function App() {
 

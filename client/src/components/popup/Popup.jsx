@@ -6,6 +6,7 @@ import CreateCommunityPopup from './CreateCommunityPopup';
 import ChangeEmailPopup from './settings/ChangeEmailPopup';
 import ChangePasswordPopup from './settings/ChangePasswordPopup';
 import ChangeGenderPopup from './settings/ChangeGenderPopup';
+import ChangeProfilePicPopup from './settings/ChangeProfilePicPopup';
 
 export default function Popup() {
   
@@ -26,5 +27,7 @@ export default function Popup() {
     return <ChangePasswordPopup />;
   case PopupType.CHANGE_GENDER:
     return <ChangeGenderPopup />;
+  case PopupType.CHANGE_PROFILE_PIC:
+    return <ChangeProfilePicPopup />;
 }
 }
