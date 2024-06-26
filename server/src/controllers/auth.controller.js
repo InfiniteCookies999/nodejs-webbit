@@ -99,6 +99,11 @@ class AuthController {
       next(error);
     }
   }
+
+  logout(req, res, next) {
+    delete req.session.user;
+    res.end();
+  }
 }
 
 module.exports = new AuthController();

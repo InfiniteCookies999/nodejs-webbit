@@ -9,7 +9,8 @@ export default function PageLayout({ middle, right }) {
   const popupContext = useContext(PopupContext);
 
   return (
-    <div className="row">
+    <div className='container p-0 m-0'>
+      <div className="row">
       <div className="col-sm-3">
         <br />
         <div className={`${styles.sideLink} ml-3`} onClick={() =>{
@@ -40,6 +41,7 @@ export default function PageLayout({ middle, right }) {
       <div className="col-sm-3">
         {right}
       </div>
+    </div>
     </div>
   )
 }

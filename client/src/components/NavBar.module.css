@@ -40,3 +40,37 @@
 #postCreateBtn, #postCreateBtn:active, #postCreateBtn:focus {
   outline: none;
 }
+
+#userProfile {
+  width: 2.2rem;
+  height: 2.2rem;
+  transform: translateX(-1rem)
+}
+
+#userProfile:hover {
+  cursor: pointer;
+}
+
+#dropDown {
+  position: absolute;
+  right: 1rem;
+  left: auto;
+  background-color: red;
+  padding: 0.5rem;
+  transform: translate(0.4rem);
+  background-color: rgb(94, 94, 94);
+  border-radius: 10px;
+  z-index: 10;
+}
+
+.dropDownSection {
+  color: rgb(233, 233, 233) !important;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.dropDownSection:hover {
+  background-color: gray;
+  cursor: pointer;
+}

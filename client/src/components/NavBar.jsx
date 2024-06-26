@@ -33,11 +33,38 @@ export default function NavBar() {
         }
         {userContext ?
           userContext.isLoggedIn ?
-          <a>
-            <img src={userImgPath}
-                className="rounded-circle"
-                style={{width:"2.2rem", height:"2.2rem"}}></img>
-          </a> :
+          <>
+          <img src={userImgPath}
+              id={styles.userProfile}
+              className="rounded-circle"
+              onClick={() => {
+                const dropDown = document.getElementById(styles.dropDown);
+                dropDown.hidden = !dropDown.hidden;
+              }}
+              >
+            </img>
+            <div id={styles.dropDown} hidden={true}>
+              <a href={`/u/${userContext.username}`} className={`link ${styles.dropDownSection}`}>
+                View Profile
+              </a>
+              <a href="/settings" className={`link ${styles.dropDownSection}`}>
+                Settings
+              </a>
+              <a className={`link ${styles.dropDownSection}`} onClick={() => {
+                fetch('/api/auth/logout', {
+                  method: 'POST',
+                  body: {}
+                })
+                .then(() => {
+                  window.location.reload();
+                })
+                .catch(error => console.log(error));
+              }}>
+                Logout
+              </a>
+            </div>
+          </>
+          :
             <a id={styles.loginBtn} className={styles.rightNavElement} onClick={(e) => {
               popupContext.setPopup(currentPopup =>
                 ({ ...currentPopup, stateType: PopupType.LOGIN }));

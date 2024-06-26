@@ -29,6 +29,11 @@ router.post('/auth/login',
   AuthController.login
 );
 
+router.post('/auth/logout', 
+  validateLogin,
+  AuthController.logout
+);
+
 router.put('/auth/email',
   body('email').isEmail(),
   body('password').notEmpty(),
