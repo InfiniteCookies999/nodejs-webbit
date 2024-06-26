@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import './SignupPopup.css';
+import styles from './SignupPopup.module.css';
+import commonStyles from './Popup.module.css';
 import AgreementTerms from './AgreementTerms';
 import PopupNextButton from "./PopupNextButton";
 import PopupBase from './PopupBase';
@@ -151,10 +152,10 @@ export default function SignupPopup() {
                 document.getElementById('email-error-text').innerText = "";
                 handleTextChange(transition)
                 }} />
-        <span id="email-error-text" className="error-text"></span>
+        <span id="email-error-text" className={commonStyles.errorText}></span>
         <div style={{marginTop:"1.4rem"}}>
           <span>Already a webbitor?
-            <span id="login-link" className="pl-1" style={{color: "#5a8dfa"}}
+            <span id={styles.loginLink} className="pl-1" style={{color: "#5a8dfa"}}
                onClick={() => {
                 popupContext.setPopup(currentPopup =>
                   ({ ...currentPopup, stateType: PopupType.LOGIN }));
@@ -177,7 +178,7 @@ export default function SignupPopup() {
                 handleTextChange(transition)
               }}
           ></input>
-        <span id="username-error-text" className="error-text"></span>
+        <span id="username-error-text" className={commonStyles.errorText}></span>
         <br />
         <input id="signup-password"
                 placeholder="Password*"
@@ -188,7 +189,7 @@ export default function SignupPopup() {
                 handleTextChange(transition)
                 }}
           ></input>
-        <span id="password-error-text" className="error-text"></span>
+        <span id="password-error-text" className={commonStyles.errorText}></span>
       </>
       }
       {transition === Transition.GENDER &&
@@ -198,13 +199,13 @@ export default function SignupPopup() {
         <div style={{textAlign:"center"}}>
           <span style={{color:"rgb(151, 151, 151)"}}>How do you identify?</span>
         </div>
-        <button className="form-control shadow-none mt-2 gender-btn" value="Woman"
+        <button className={`form-control shadow-none mt-2 ${styles.genderBtn}`} value="Woman"
           onClick={(e) => handleGenderSelection(e.target)}>Woman</button>
-        <button className="form-control shadow-none mt-2 gender-btn" value="Man"
+        <button className={`form-control shadow-none mt-2 ${styles.genderBtn}`} value="Man"
           onClick={(e) => handleGenderSelection(e.target)}>Man</button>
-        <button className="form-control shadow-none mt-2 gender-btn" value="Non-Binary"
+        <button className={`form-control shadow-none mt-2 ${styles.genderBtn}`} value="Non-Binary"
           onClick={(e) => handleGenderSelection(e.target)}>Non-Binary</button>
-        <button className="form-control shadow-none mt-2 gender-btn" value="Not-Say"
+        <button className={`form-control shadow-none mt-2 ${styles.genderBtn}`} value="Not-Say"
           onClick={(e) => handleGenderSelection(e.target)}>Prefer not to say</button>
       </>
       }

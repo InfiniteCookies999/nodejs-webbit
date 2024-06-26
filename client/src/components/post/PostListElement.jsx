@@ -1,4 +1,4 @@
-import "./PostListElement.css";
+import styles from "./PostListElement.module.css";
 import PostHeaderInfo from "./PostHeaderInfo";
 import PostFooterInfo from "./PostFooterInfo";
 
@@ -11,7 +11,7 @@ export default function PostListElement({ post, lastRef }) {
 
   const postLink = `/w/${post.SubWebbit.name}/comments/${post.id}`;
   return (
-    <div className="post rounded" ref={lastRef}>
+    <div className={styles.postElement} ref={lastRef}>
       <a href={postLink} className="link">
         <div>
           <PostHeaderInfo

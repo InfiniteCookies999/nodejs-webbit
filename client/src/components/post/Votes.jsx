@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { PopupContext, PopupType } from '../../contexts/PopupContext';
+import styles from './Votes.module.css';
 
 export default function Votes({ likes, dislikes,
                                 isLiked, isDisliked,
@@ -19,7 +20,7 @@ export default function Votes({ likes, dislikes,
   
   return (<>
     <a href="#/"
-       className={"bx link link-upvote " + (votes.isLiked ? "bxs-upvote" : "bx-upvote")}
+       className={`bx link ${styles.linkUpvote} ` + (votes.isLiked ? "bxs-upvote" : "bx-upvote")}
        style={upvoteStyle}
        onClick={() => {
         if (!userContext.isLoggedIn) {
@@ -43,7 +44,7 @@ export default function Votes({ likes, dislikes,
        />
     <span className="pr-1 pl-1">{votes.total}</span>
     <a href="#/"
-       className={"bx link link-downvote " + (votes.isDisliked ? "bxs-downvote" : "bx-downvote") }
+       className={`bx link ${styles.linkDownvote} ` + (votes.isDisliked ? "bxs-downvote" : "bx-downvote") }
        onClick={() => {
         if (!userContext.isLoggedIn) {
           popupContext.setPopup(currentPopup =>

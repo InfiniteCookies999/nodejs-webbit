@@ -1,7 +1,6 @@
 import PopupBase from "../PopupBase";
 import PopupNextButton from "../PopupNextButton";
 import { emailPattern } from '../../../utils/validationPatterns';
-import './Settings.css';
 import { PopupContext, PopupType } from "../../../contexts/PopupContext";
 import { useContext } from "react";
 import { UserContext } from "../../../contexts/UserContext";

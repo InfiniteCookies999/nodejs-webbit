@@ -1,0 +1,13 @@
+.postUsername {
+  display: block;
+  transform: translate(0, -0.3rem);
+  color: rgb(82, 82, 82) !important;
+}
+
+.smallerHeading {
+  font-size: 0.9rem;
+}
+
+.linkHighlight:hover {
+  color: #4429a5 !important;
+}

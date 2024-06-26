@@ -2,7 +2,7 @@ import PageLayout from '../PageLayout';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PostTop from './PostTop';
-import './CommentThread.css';
+import styles from './CommentThread.module.css';
 import Comment from './Comment';
 import useComments from '../hooks/useComments';
 
@@ -51,11 +51,11 @@ export default function CommentThread() {
             <PostTop post={post} />
             <br />
             <div style={{display:'flex'}}>
-              <a href='#/' className='full-dicussion-link link'>Single comment thread</a>
+              <a href='#/' className={`${styles.fullDicussionLink} link`}>Single comment thread</a>
               <div style={{flex:1, padding:'0 0.8rem 0 0.8rem'}}>
-                <div className='full-discussion-line'></div>
+                <div className={styles.fullDiscussionLine}></div>
               </div>
-              <a href={linkToPost} className='full-dicussion-link link'>See full discussion</a>
+              <a href={linkToPost} className={`${styles.fullDicussionLink} link`}>See full discussion</a>
             </div>
             {!comment || (comments.length === 0 && !noMoreComments) ? <h1>Loading...</h1> :
               <Comment key={comment.id}

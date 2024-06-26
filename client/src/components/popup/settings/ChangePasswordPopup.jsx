@@ -1,6 +1,5 @@
 import PopupBase from "../PopupBase";
 import { passwordPattern } from '../../../utils/validationPatterns';
-import './Settings.css';
 import PopupNextButton from "../PopupNextButton";
 
 function onTextChange(e) {

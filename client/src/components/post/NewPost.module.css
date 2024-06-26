@@ -1,4 +1,4 @@
-#tab-container {
+#tabContainer {
   display: flex;
 }
 
@@ -13,19 +13,19 @@
   color: rgb(140, 140, 150);
 }
 
-.tab-underline {  
+.tabUnderline {  
   width: 100%;
   height: 0.4rem;
   border-radius: 25px;
 }
 
-.body-container {
+#bodyContainer {
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid #222;
 }
 
-#body-textarea {
+#bodyTextArea {
   border: none;
   outline: none;
   display: block;
@@ -33,13 +33,13 @@
   padding: 0.5rem 0 0.5rem 0.5rem;
 }
 
-#body-textarea:empty:before {
+#bodyTextArea:empty:before {
   content:attr(placeholder);
   color:grey;
   background-color: transparent;
 }
 
-#submit-btn {
+#submitBtn {
   color: white;
   float: right;
   border-radius: 18px;
@@ -47,40 +47,34 @@
   border-style: none;
 }
 
-#submit-btn:hover {
+#submitBtn:hover {
   cursor: pointer;
 }
 
-#media-drag-drop {
+#mediaDragDrop {
   text-align: center;
   line-height: 20rem;
   height: 20rem;
 }
 
-.media-drag-drop-pointer:hover {
+.mediaDragDropPointer:hover {
   cursor: pointer;
 }
 
-#drag-drop-text {
+#dragDropText {
   color: gray;
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
 }
 
-#media-image-display {
-  width: 100%;
-  height: 100%;
-  background-color: red;
-}
-
-#image-display {
+#imageDisplay {
   width: 100%;
   height: 100%;
   background-size: 100% 100%;
 }
 
-#image-display .bx-trash, .bx-caret-left, .bx-caret-right, #add-images {
+.imageDisplayIcon {
   position: absolute;
   cursor: pointer;
   font-size: 2rem;
@@ -90,49 +84,47 @@
   border-radius: 25px;
 }
 
-#image-display .bx-trash {
+#imageTrash {
   right: 0;
   margin-right: 1.5rem;
   margin-top: 0.5rem;
-  padding: 0.2rem;
+  padding: 0.2rem; 
+  display: none;
 }
 
-#image-display .bx-caret-left {
-  left: 0;
-  padding: 0.2rem;
-  margin-left: 1.5rem;
-  margin-top: 9rem;
-}
-
-#image-display .bx-caret-right {
-  right: 0;
-  padding: 0.2rem;
-  margin-right: 1.5rem;
-  margin-top: 9rem;
-}
-
-#add-images {
+#addImages {
   left: 0;
   line-height: 32px;
   margin-left: 1.5rem;
   margin-top: 0.5rem;
   padding: 0.2rem;
+  display: none;
 }
 
-#add-images-text {
+#addImagesText {
   display: inline-block;
   font-size: 1.2rem;
   transform: translateY(-0.3rem);
 }
 
-#image-display .bx-trash, #add-images {
-  display: none;
-}
-
-#image-display:hover .bx-trash {
+#imageDisplay:hover #imageTrash {
   display: block;
 }
 
-#image-display:hover #add-images {
+#imageDisplay:hover #addImages {
   display: block;
+}
+
+#imageLeft {
+  left: 0;
+  padding: 0.2rem;
+  margin-left: 1.5rem;
+  margin-top: 9rem;
+}
+
+#imageRight {
+  right: 0;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  margin-top: 9rem;
 }

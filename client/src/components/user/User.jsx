@@ -2,7 +2,7 @@ import PageLayout from '../PageLayout';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostContainer from "../post/PostsContainer";
-import './User.css';
+import styles from './User.module.css';
 import UsersComments from "./UsersComments";
 
 const Tabs = Object.freeze({
@@ -49,20 +49,20 @@ export default function User() {
       user ?
           <>
             <br />
-            <div id="profile-row">
+            <div id={styles.profileRow}>
               <img src={profilePicture} style={{width:"10rem", height:"12rem"}} />
-              <div id="username-container">  
-                <span id='username-heading'>{user.username}</span>
-                <span id="username-heading-sm">{"u/" + user.username}</span>
+              <div id={styles.usernameContainer}>  
+                <span id={styles.usernameHeading}>{user.username}</span>
+                <span id={styles.usernameHeadingSm}>{"u/" + user.username}</span>
               </div>
             </div>
             <br />
-            <button id="posts-tab-btn" className="tab-btn" style={{backgroundColor:"#aaa"}} onClick={(e) => {
+            <button id="posts-tab-btn" className={styles.tabBtn} style={{backgroundColor:"#aaa"}} onClick={(e) => {
               setTab(Tabs.POSTS);
               document.getElementById('posts-tab-btn').style.backgroundColor = '#aaa';
               document.getElementById('comments-tab-btn').style.backgroundColor = '#ddd';
             }}>Posts</button>
-            <button id="comments-tab-btn" className="tab-btn" style={{backgroundColor:"#ddd"}} onClick={() => {
+            <button id="comments-tab-btn" className={styles.tabBtn} style={{backgroundColor:"#ddd"}} onClick={() => {
               setTab(Tabs.COMMENTS);
               document.getElementById('posts-tab-btn').style.backgroundColor = '#ddd';
               document.getElementById('comments-tab-btn').style.backgroundColor = '#aaa';
@@ -77,22 +77,22 @@ export default function User() {
     right={
       <>
         <br />
-        <div id="user-info">
+        <div id={styles.userInfo}>
           <div className="row">
             <div className="col-sm-4">
-              <span className="user-info-values">{user ? user.postKarma : 0}</span>
+              <span className={styles.userInfoValues}>{user ? user.postKarma : 0}</span>
               <br />
-              <span className="user-info-desc">Post Karma</span>
+              <span className={styles.userInfoDesc}>Post Karma</span>
             </div>
             <div className="col-sm-4">
-              <span className="user-info-values">{user ? user.commentKarma : 0}</span>
+              <span className={styles.userInfoValues}>{user ? user.commentKarma : 0}</span>
               <br />
-              <span className="user-info-desc">Comment Karma</span>
+              <span className={styles.userInfoDesc}>Comment Karma</span>
             </div>
             <div className="col-sm-4">
-              <span className="user-info-values">{cakeDayStr}</span>
+              <span className={styles.userInfoValues}>{cakeDayStr}</span>
               <br />
-              <span className="user-info-desc">Cake day</span>
+              <span className={styles.userInfoDesc}>Cake day</span>
             </div>
           </div>
         </div>

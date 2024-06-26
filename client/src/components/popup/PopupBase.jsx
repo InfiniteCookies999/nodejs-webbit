@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
-import './PopupBase.css';
 import { PopupContext, PopupType } from '../../contexts/PopupContext';
+import styles from './PopupBase.module.css';
+import commonStyles from './Popup.module.css';
 
 export default function PopupBase({ onBackgroundClicked, onCloseButton, content, width, height }) {
   const style = {};
@@ -19,8 +20,8 @@ export default function PopupBase({ onBackgroundClicked, onCloseButton, content,
   });
   
   return (
-    <div id="popup" onClick={(e) => {
-      const popup = document.getElementById('popup');
+    <div id={styles.popup} onClick={(e) => {
+      const popup = document.getElementById(styles.popup);
       if (e.target === popup) {
         if (onBackgroundClicked) {
           onBackgroundClicked(e);
@@ -29,11 +30,11 @@ export default function PopupBase({ onBackgroundClicked, onCloseButton, content,
         }
       }
     }}>
-      <div id="popup-container" style={style}>
-        <div id="popup-close-button" onClick={onCloseButton ? onCloseButton : closeCallback}>
+      <div id={styles.popupContainer} style={style}>
+        <div id={styles.popupCloseButton} onClick={onCloseButton ? onCloseButton : closeCallback}>
               X
             </div>
-        <div className='center-padding' style={{height: "100%"}}>
+        <div className={commonStyles.centerPadding} style={{height: "100%"}}>
           {content}
         </div>
       </div>

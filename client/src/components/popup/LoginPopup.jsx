@@ -1,9 +1,9 @@
-import './LoginPopup.css';
 import AgreementTerms from './AgreementTerms';
 import PopupNextButton from './PopupNextButton';
 import PopupBase from './PopupBase';
 import { PopupContext, PopupType } from '../../contexts/PopupContext';
 import { useContext } from 'react';
+import commonStyles from './Popup.module.css';
 
 function handleTextChange() {
   const nextBtn = document.getElementById('next-btn');
@@ -72,7 +72,7 @@ export default function OpenLoginPopup() {
           className="form-control"
           onChange={handleTextChange}
       ></input>
-      <span id="username-or-email-error-text" className="error-text"></span>
+      <span id="username-or-email-error-text" className={commonStyles.errorText}></span>
       <br />
       <input id="login-password"
           placeholder="Password*"
@@ -80,7 +80,7 @@ export default function OpenLoginPopup() {
           type="password"
           onChange={handleTextChange}
       ></input>
-      <span id="password-error-text" className="error-text"></span>
+      <span id="password-error-text" className={commonStyles.errorText}></span>
       <br />
       <span>New to Webbit?
         <span id="login-link" className="pl-1" style={{color: "#5a8dfa"}}
@@ -92,7 +92,7 @@ export default function OpenLoginPopup() {
         </span>
       </span>
       <br />
-      <span id="invalid-creds-error-text" className="error-text"></span>
+      <span id="invalid-creds-error-text" className={commonStyles.errorText}></span>
 
       <PopupNextButton text={"Log In"} disabled={true} />
     </form>

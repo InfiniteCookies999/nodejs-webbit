@@ -1,0 +1,9 @@
+#addACommentNoLogin {
+  width: 30%;
+  background-color: rgb(235, 235, 235);
+}
+
+#addACommentNoLogin:hover {
+  cursor: pointer;
+  background-color: rgb(187, 187, 187); 
+}

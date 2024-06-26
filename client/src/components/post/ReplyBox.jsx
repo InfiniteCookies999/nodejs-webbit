@@ -1,6 +1,6 @@
-import './ReplyBox.css';
+import styles from './ReplyBox.module.css';
 
-export default function ReplyBox({ comment, setComments, replyJumpsToThread }) {
+export default function ReplyBox({ comment, setComments }) {
   const qualifiedId = comment ? comment.id : 'post';
   
   const submitBtnId = 'comment-submit-btn-' + qualifiedId;
@@ -12,13 +12,13 @@ export default function ReplyBox({ comment, setComments, replyJumpsToThread }) {
 
   return (
     <div id={id}
-         className="comment-form"
+         className={styles.commentForm}
          style={{display: comment ? "none" : "block"}}>
       <div id={"comment-form-textarea-" + qualifiedId}
           type="text"
           role="textbox"
           placeholder="Add a comment"
-          className="input comment-form-textarea"
+          className={`input ${styles.commentFormTextarea}`}
           contentEditable={true}
           onInput={(e) => {
             const area = e.target;
@@ -33,7 +33,7 @@ export default function ReplyBox({ comment, setComments, replyJumpsToThread }) {
           >
       </div>
       <button id={submitBtnId}
-              className="form-control shadow-none comment-submit-btn"
+              className={`form-control shadow-none ${styles.commentSubmitBtn}`}
               style={btnDisplayStyle}
               onClick={() => {
 
@@ -89,7 +89,7 @@ export default function ReplyBox({ comment, setComments, replyJumpsToThread }) {
           Comment
       </button>
       <button id={cancelBtnId}
-            className="form-control shadow-none comment-cancel-btn"
+            className={`form-control shadow-none ${styles.commentCancelBtn}`}
             style={btnDisplayStyle}
             onClick={() => {
               if (comment) {

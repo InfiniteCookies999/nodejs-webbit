@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import './Settings.css';
+import styles from './Settings.module.css';
 import PageLayout from "./PageLayout";
 import { PopupContext, PopupType } from "../contexts/PopupContext";
 
@@ -35,7 +35,7 @@ export default function Settings() {
     <div className="container">
       <br />
       <h1>Settings</h1>
-      <div className="setting" onClick={() => {
+      <div className={styles.setting} onClick={() => {
         popupContext.setPopup(currentPopup =>
           ({ ...currentPopup, stateType: PopupType.CHANGE_EMAIL }));
       }}>
@@ -45,7 +45,7 @@ export default function Settings() {
           <label className="bx bx-chevron-right"></label>
         </div>
       </div>
-      <div className="setting" onClick={() => {
+      <div className={styles.setting} onClick={() => {
         popupContext.setPopup(currentPopup =>
           ({ ...currentPopup, stateType: PopupType.CHANGE_PASSWORD }));
       }}>
@@ -54,7 +54,7 @@ export default function Settings() {
           <label className="bx bx-chevron-right"></label>
         </div>
       </div>
-      <div className="setting" onClick={() => {
+      <div className={styles.setting} onClick={() => {
         popupContext.setPopup(currentPopup =>
           ({ ...currentPopup, stateType: PopupType.CHANGE_GENDER }));
       }}>

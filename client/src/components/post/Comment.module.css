@@ -1,0 +1,19 @@
+.commentIndent {
+  padding-left: 1rem;
+}
+
+.commentBody {
+  padding-top: 0.5rem;
+  padding-bottom: 0.2rem;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.linkMoreComments {
+  color: rgb(39, 39, 39);
+  font-size: 0.9rem;
+}
+
+.linkMoreComments:hover {
+  color: rgb(121, 121, 121);
+}

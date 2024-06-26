@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import { PopupContext, PopupType } from "../../contexts/PopupContext";
 import PopupBase from "./PopupBase";
-import './CreateCommunityPopup.css';
+import styles from './CreateCommunityPopup.module.css';
+import commonStyles from './Popup.module.css';
 
 function changeType(e) {
   for (const child of document.getElementById('type-selection').children) {
-    child.classList.remove("sub-type-selected");
+    child.classList.remove(styles.subTypeSelected);
     child.querySelector("input").checked = false;
   }
   const tag = e.target.tagName.toLowerCase();
@@ -13,7 +14,7 @@ function changeType(e) {
   if (tag !== "div") {
     subSection = e.target.parentElement;
   }
-  subSection.classList.add("sub-type-selected");
+  subSection.classList.add(styles.subTypeSelected);
   subSection.querySelector("input").checked = true;
 }
 
@@ -81,7 +82,7 @@ export default function CreateCommunityPopup() {
       });
     }}>
       <h3>Create a community</h3>
-      <p className="explainations">You can create a community which you can build and grow into something special. Let's get started!</p>
+      <p className={styles.explainations}>You can create a community which you can build and grow into something special. Let's get started!</p>
       <br />
       <input id="name-input" 
           placeholder="Name*"
@@ -95,29 +96,29 @@ export default function CreateCommunityPopup() {
           }
         }
       ></input>
-      <p className="explainations">Choose carefully, you cannot change afterwards</p>
+      <p className={styles.explainations}>Choose carefully, you cannot change afterwards</p>
       <span id="error-label" style={{display:"none", color:"red", position:"absolute"}}></span>
       <br />
       <h6>Type</h6>
       <div id="type-selection">
-        <div className="sub-type-section sub-type-selected" onClick={changeType}>
+        <div className={`${styles.subTypeSection} ${styles.subTypeSelected}`} onClick={changeType}>
           <span>Public</span>
           <p>Anyone can view, post, or comment in the community</p>
           <input type="radio" value="public" defaultChecked={true} />
         </div>
-        <div className="sub-type-section" onClick={changeType}>
+        <div className={styles.subTypeSection} onClick={changeType}>
           <span>Restricted</span>
           <p>Anyone can view but only approved members can contribute</p>
           <input type="radio" value="restricted" />
         </div>
-        <div className="sub-type-section" onClick={changeType}>
+        <div className={styles.subTypeSection} onClick={changeType}>
           <span>Private</span>
           <p>Only approved members can view or contribute</p>
           <input type="radio" value="private" />
         </div>
       </div>
       <hr style={{margin:0, backgroundColor:"gray"}} className="mt-2 mb-2" />
-      <div className="sub-type-section" onClick={(e) => {
+      <div className={styles.subTypeSection} onClick={(e) => {
         const matureSwitch = document.getElementById("mature-content-switch");
         if (e.target === matureSwitch) return;
         
@@ -128,7 +129,7 @@ export default function CreateCommunityPopup() {
         <input id="mature-content-switch" type="checkbox" role="switch" />
       </div>
 
-      <div id="option-btns" className="bottom-container center-padding">
+      <div id={styles.optionBtns} className={`${commonStyles.bottomContainer} ${commonStyles.centerPadding}`}>
         <button onClick={() =>{
           popupContext.setPopup(currentPopup =>
             ({ ...currentPopup, stateType: PopupType.NONE }));

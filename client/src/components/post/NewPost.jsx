@@ -1,22 +1,22 @@
 import PageLayout from '../PageLayout';
 import { useParams } from "react-router-dom"
-import './NewPost.css';
+import styles from './NewPost.module.css';
 
 function swapUnderline(target) {
-  for (const child of document.getElementById('tab-container').children) {
-    child.querySelector('.tab-underline').hidden = true;
+  for (const child of document.getElementById(styles.tabContainer).children) {
+    child.querySelector('.' + styles.tabUnderline).hidden = true;
   }
   
   // show our underline.
   const parent = target.parentElement;
-  parent.querySelector('.tab-underline').hidden = false;
+  parent.querySelector('.' + styles.tabUnderline).hidden = false;
 }
 
 function swapUpload(showChildId) {  
-  for (const child of document.querySelector('.body-container').children) {
+  for (const child of document.getElementById(styles.bodyContainer).children) {
     child.hidden = true;
   }
-  document.querySelector('.body-container').style['border-style'] = 'solid';
+  document.getElementById(styles.bodyContainer).style['border-style'] = 'solid';
   document.getElementById(showChildId).hidden = false;
 }
 
@@ -27,12 +27,12 @@ function dragFinished(e) {
     // Do not remove the solid border if there is already a file being displayed.
     return;
   }
-  document.querySelector('.body-container').style['border-style'] = 'dashed';
+  document.getElementById(styles.bodyContainer).style['border-style'] = 'dashed';
 }
 
 function updateDisplayImageLeftRightArrows() {
   const input = document.getElementById('file-input-holder');
-  const imageDisplay = document.getElementById('image-display');
+  const imageDisplay = document.getElementById(styles.imageDisplay);
   const leftCaret = imageDisplay.querySelector('.bx-caret-left');
   const rightCaret = imageDisplay.querySelector('.bx-caret-right');
   
@@ -48,13 +48,13 @@ function updateDisplayImageLeftRightArrows() {
 
 function addMediaImage(file) {
   const input = document.getElementById('file-input-holder');
-  const imageDisplay = document.getElementById('image-display');
+  const imageDisplay = document.getElementById(styles.imageDisplay);
   imageDisplay.hidden = false;
-  document.getElementById('drag-drop-text').hidden = true;
-  document.getElementById('media-drag-drop').classList.remove('media-drag-drop-pointer');
+  document.getElementById(styles.dragDropText).hidden = true;
+  document.getElementById(styles.mediaDragDrop).classList.remove(styles.mediaDragDropPointer);
 
   if (input.files.length === 4) {
-    document.getElementById('add-images').hidden = true;
+    document.getElementById(styles.addImages).hidden = true;
   }
 
   const reader = new FileReader();
@@ -62,14 +62,14 @@ function addMediaImage(file) {
   reader.onload = () => {
     imageDisplay.style.backgroundImage = `url(${reader.result})`;
     imageDisplay.setAttribute("data-index", input.files.length - 1);
-    document.getElementById('image-display').hidden = false;
+    document.getElementById(styles.imageDisplay).hidden = false;
     updateDisplayImageLeftRightArrows();
   };
 }
 
 function changeMediaImage(newIndex) {
   const input = document.getElementById('file-input-holder');
-  const imageDisplay = document.getElementById('image-display');
+  const imageDisplay = document.getElementById(styles.imageDisplay);
   
   imageDisplay.setAttribute("data-index", newIndex);
 
@@ -102,7 +102,7 @@ export default function NewPost() {
         e.preventDefault();
         
         const title = document.getElementById('title-input').value;
-        const body = document.getElementById('body-textarea').innerText;
+        const body = document.getElementById(styles.bodyTextArea).innerText;
         const files = document.getElementById('file-input-holder').files;
 
         if (title === "" || body === "") return;
@@ -141,35 +141,36 @@ export default function NewPost() {
         .catch(error => console.log(error));
         
       }}>
+        <br />
         <h3>Create Post</h3>
-        <div id="tab-container" className="pl-2">
+        <div id={styles.tabContainer} className="pl-2">
           <div>
-            <span className="tab" onClick={(e) => {
+            <span className={styles.tab} onClick={(e) => {
               swapUnderline(e.target);
-              swapUpload('body-textarea');
+              swapUpload(styles.bodyTextArea);
               
             }}>Text</span>
-            <div className="tab-underline bg-primary"></div>
+            <div className={`${styles.tabUnderline} bg-primary`}></div>
           </div>
           <div className="pl-3">
-            <span className="tab" onClick={(e) => {
+            <span className={styles.tab} onClick={(e) => {
               swapUnderline(e.target);
-              swapUpload('media-drag-drop');
+              swapUpload(styles.mediaDragDrop);
               const input = document.getElementById('file-input-holder');
               if (input.files.length === 0) {
-                document.querySelector('.body-container').style['border-style'] = 'dashed';
+                document.getElementById(styles.bodyContainer).style['border-style'] = 'dashed';
               }
 
             }}>Media</span>
-            <div className="tab-underline bg-primary" hidden={true}></div>
+            <div className={`${styles.tabUnderline} bg-primary`} hidden={true}></div>
           </div>            
         </div>
         
         <br />
         <input id='title-input' placeholder="Title*" className="form-control shadow-none" maxLength={300} />
         <br />
-        <div className="body-container">
-          <div id="body-textarea"
+        <div id={styles.bodyContainer}>
+          <div id={styles.bodyTextArea}
               type="text"
               role="textbox"
               placeholder="Body"
@@ -183,12 +184,12 @@ export default function NewPost() {
               }}
               />
 
-            <div id="media-drag-drop" hidden={true} className='media-drag-drop-pointer'
+            <div id={styles.mediaDragDrop} hidden={true} className={styles.mediaDragDropPointer}
               onClick={(e) => {
                 
                 
-                if (e.target !== document.getElementById('media-drag-drop') &&
-                    e.target !== document.getElementById('drag-drop-text')) {
+                if (e.target !== document.getElementById(styles.mediaDragDrop) &&
+                    e.target !== document.getElementById(styles.dragDropText)) {
                   return;
                 }
                 
@@ -204,6 +205,7 @@ export default function NewPost() {
                   const transfer = new DataTransfer();
                   transfer.items.add(file);
                   input.files = transfer.files;
+                  document.getElementById(styles.bodyContainer).style['border-style'] = 'solid';
                   addMediaImage(file);
                 };
                 selector.click();
@@ -211,7 +213,7 @@ export default function NewPost() {
               onDragOver={(e) => {
                 e.preventDefault();
                 e.target.parentElement.classList.add('border-primary');
-                document.querySelector('.body-container').style['border-style'] = 'solid';
+                document.getElementById(styles.bodyContainer).style['border-style'] = 'solid';
               }}
               onDragEnd={dragFinished}
               onDragLeave={dragFinished}
@@ -229,7 +231,7 @@ export default function NewPost() {
                 if (e.dataTransfer.files.length === 0 ||
                     !e.dataTransfer.files[0].type.startsWith('image/')) {
                   if (input.files.length === 0) {
-                    document.querySelector('.body-container').style['border-style'] = 'dashed';
+                    document.getElementById(styles.bodyContainer).style['border-style'] = 'dashed';
                   }
                   return;
                 }
@@ -247,31 +249,31 @@ export default function NewPost() {
                 
               }}
               >
-              <span id="drag-drop-text">Drag and drop media or click to upload</span>
+              <span id={styles.dragDropText}>Drag and drop media or click to upload</span>
               <input id="file-input-holder" type="file" name="file-holder" multiple="multiple" hidden={true}/>
               <input id="file-selector" type="file" hidden={true} />
 
-              <div id="image-display" data-index="0" hidden={true}>
-                <span className='bx bx-trash' onClick={() => {
-                  const index = parseInt(document.getElementById('image-display').getAttribute("data-index"));
+              <div id={styles.imageDisplay} data-index="0" hidden={true}>
+                <span id={styles.imageTrash} className={`bx bx-trash ${styles.imageDisplayIcon}`} onClick={() => {
+                  const index = parseInt(document.getElementById(styles.imageDisplay).getAttribute("data-index"));
                   
                   const input = document.getElementById('file-input-holder');
                   
                   removeMediaFile(input, index);
 
-                  document.getElementById('add-images').hidden = false;
+                  document.getElementById(styles.addImages).hidden = false;
 
                   if (input.files.length === 0) {
-                    document.querySelector('.body-container').style['border-style'] = 'dashed';
-                    document.getElementById('image-display').hidden = true;
-                    document.getElementById('drag-drop-text').hidden = false;
-                    document.getElementById('media-drag-drop').classList.add('media-drag-drop-pointer');
+                    document.getElementById(styles.bodyContainer).style['border-style'] = 'dashed';
+                    document.getElementById(styles.imageDisplay).hidden = true;
+                    document.getElementById(styles.dragDropText).hidden = false;
+                    document.getElementById(styles.mediaDragDrop).classList.add(styles.mediaDragDropPointer);
                   } else  {
                     const newIndex = index === 0 ? 0 : index - 1;
                     changeMediaImage(newIndex);
                   }
                 }}></span>
-                <div id="add-images" onClick={() => {
+                <div id={styles.addImages} className={styles.imageDisplayIcon} onClick={() => {
                   const selector = document.getElementById('file-selector');
 
                   selector.onchange = () => {
@@ -292,21 +294,21 @@ export default function NewPost() {
                   };
                   selector.click();
                 }}>
-                  <span className='bx bx-images'></span>
-                  <span id="add-images-text">Add</span>
+                  <span className="bx bx-images"></span>
+                  <span id={styles.addImagesText}>Add</span>
                 </div>
-                <span className='bx bx-caret-left' hidden={true} onClick={() => {
-                  const index = parseInt(document.getElementById('image-display').getAttribute("data-index"));
+                <span id={styles.imageLeft} className={`bx bx-caret-left ${styles.imageDisplayIcon}`} hidden={true} onClick={() => {
+                  const index = parseInt(document.getElementById(styles.imageDisplay).getAttribute("data-index"));
                   changeMediaImage(index - 1);
                 }}></span>
-                <span className='bx bx-caret-right' hidden={true} onClick={() => {
-                  const index = parseInt(document.getElementById('image-display').getAttribute("data-index"));
+                <span id={styles.imageRight} className={`bx bx-caret-right ${styles.imageDisplayIcon}`} hidden={true} onClick={() => {
+                  const index = parseInt(document.getElementById(styles.imageDisplay).getAttribute("data-index"));
                   changeMediaImage(index + 1);
                 }}></span>
               </div>                  
             </div>
         </div>
-        <button className='mt-2 bg-primary' id='submit-btn'>Post</button>
+        <button className='mt-2 bg-primary' id={styles.submitBtn}>Post</button>
       </form>
     } />
   )

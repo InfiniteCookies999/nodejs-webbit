@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import './NavBar.css';
+import styles from './NavBar.module.css';
 import { UserContext } from '../contexts/UserContext';
 import { PopupContext, PopupType } from '../contexts/PopupContext';
 
@@ -16,10 +16,10 @@ export default function NavBar() {
   const showCreatePostBtn = window.location.pathname.startsWith("/w/");
 
   return (
-    <nav id="site-navbar">
-      <div className='right-nav-element'>
+    <nav id={styles.siteNavbar}>
+      <div className={styles.rightNavElement}>
         {showCreatePostBtn &&
-          <button id="post-create-btn" className='mr-4' onClick={() => {
+          <button id={styles.postCreateBtn} className='mr-4' onClick={() => {
             if (!userContext) return;
 
             if (!userContext.isLoggedIn) {
@@ -27,7 +27,6 @@ export default function NavBar() {
                 ({ ...currentPopup, stateType: PopupType.SIGNUP }));
             } else {
               const subname = window.location.pathname.split('/')[2];
-              console.log("subname: ", subname);
               window.location.href = `/w/${subname}/submit`;
             }
           }}>+ Create</button>
@@ -39,7 +38,7 @@ export default function NavBar() {
                 className="rounded-circle"
                 style={{width:"2.2rem", height:"2.2rem"}}></img>
           </a> :
-            <a id="login-button" className='right-nav-element' onClick={(e) => {
+            <a id={styles.loginBtn} className={styles.rightNavElement} onClick={(e) => {
               popupContext.setPopup(currentPopup =>
                 ({ ...currentPopup, stateType: PopupType.LOGIN }));
             }}>

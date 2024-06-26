@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import PopupBase from "../PopupBase";
 import PopupNextButton from "../PopupNextButton";
-import './Settings.css';
+import styles from './Settings.module.css';
 import { UserContext } from "../../../contexts/UserContext";
 import { PopupContext, PopupType } from "../../../contexts/PopupContext";
 
@@ -10,7 +10,7 @@ function onSelectionClicked(e) {
   if (e.target.tagName.toLowerCase() !== "div") {
     section = e.target.parentElement;
   }
-  for (const section of document.getElementsByClassName('gender-section')) {
+  for (const section of document.getElementsByClassName(styles.genderSection)) {
     section.childNodes[1].hidden = true;
   }
 
@@ -29,7 +29,7 @@ export default function ChangeGenderPopup() {
       e.preventDefault();
 
       let gender = "";
-      for (const section of document.getElementsByClassName('gender-section')) {
+      for (const section of document.getElementsByClassName(styles.genderSection)) {
         if (!section.childNodes[1].hidden) {
           gender = section.getAttribute("value");
           break;
@@ -61,19 +61,19 @@ export default function ChangeGenderPopup() {
       
     }}>
       <h3>Gender</h3>
-      <div className="gender-section" value="Woman" onClick={onSelectionClicked}>
+      <div className={styles.genderSection} value="Woman" onClick={onSelectionClicked}>
         <span>Woman</span>
         <span className="bx bx-check" hidden={gender !== "Woman"}></span>
       </div>
-      <div className="gender-section" value="Man" onClick={onSelectionClicked}>
+      <div className={styles.genderSection} value="Man" onClick={onSelectionClicked}>
         <span>Man</span>
         <span className="bx bx-check" hidden={gender !== "Man"}></span>
       </div>
-      <div className="gender-section" value="Non-Binary" onClick={onSelectionClicked}>
+      <div className={styles.genderSection} value="Non-Binary" onClick={onSelectionClicked}>
         <span>Non binary</span>
         <span className="bx bx-check" hidden={gender !== "Non-Binary"}></span>
       </div>
-      <div className="gender-section" value="Not-Say" onClick={onSelectionClicked}>
+      <div className={styles.genderSection} value="Not-Say" onClick={onSelectionClicked}>
         <span>Prefer not to say</span>
         <span className="bx bx-check" hidden={gender !== "Not-Say"}></span>
       </div>

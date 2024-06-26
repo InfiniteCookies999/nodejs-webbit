@@ -1,4 +1,5 @@
 import getTimeAgo from "../../utils/getTimeAgo";
+import styles from './PostHeaderInfo.module.css';
 
 export default function PostHeaderInfo({ sub,
                                          user,
@@ -29,14 +30,14 @@ export default function PostHeaderInfo({ sub,
            className="rounded-circle"
            style={{width:"2rem", height:"2rem"}}></img>
       <div style={nameBlockStyle}>
-        <a href={"/"+subOrUserTag} className="pl-2 link link-sub smaller-heading">
+        <a href={"/"+subOrUserTag} className={`pl-2 link ${styles.linkHighlight} ${styles.smallerHeading}`}>
           {subOrUserTag}
         </a>
         {subNameForPost &&
-          <a href={`/u/${user.username}`} className="pl-2 link smaller-heading post-username">{user.username}</a>}
+          <a href={`/u/${user.username}`} className={`pl-2 link ${styles.linkHighlight} ${styles.smallerHeading} ${styles.postUsername}`}>{user.username}</a>}
       </div>
       
-      <span className="pl-3 time-ago smaller-heading">{getTimeAgo(timeStamp)}</span>
+      <span className={`pl-3 time-ago ${styles.smallerHeading}`}>{getTimeAgo(timeStamp)}</span>
     </div>
   );
 }

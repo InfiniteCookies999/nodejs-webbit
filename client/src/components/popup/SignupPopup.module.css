@@ -1,21 +1,16 @@
 
-.error-text {
-  position: absolute;
-  color: rgb(238, 54, 54);
-}
-
-.gender-btn {
+.genderBtn {
   color: rgb(210, 210, 210);
   background-color: rgb(58, 58, 58);
   border: 0;
   border-radius: 20px;
 }
 
-.gender-btn:hover {
+.genderBtn:hover {
   background-color: rgb(88, 88, 88);
   cursor: pointer;
 }
 
-#login-link:hover {
+#loginLink:hover {
   cursor: pointer;
 }

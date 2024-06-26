@@ -1,7 +1,7 @@
 import PageLayout from '../PageLayout';
 import { useEffect, useState, useRef, useContext } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import "./Post.css";
+import styles from "./Post.module.css";
 import "../../index.css";
 import Comment from "./Comment";
 import PostTop from "./PostTop";
@@ -65,7 +65,7 @@ export default function Post() {
           {userContext.isLoggedIn ? 
           post.mayComment &&
           <ReplyBox setComments={setComments} />
-          : <button id="add-a-comment-nologin"
+          : <button id={styles.addACommentNoLogin}
                     className="form-control rounded shadow-none"
                     onClick={() => {
                       popupContext.setPopup(currentPopup =>

@@ -1,16 +1,16 @@
 
-#site-navbar {
+#siteNavbar {
   height: 3rem;
   display: flex;
   align-items: center;
 }
 
-.right-nav-element {
+.rightNavElement {
   margin-left: auto;
   margin-right: 1rem;
 }
 
-#login-button {
+#loginBtn {
   margin-left: auto;
   background-color: rgb(235, 124, 20);
   color: rgb(243, 243, 243);
@@ -18,7 +18,7 @@
   padding: 0.5rem 0.8rem 0.5rem 0.8rem;
 }
 
-#login-button:hover {
+#loginBtn:hover {
   cursor: pointer;
   background-color: rgb(185, 101, 23);
 }
@@ -27,16 +27,16 @@
   cursor: pointer;
 }
 
-#post-create-btn {
+#postCreateBtn {
   border-style: none;
   font-size: 1.2rem;
   background-color: transparent;
 }
 
-#post-create-btn:hover {
+#postCreateBtn:hover {
   cursor: pointer;
 }
 
-#post-create-btn, #post-create-btn:active, #post-create-btn:focus {
+#postCreateBtn, #postCreateBtn:active, #postCreateBtn:focus {
   outline: none;
 }

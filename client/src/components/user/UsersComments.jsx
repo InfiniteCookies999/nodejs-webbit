@@ -54,7 +54,7 @@ export default function UsersComments({ user }) {
       {!comments ? <span>Loading...</span> :
         comments.map(comment => (
           <div key={comment.id} style={{backgroundColor:"#f5f5f5", marginTop:"1rem"}} className="rounded">
-            <Comment comment={comment} addExtraPadding={true} />
+            <Comment comment={comment} addExtraPadding={true} replyJumpsToThread={true} />
           </div>
         ))}
     </div>

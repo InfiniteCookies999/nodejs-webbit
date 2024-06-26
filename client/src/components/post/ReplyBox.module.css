@@ -1,10 +1,10 @@
-.comment-form {
+.commentForm {
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid #222;
 }
 
-.comment-form-textarea {
+.commentFormTextarea {
   border: none;
   outline: none;
   display: block;
@@ -12,13 +12,13 @@
   padding: 0.5rem 0 0.5rem 0.5rem;
 }
 
-.comment-form-textarea:empty:before{
+.commentFormTextarea:empty:before{
   content:attr(placeholder);
   color:grey;
   background-color: transparent;;
 }
 
-.comment-submit-btn {
+.commentSubmitBtn {
   background-color: #1b3fc2;
   color: white;
   width: 7rem;
@@ -26,11 +26,11 @@
   border-radius: 20px;
 }
 
-.comment-submit-btn:hover {
+.commentSubmitBtn:hover {
   background-color: #1232a5;
 }
 
-.comment-cancel-btn {
+.commentCancelBtn {
   background-color: lightgray;
   color: black;
   width: 5rem;
@@ -38,6 +38,6 @@
   border-radius: 20px;
 }
 
-.comment-cancel-btn:hover {
+.commentCancelBtn:hover {
   background-color: #aaa;
 }

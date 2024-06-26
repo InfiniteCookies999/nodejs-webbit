@@ -1,38 +1,38 @@
-#profile-row {
+#profileRow {
   display: flex;
   align-items: end;
   margin-left: 2rem;
 }
 
-#username-container {
+#usernameContainer {
   display: inline-block;
 }
 
-#username-heading, #username-heading-sm {
+#usernameHeading, #usernameHeadingSm {
   margin-left: 1rem;
 }
 
-#username-heading {
+#usernameHeading {
   display: block;
   font-size: 1.5rem;
 }
 
-.tab-btn {
+.tabBtn {
   margin-left: 1rem;
   padding: 0.5rem;
   border-style: none;
   border-radius: 25px;
 }
 
-.tab-btn, .tab-btn:focus, .tab-btn:active {
+.tabBtn, .tabBtn:focus, .tabBtn:active {
   outline: none;
 }
 
-.tab-btn:hover {
+.tabBtn:hover {
   cursor: pointer;
 }
 
-#user-info {
+#userInfo {
   padding: 1.5rem;
   width: 95%;
   height: 10rem;
@@ -41,15 +41,15 @@
   color: white;
 }
 
-.user-info-values {
+#userInfo .row .col-sm-4 {
+  padding: 0.1rem;
+}
+
+.userInfoValues {
   font-size: 1rem;
 }
 
-.user-info-desc {
+.userInfoDesc {
   font-size: 0.8rem;
   color: rgb(194, 194, 194);
-}
-
-#user-info .row .col-sm-4 {
-  padding: 0.1rem;
 }

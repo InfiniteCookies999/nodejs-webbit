@@ -1,20 +1,16 @@
-.error-label {
-  color: red;
-  position: absolute;
-}
 
-.gender-section {
+.genderSection {
   margin-top: 0.9rem;
   padding: 0.1rem;
   padding-left: 1rem;
   border-radius: 20px;
 }
 
-.gender-section span:nth-child(2) {
+.genderSection span:nth-child(2) {
   float: right;
 }
 
-.gender-section:hover {
+.genderSection:hover {
   cursor: pointer;
   background-color: rgb(57, 58, 68);
 }

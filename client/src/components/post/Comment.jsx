@@ -4,6 +4,7 @@ import ReplyBox from "./ReplyBox";
 import Votes from "./Votes";
 import { UserContext } from "../../contexts/UserContext";
 import { PopupContext, PopupType } from "../../contexts/PopupContext";
+import styles from './Comment.module.css';
 
 export default function Comment({ comment, addExtraPadding, setComments, repliesList, replyJumpsToThread }) {
   let replies = comment.replies;
@@ -24,8 +25,8 @@ export default function Comment({ comment, addExtraPadding, setComments, replies
   return (
     <div id={"comment-" + comment.id} style={style} ref={comment.lastRef}>
       <PostHeaderInfo user={comment.User} timeStamp={comment.createdAt} />
-      <div className="comment-indent">
-        <p className="comment-body">{comment.content}</p>
+      <div className={styles.commentIndent}>
+        <p className={styles.commentBody}>{comment.content}</p>
         <Votes likes={comment.likes} dislikes={comment.dislikes}
                isLiked={comment.isLiked} isDisliked={comment.isDisliked}
                likeURI={`/api/comment/like/${comment.id}`}
@@ -33,7 +34,11 @@ export default function Comment({ comment, addExtraPadding, setComments, replies
         <a href="#/" className="link" style={{display:"inline-block"}}
           onClick={() => {
             if (userContext.isLoggedIn) {
-              window.location.href = `/u/${comment.User.username}/comments/${comment.id}`;
+              if (replyJumpsToThread) {
+                window.location.href = `/u/${comment.User.username}/comments/${comment.id}`;
+              } else {
+                document.getElementById('reply-box-' + comment.id).style.display = "block";
+              }
             } else {
               popupContext.setPopup(currentPopup =>
                 ({ ...currentPopup, stateType: PopupType.SIGNUP }));
@@ -53,7 +58,7 @@ export default function Comment({ comment, addExtraPadding, setComments, replies
         {moreReplies &&
           <div>
             <a href={`/u/${comment.User.username}/comments/${comment.id}`}
-              className="link link-more-comments" >
+              className={`link ${styles.linkMoreComments}`} >
                 + {comment.remainingReplies} more { comment.remainingReplies > 1 ? "replies" : "reply" } 
             </a>
           </div>

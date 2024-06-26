@@ -11,8 +11,16 @@
   color: rgb(228, 228, 228);
   z-index: 10;
 }
+#popupContainer {
+  background-color: rgb(42, 42, 46);
+  width: 32rem;
+  height: 40rem;
+  transform: translateY(20%);
+  margin: auto;
+  border-radius: 24px;
+}
 
-#popup-close-button {
+#popupCloseButton {
   border-radius: 25px;
   width: 2.5rem;
   height: 2.5rem;
@@ -24,32 +32,7 @@
   background-color: rgb(58, 58, 58);
 }
 
-#popup-close-button:hover {
+#popupCloseButton:hover {
   cursor: pointer;
   background-color: rgb(85, 85, 85);
-}
-
-#popup-container {
-  background-color: rgb(42, 42, 46);
-  width: 32rem;
-  height: 40rem;
-  transform: translateY(20%);
-  margin: auto;
-  border-radius: 24px;
-}
-
-.center-padding {
-  padding: 5rem 4rem 0 4rem;
-}
-
-.bottom-container {
-  pointer-events: none;
-  position: absolute;
-  display: flex;
-  align-items: flex-end;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  padding-top: 0;
 }
