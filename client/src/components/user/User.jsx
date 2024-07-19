@@ -50,7 +50,7 @@ export default function User() {
           <>
             <br />
             <div id={styles.profileRow}>
-              <img src={profilePicture} style={{width:"10rem", height:"12rem"}} />
+              <img src={profilePicture} alt="" style={{width:"10rem", height:"12rem"}} />
               <div id={styles.usernameContainer}>  
                 <span id={styles.usernameHeading}>{user.username}</span>
                 <span id={styles.usernameHeadingSm}>{"u/" + user.username}</span>

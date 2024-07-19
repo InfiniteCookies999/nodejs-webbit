@@ -9,20 +9,20 @@ export default function PostListElement({ post, lastRef }) {
     body += "...";
   }
 
-  const postLink = `/w/${post.SubWebbit.name}/comments/${post.id}`;
   return (
-    <div className={styles.postElement} ref={lastRef}>
-      <a href={postLink} className="link">
-        <div>
-          <PostHeaderInfo
-            sub={post.SubWebbit}
-            timeStamp={post.createdAt}
-          />
-          <h2><b>{post.title}</b></h2>
-          <p>{body}</p>
-          <PostFooterInfo post={post} />
-        </div>
-      </a>
+    <div className={styles.postElement} ref={lastRef} onClick={() => {
+      window.location.href = `/w/${post.SubWebbit.name}/comments/${post.id}`;
+    }}>
+      <div>
+        <PostHeaderInfo
+          sub={post.SubWebbit}
+          timeStamp={post.createdAt}
+        />
+        <h2><b>{post.title}</b></h2>
+        <p>{body}</p>
+        <PostFooterInfo post={post} />
+      </div>
+
     </div>
   );
 }

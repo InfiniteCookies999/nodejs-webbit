@@ -44,6 +44,7 @@ export default function Post() {
 
   // scroll to the first comment if viewReplies is set to true.
   useEffect(() => {
+    if (!searchParams) return;
     const commentContainer = document.getElementById("comment-container");
     if (scrollStateRef.current !== false) return;
     if (searchParams.get("viewReplies") !== "true") return;
@@ -53,11 +54,11 @@ export default function Post() {
     scrollStateRef.current = true;
     commentContainer.children[0].scrollIntoView();
   
-  }, [ comments ]);
+  }, [ comments, searchParams ]);
 
   return (
     <PageLayout middle={
-      post === undefined ? <h1>Loading...</h1> :
+      post === undefined || userContext === undefined ? <h1>Loading...</h1> :
         <div>
           <PostTop post={post} subNameForPost={post.SubWebbit.name} />
           <br />

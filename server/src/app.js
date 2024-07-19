@@ -3,7 +3,6 @@ const config = require('./config/env.config');
 const createApp = require('./create.app');
 const db = require('./models');
 const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
 
 (async () => {
 

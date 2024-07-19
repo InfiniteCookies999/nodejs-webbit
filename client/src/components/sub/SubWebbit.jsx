@@ -1,6 +1,6 @@
-import PageLayout from "./PageLayout";
+import PageLayout from "../PageLayout";
 import { useParams } from "react-router-dom";
-import PostContainer from "./post/PostsContainer";
+import PostContainer from "../post/PostsContainer";
 import styles from './SubWebbit.module.css';
 import { useEffect, useState } from "react";
 
@@ -37,7 +37,7 @@ export default function SubWebbit() {
         {!sub ? <h1>Loading...</h1> :
           <>
             <div id={styles.subHeader}>
-              <img src={subCommunityFileLink} className="rounded-circle" id={styles.subImage} />
+              <img src={subCommunityFileLink} alt="" className="rounded-circle" id={styles.subImage} />
               <span>{"w/"+subname}</span>
             </div>
             <PostContainer subname={subname} />

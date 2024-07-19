@@ -9,7 +9,7 @@ export default function PageLayout({ middle, right }) {
   const popupContext = useContext(PopupContext);
 
   return (
-    <div className='container p-0 m-0'>
+    <div className='container-fluid p-0 m-0'>
       <div className="row">
       <div className="col-sm-3">
         <br />
